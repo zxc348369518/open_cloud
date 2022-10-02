@@ -263,8 +263,9 @@ digitalocean_menu() {
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
  ${Green_font_prefix}4.${Font_color_suffix} 删除机器
 ————————————————————————————————————————————————————————————————
- ${Green_font_prefix}5.${Font_color_suffix} 添加api
- ${Green_font_prefix}6.${Font_color_suffix} 删除api
+ ${Green_font_prefix}5.${Font_color_suffix} 查询已保存api
+ ${Green_font_prefix}6.${Font_color_suffix} 添加api
+ ${Green_font_prefix}7.${Font_color_suffix} 删除api
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}99.${Font_color_suffix} 退出" &&
 
@@ -283,9 +284,12 @@ read -p " 请输入数字 :" num
     del_do
     ;;
     5)
-    create_api_do
+    check_api_do
     ;;
     6)
+    create_api_do
+    ;;
+    7)
     del_api_do
     ;;
     99)
@@ -421,8 +425,9 @@ linode_menu() {
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
  ${Green_font_prefix}4.${Font_color_suffix} 删除机器
 ————————————————————————————————————————————————————————————————
- ${Green_font_prefix}5.${Font_color_suffix} 添加api
- ${Green_font_prefix}6.${Font_color_suffix} 删除api
+ ${Green_font_prefix}5.${Font_color_suffix} 查询已保存api
+ ${Green_font_prefix}6.${Font_color_suffix} 添加api
+ ${Green_font_prefix}7.${Font_color_suffix} 删除api
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}99.${Font_color_suffix} 退出" &&
 
@@ -441,9 +446,12 @@ read -p " 请输入数字 :" num
     del_linode
     ;;
     5)
-    create_api_linode
+    check_api_linode
     ;;
     6)
+    create_api_linode
+    ;;
+    7)
     del_api_linode
     ;;
     99)
