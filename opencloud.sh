@@ -11,7 +11,7 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
 
 #提取do机器信息
-Information_do() {
+Information_vps_do() {
     check_api_do
     read -p "你需要查询的api名称:" api_name
     DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
@@ -38,7 +38,7 @@ Information_do() {
 }
 
 #提取do用户信息
-Information_do() {
+Information_user_do() {
     check_api_do
     read -p "你需要查询的api名称:" api_name
     DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
@@ -271,10 +271,10 @@ digitalocean_menu() {
 read -p " 请输入数字 :" num
   case "$num" in
     1)
-    Information_do
+    Information_user_do
     ;;
     2)
-    Information_do
+    Information_vps_do
     ;;
     3)
     create_do
@@ -375,91 +375,6 @@ read -p " 请输入数字 :" num
     start_menu
     ;;
   esac
-}
-
-#linode菜单
-linode_menu() {
-    clear
-    echo && echo -e " ${Red_font_prefix}linde${Font_color_suffix} 开机脚本 ${Green_font_prefix}from LeiGe${Font_color_suffix}
- ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
- ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
- ${Green_font_prefix}3.${Font_color_suffix} 创新机器
- ${Green_font_prefix}4.${Font_color_suffix} 删除机器
-————————————————————————————————————————————————————————————————
- ${Green_font_prefix}5.${Font_color_suffix} 添加api
- ${Green_font_prefix}6.${Font_color_suffix} 删除api
-————————————————————————————————————————————————————————————————
- ${Green_font_prefix}99.${Font_color_suffix} 退出" &&
-
-read -p " 请输入数字 :" num
-  case "$num" in
-    1)
-    Information_do
-    ;;
-    2)
-    Information_do
-    ;;
-    3)
-    create_do
-    ;;
-    4)
-    del_do
-    ;;
-    5)
-    create_api_linode
-    ;;
-    6)
-    del_api_linode
-    ;;
-    99)
-    start_menu
-    ;;
-  *)
-    clear
-    echo -e "${Error}:请输入正确数字 [0-99]"
-    sleep 5s
-    start_menu
-    ;;
-  esac
-}
-
-#查询已保存linodeapi
-check_api_linode(){
-    echo -e "已绑定的api：`ls ${file_path}/linode`"
-}
-
-#创建linodeapi
-create_api_linode(){
-    check_api_do
-    read -e -p "是否需要添加api(默认: N 取消)：" info
-    [[ -z ${info} ]] && info="n"
-    if [[ ${info} == [Yy] ]]; then
-        read -e -p "请为这个api添加一个备注：" api_name
-        read -e -p "输入api：" api_key
-        if test -f "${file_path}/linode/api_name"; then
-            echo "该备注已经存在，请更换其他名字，或者删除原来api"
-        else
-            echo "${api_key}" > ${file_path}/linode/${api_name}
-            echo "添加成功！"
-        fi
-    fi
-}
-
-#删除linodeapi
-del_api_linode(){
-    check_api_linode
-    read -p "你需要删除的api名称:" api_name
-    read -e -p "是否需要删除 ${api_name}(默认: N 取消)：" info
-    [[ -z ${info} ]] && info="n"
-    if [[ ${info} == [Yy] ]]; then
-        read -e -p "请输入需要删除api的名字：" api_name
-        if test -f "${file_path}/linode/api_name"; then
-            rm -rf ${file_path}/linode/${api_name}
-            echo "删除成功！"
-        else
-            echo "未在系统中查找到该名称的api"
-        fi
-    fi
 }
 
 initialization
