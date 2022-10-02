@@ -257,7 +257,7 @@ del_do() {
 #do菜单
 digitalocean_menu() {
     clear
-    echo && echo -e " ${Red_font_prefix}233yun${Font_color_suffix} 开机脚本 ${Green_font_prefix}from LeiGe${Font_color_suffix}
+    echo && echo -e " ${Red_font_prefix}do${Font_color_suffix} 开机脚本 ${Green_font_prefix}from LeiGe${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创新机器
