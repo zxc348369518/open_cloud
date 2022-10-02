@@ -260,7 +260,7 @@ digitalocean_menu() {
     echo && echo -e " ${Red_font_prefix}do${Font_color_suffix} 开机脚本 ${Green_font_prefix}from LeiGe${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
- ${Green_font_prefix}3.${Font_color_suffix} 创新机器
+ ${Green_font_prefix}3.${Font_color_suffix} 创建机器
  ${Green_font_prefix}4.${Font_color_suffix} 删除机器
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}5.${Font_color_suffix} 添加api
@@ -341,12 +341,13 @@ del_api_do(){
 
 #初始化
 initialization(){
-        mkdir -p /root/opencloud
-        mkdir -p /root/opencloud/do
-        mkdir -p /root/opencloud/linode
-        mkdir -p /root/opencloud/az
-        mkdir -p /root/opencloud/aws
-        mkdir -p /root/opencloud/vu
+    
+    mkdir -p /root/opencloud
+    mkdir -p /root/opencloud/do
+    mkdir -p /root/opencloud/linode
+    mkdir -p /root/opencloud/az
+    mkdir -p /root/opencloud/aws
+    mkdir -p /root/opencloud/vu
 
     start_menu
 }
@@ -356,7 +357,7 @@ start_menu() {
   clear
   echo && echo -e " ${Red_font_prefix}五合一${Font_color_suffix} 开机脚本 ${Green_font_prefix}from @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} Digitalocean
- ${Green_font_prefix}2.${Font_color_suffix} Linode（开放中）
+ ${Green_font_prefix}2.${Font_color_suffix} Linode
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}99.${Font_color_suffix} 退出" &&
 
@@ -364,6 +365,9 @@ read -p " 请输入数字 :" num
   case "$num" in
     1)
     digitalocean_menu
+    ;;
+    2)
+    create_linode
     ;;
     99)
     exit 1
@@ -375,6 +379,292 @@ read -p " 请输入数字 :" num
     start_menu
     ;;
   esac
+}
+
+#linode菜单
+linode_menu() {
+    clear
+    echo && echo -e " ${Red_font_prefix}linde${Font_color_suffix} 开机脚本 ${Green_font_prefix}from LeiGe${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
+ ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
+ ${Green_font_prefix}3.${Font_color_suffix} 创建机器
+ ${Green_font_prefix}4.${Font_color_suffix} 删除机器
+————————————————————————————————————————————————————————————————
+ ${Green_font_prefix}5.${Font_color_suffix} 添加api
+ ${Green_font_prefix}6.${Font_color_suffix} 删除api
+————————————————————————————————————————————————————————————————
+ ${Green_font_prefix}99.${Font_color_suffix} 退出" &&
+
+read -p " 请输入数字 :" num
+  case "$num" in
+    1)
+    Information_user_linode
+    ;;
+    2)
+    Information_vps_linode
+    ;;
+    3)
+    create_linode
+    ;;
+    4)
+    del_linode
+    ;;
+    5)
+    create_api_linode
+    ;;
+    6)
+    del_api_linode
+    ;;
+    99)
+    start_menu
+    ;;
+  *)
+    clear
+    echo -e "${Error}:请输入正确数字 [0-99]"
+    sleep 5s
+    start_menu
+    ;;
+  esac
+}
+
+#查询已保存linodeapi
+check_api_linode(){
+    echo -e "已绑定的api：`ls ${file_path}/linode`"
+}
+
+#创建linodeapi
+create_api_linode(){
+    check_api_do
+    read -e -p "是否需要添加api(默认: N 取消)：" info
+    [[ -z ${info} ]] && info="n"
+    if [[ ${info} == [Yy] ]]; then
+        read -e -p "请为这个api添加一个备注：" api_name
+        read -e -p "输入api：" api_key
+        if test -f "${file_path}/linode/api_name"; then
+            echo "该备注已经存在，请更换其他名字，或者删除原来api"
+        else
+            echo "${api_key}" > ${file_path}/linode/${api_name}
+            echo "添加成功！"
+        fi
+    fi
+}
+
+#删除linodeapi
+del_api_linode(){
+    check_api_linode
+    read -p "你需要删除的api名称:" api_name
+    read -e -p "是否需要删除 ${api_name}(默认: N 取消)：" info
+    [[ -z ${info} ]] && info="n"
+    if [[ ${info} == [Yy] ]]; then
+        read -e -p "请输入需要删除api的名字：" api_name
+        if test -f "${file_path}/linode/api_name"; then
+            rm -rf ${file_path}/linode/${api_name}
+            echo "删除成功！"
+        else
+            echo "未在系统中查找到该名称的api"
+        fi
+    fi
+}
+
+#查询linode机器信息
+Information_vps_linode() {
+   check_api_linode
+    read -p "你需要查询的api名称:" api_name
+        TOKEN=`cat ${file_path}/linode/${api_name}`
+        
+    json=`curl -s -H "Authorization: Bearer $TOKEN" \
+        https://api.linode.com/v4/linode/instances`
+        
+    total=`echo $json | jq -r '.results'`
+    echo "查询结果为空代表 账号下没有任何机器 或者 账号已经失效了"
+    i=-1
+    while ((i < ("${total}" - "1" )))
+    do
+        ((i++))
+        echo "机器ID："
+        echo $json | jq '.data['${i}'].id'
+        echo "机器ipv4："
+        echo $json | jq '.data['${i}'].ipv4'
+        echo -e "\n"
+    done 
+}
+
+#查询linode账号信息
+Information_user_linode() {
+    check_api_linode
+    read -p "你需要查询的api名称:" api_name
+    TOKEN=`cat ${file_path}/linode/${api_name}`
+    json=`curl -s -H "Authorization: Bearer $TOKEN" \
+    https://api.linode.com/v4/account`
+
+    if [[ $json =~ "Invalid Token" ]];
+    then
+        echo "获取失败：令牌无效"
+    else
+        var1=`echo $json | jq -r '.email'`
+        var2=`echo $json | jq -r '.active_promotions[0].credit_remaining'`
+        echo -e  "电子邮箱：${var1}\n账号余额：${var2}\n有余额的账号才是正常的！" 
+    fi
+}
+
+#创建linode机器
+create_linode() {
+    check_api_linode
+    read -p "你需要查询的api名称:" api_name
+    TOKEN=`cat ${file_path}/linode/${api_name}`
+    
+    echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix}  ap-west（in）
+ ${Green_font_prefix}2.${Font_color_suffix}  ca-central（ca）
+ ${Green_font_prefix}3.${Font_color_suffix}  ap-southeast（au）
+ ${Green_font_prefix}4.${Font_color_suffix}  us-central（us）
+ ${Green_font_prefix}5.${Font_color_suffix}  us-west（us）
+ ${Green_font_prefix}6.${Font_color_suffix}  us-southeast（us）
+ ${Green_font_prefix}7.${Font_color_suffix}  us-east（us）
+ ${Green_font_prefix}8.${Font_color_suffix}  eu-west（uk）
+ ${Green_font_prefix}9.${Font_color_suffix}  ap-south（sg）
+ ${Green_font_prefix}10.${Font_color_suffix}  eu-central（de）
+ ${Green_font_prefix}11.${Font_color_suffix}  ap-northeast（JP）"
+    read -e -p "请选择你的服务器位置:" region
+    if [[ ${region} == "1" ]]; then
+        region="ap-west"
+    elif [[ ${region} == "2" ]]; then
+        region="ca-central"
+    elif [[ ${region} == "3" ]]; then
+        region="ap-southeast"
+    elif [[ ${region} == "4" ]]; then
+        region="us-central"
+    elif [[ ${region} == "5" ]]; then
+        region="us-west"
+    elif [[ ${region} == "6" ]]; then
+        region="us-southeast"
+    elif [[ ${region} == "7" ]]; then
+        region="us-east"
+    elif [[ ${region} == "8" ]]; then
+        region="eu-west"
+    elif [[ ${region} == "9" ]]; then
+        region="ap-south"
+    elif [[ ${region} == "10" ]]; then
+        region="eu-central"
+    else
+        region="ap-northeast"
+    fi
+    
+    echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix}  linode/centos7
+ ${Green_font_prefix}2.${Font_color_suffix}  linode/centos-stream8
+ ${Green_font_prefix}3.${Font_color_suffix}  linode/centos-stream9
+ ${Green_font_prefix}4.${Font_color_suffix}  linode/debian10
+ ${Green_font_prefix}5.${Font_color_suffix}  linode/debian11
+ ${Green_font_prefix}6.${Font_color_suffix}  linode/debian9
+ ${Green_font_prefix}7.${Font_color_suffix}  linode/ubuntu16.04lts
+ ${Green_font_prefix}8.${Font_color_suffix}  linode/ubuntu18.04
+ ${Green_font_prefix}9.${Font_color_suffix}  linode/ubuntu20.04
+ ${Green_font_prefix}10.${Font_color_suffix}  linode/ubuntu22.04
+ ${Green_font_prefix}11.${Font_color_suffix}  linode/centos8
+ ${Green_font_prefix}12.${Font_color_suffix}  linode/ubuntu21.04
+ ${Green_font_prefix}13.${Font_color_suffix}  linode/ubuntu21.10"
+    read -e -p "请选择你的服务器位置:" image
+    if [[ ${image} == "1" ]]; then
+        image="linode/centos7"
+    elif [[ ${image} == "2" ]]; then
+        image="linode/centos-stream8"
+    elif [[ ${image} == "3" ]]; then
+        image="linode/centos-stream9"
+    elif [[ ${image} == "4" ]]; then
+        image="linode/debian10"
+    elif [[ ${image} == "5" ]]; then
+        image="linode/debian11"
+    elif [[ ${image} == "6" ]]; then
+        image="linode/debian9"
+    elif [[ ${image} == "7" ]]; then
+        image="linode/ubuntu16.04lts"
+    elif [[ ${image} == "8" ]]; then
+        image="linode/ubuntu18.04"
+    elif [[ ${image} == "9" ]]; then
+        image="linode/ubuntu20.04"
+    elif [[ ${image} == "10" ]]; then
+        image="linode/ubuntu22.04"
+    elif [[ ${image} == "11" ]]; then
+        image="linode/centos8"
+    elif [[ ${image} == "12" ]]; then
+        image="linode/ubuntu21.04"
+    else
+        image="linode/ubuntu21.10"
+    fi
+    
+    echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix} 1H1G
+ ${Green_font_prefix}2.${Font_color_suffix}  1H2G
+ ${Green_font_prefix}3.${Font_color_suffix}  2H4G
+ ${Green_font_prefix}4.${Font_color_suffix}  4H8G
+ ${Green_font_prefix}5.${Font_color_suffix}  6H16G"
+    read -p " 请输入机器规格:" size
+    if [[ ${size} == "1" ]]; then
+        size="g6-nanode-1"
+    elif [[ ${size} == "2" ]]; then
+        size="g6-standard-1"
+    elif [[ ${size} == "3" ]]; then
+        size="g6-standard-2"
+    elif [[ ${size} == "4" ]]; then
+        size="g6-standard-4"
+    else
+        size="g6-standard-6"
+    fi
+
+    json=`curl -s -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $TOKEN" \
+    -X POST -d '{
+      "swap_size": 512,
+      "image": "'${image}'",
+      "root_pass": "GVuRxZYMiOwgdiTd",
+      "booted": true,
+      "type": "'${size}'",
+      "region": "'${region}'"
+    }' \
+    https://api.linode.com/v4/linode/instances`
+    
+    ipv4=`echo ${json} | jq -r '.ipv4'`
+    
+    if [[ $ipv4 =~ "null" ]];
+    then
+        echo "创建失败"
+    else
+        echo -e "IP地址为：${ipv4}\n开机密码统一为：GVuRxZYMiOwgdiTd\n请立即修改密码！"
+    fi
+}
+
+#删除linode机器
+del_linode() {
+    Information_vps_linode
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/linode/${api_name}`
+    
+    json=`curl -s -X GET \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
+    "https://api.digitalocean.com/v2/droplets"`
+    total=`echo $json | jq -r '.meta.total'`
+    
+    i=-1
+    while ((i < ("${total}" - "1" )))
+    do
+        ((i++))
+        echo "机器ID："
+        echo $json | jq '.droplets['${i}'].id'
+        echo "机器名字："
+        echo $json | jq '.droplets['${i}'].name'
+        echo "机器IP："
+        echo $json | jq '.droplets['${i}'].networks.v4[0].ip_address'
+        echo $json | jq '.droplets['${i}'].networks.v4[1].ip_address'
+        echo -e "\n"
+    done
+    
+    read -e -p "请输入需要删除机器的id号：" id
+    read -e -p "是否需要删除id为 ${id} (默认: N 取消)：" info
+        [[ -z ${info} ]] && info="n"
+        if [[ ${info} == [Yy] ]]; then
+            curl -s -H "Authorization: Bearer $TOKEN" \
+            -X DELETE \
+            https://api.linode.com/v4/linode/instances/${id}
+            echo "${id} 删除成功"
+        fi
 }
 
 initialization
