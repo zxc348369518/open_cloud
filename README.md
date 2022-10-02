@@ -7,6 +7,13 @@
 - 脚本会自动保存api到本地，云端不会记录你保存的api
 - 所有代码都是开源的无任何加密
 
+### api保存位置
+- /root/opencloud/do
+- /root/opencloud/linode
+- /root/opencloud/vu
+- /root/opencloud/aws
+- /root/opencloud/az
+
 ### 安装代码
 - 所有机器创建的密码均为：GVuRxZYMiOwgdiTd   开机完成后请立即修改密码
 ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud.sh)```
