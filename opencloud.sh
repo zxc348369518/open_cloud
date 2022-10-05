@@ -9,7 +9,7 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
-Version="22.10.2.3"
+Version="22.10.2-3"
 
 #提取do机器信息
 Information_vps_do() {
