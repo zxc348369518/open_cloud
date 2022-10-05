@@ -20,4 +20,3 @@
 - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud.sh)```
 
 > [@openccloud](https://t.me/openccloud "@openccloud")
-> [@Leige_233](https://t.me/LeiGe_233 "@Leige_233")
