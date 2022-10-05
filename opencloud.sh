@@ -9,6 +9,7 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
+Version="22.10.2.3"
 
 #提取do机器信息
 Information_vps_do() {
@@ -185,7 +186,8 @@ create_do() {
            json=`curl -s -X POST \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-            -d '{"name":"'${name}'","region":"'${region}'","size":"'${size}'","image":"'${image}'","ipv6":true,"user_data":"bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/passwd.sh)"}' \
+            -d '{"name":"'${name}'","region":"'${region}'","size":"'${size}'","image":"'${image}'","ipv6":true,"user_data":"#!/bin/bash\necho root:GVuRxZYMiOwgdiTd |sudo chpasswd root;\nsudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+\nsudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;\nsudo service sshd restart"}' \
             "https://api.digitalocean.com/v2/droplets"`
             
             if [[ $json =~ "Size is not available in this region" ]];
@@ -257,7 +259,7 @@ del_do() {
 #do菜单
 digitalocean_menu() {
     clear
-    echo && echo -e " ${Red_font_prefix}do${Font_color_suffix} 开机脚本 ${Green_font_prefix}from LeiGe${Font_color_suffix}
+    echo && echo -e " Digitalocean 开机脚本${Red_font_prefix} [V${Version}] 开源免费${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
@@ -390,8 +392,8 @@ initialization(){
 #启动菜单
 start_menu() {
   clear
-  echo && echo -e " ${Red_font_prefix}五合一${Font_color_suffix} 开机脚本 ${Green_font_prefix}from @LeiGe_233${Font_color_suffix}
- ${Green_font_prefix}1.${Font_color_suffix} Digitalocean
+  echo && echo -e " 云服务开机脚本${Red_font_prefix} [V${Version}] 开源免费${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} Digitalocean 
  ${Green_font_prefix}2.${Font_color_suffix} Linode
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}99.${Font_color_suffix} 退出" &&
@@ -419,7 +421,7 @@ read -p " 请输入数字 :" num
 #linode菜单
 linode_menu() {
     clear
-    echo && echo -e " ${Red_font_prefix}linde${Font_color_suffix} 开机脚本 ${Green_font_prefix}from LeiGe${Font_color_suffix}
+    echo && echo -e " Linode 开机脚本${Red_font_prefix} [V${Version}] 开源免费${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
