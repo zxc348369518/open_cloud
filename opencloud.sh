@@ -13,8 +13,8 @@ file_path="/root/opencloud"
 #linode循环脚本
 linode_loop_script(){
 echo && echo -e "
- ${Green_font_prefix}98.${Font_color_suffix} 返回
- ${Green_font_prefix}99.${Font_color_suffix} 退出"  &&
+ ${Green_font_prefix}98.${Font_color_suffix} 返回linode菜单
+ ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
  
 
 read -p " 请输入数字 :" num
@@ -36,9 +36,9 @@ read -p " 请输入数字 :" num
 
 #do循环脚本
 do_loop_script(){
-echo && echo -e "
- ${Green_font_prefix}98.${Font_color_suffix} 返回
- ${Green_font_prefix}99.${Font_color_suffix} 退出"  &&
+echo -e "
+ ${Green_font_prefix}98.${Font_color_suffix} 返回do菜单
+ ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
  
 
 read -p " 请输入数字 :" num
@@ -63,7 +63,7 @@ Information_vps_do() {
     check_api_do
     read -p "你需要查询的api名称:" api_name
     DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
-    
+    clear
     json=`curl -s -X GET \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
@@ -97,6 +97,7 @@ Information_user_do() {
     then
         echo "获取失败：无法对您进行身份验证"
     else
+        clear
         var1=`echo $json | jq -r '.account.droplet_limit'`
         var2=`echo $json | jq -r '.account.email'`
         var3=`echo $json | jq -r '.account.status'`
@@ -114,7 +115,7 @@ create_do() {
     
     read -p " 请输入机器名字:" name
     
-    echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix}  纽约3
+    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  纽约3
  ${Green_font_prefix}2.${Font_color_suffix}  纽约1 
  ${Green_font_prefix}3.${Font_color_suffix}  加利福尼亚1（未开放）
  ${Green_font_prefix}4.${Font_color_suffix}  纽约2（未开放）
@@ -156,7 +157,7 @@ create_do() {
         region="syd1"
     fi
     
-    echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix}  s-1vcpu-512mb-10gb
+    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  s-1vcpu-512mb-10gb
  ${Green_font_prefix}2.${Font_color_suffix}  s-1vcpu-1gb 
  ${Green_font_prefix}3.${Font_color_suffix}  s-1vcpu-1gb-amd
  ${Green_font_prefix}4.${Font_color_suffix}  s-1vcpu-1gb-intel
@@ -200,7 +201,7 @@ create_do() {
     
     data="#!/bin/bash && echo root:GVuRxZYMiOwgdiTd |sudo chpasswd root \ sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config; && sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config; && sudo service sshd restart"
 
-    echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix}  centos-7-x64
+     echo -e " ${Green_font_prefix}1.${Font_color_suffix}  centos-7-x64
  ${Green_font_prefix}2.${Font_color_suffix}  centos-stream-8-x64
  ${Green_font_prefix}3.${Font_color_suffix}  debian-11-x64
  ${Green_font_prefix}4.${Font_color_suffix}  debian-10-x64
@@ -226,7 +227,8 @@ create_do() {
     else
         image="centos-stream-9-x64"
     fi
-
+    
+    clear
      echo -e "请确认？ [Y/n]
 机器名字：${name}\n服务器位置：${region}\n服务器规格：${size}\n机器系统: ${image}"
         read -e -p "(默认: N 取消):" state
@@ -237,7 +239,7 @@ create_do() {
             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
             -d '{"name":"'${name}'","region":"'${region}'","size":"'${size}'","image":"'${image}'","ipv6":true,"user_data":"bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/passwd.sh)"}' \
             "https://api.digitalocean.com/v2/droplets"`
-            
+            echo ""
             if [[ $json =~ "created_at" ]];
             then
                 echo $json
@@ -274,7 +276,7 @@ del_do() {
     check_api_do
     read -p "你需要删除哪个api下的机器（输入API名字）:" api_name
     DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
-    
+
     json=`curl -s -X GET \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
@@ -303,6 +305,7 @@ del_do() {
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
             "https://api.digitalocean.com/v2/droplets/${id}"
+            echo "ID为 ${id} 删除成功！"
         fi
     do_loop_script
 }
@@ -360,12 +363,14 @@ read -p " 请输入数字 :" num
 
 #查询已保存doapi
 check_api_do(){
+    clear
     echo -e "已绑定的api：`ls ${file_path}/do`"
 }
 
 #创建doapi
 create_api_do(){
     check_api_do
+    
     read -e -p "是否需要添加api(默认: N 取消)：" info
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
@@ -523,12 +528,13 @@ read -p " 请输入数字 :" num
   esac
 }
 
-#查询已保存linodeapi
+#查询已保存linode api
 check_api_linode(){
+    clear
     echo -e "已绑定的api：`ls ${file_path}/linode`"
 }
 
-#创建linodeapi
+#创建linode api
 create_api_linode(){
     check_api_do
     read -e -p "是否需要添加api(默认: N 取消)：" info
@@ -546,7 +552,7 @@ create_api_linode(){
     linode_loop_script
 }
 
-#删除linodeapi
+#删除linode api
 del_api_linode(){
     check_api_linode
     read -p "你需要删除的api名称:" api_name
@@ -572,7 +578,8 @@ Information_vps_linode() {
         
     json=`curl -s -H "Authorization: Bearer $TOKEN" \
         https://api.linode.com/v4/linode/instances`
-        
+      
+    clear  
     total=`echo $json | jq -r '.results'`
     echo "查询结果为空代表 账号下没有任何机器 或者 账号已经失效了"
     i=-1
@@ -595,7 +602,7 @@ Information_user_linode() {
     TOKEN=`cat ${file_path}/linode/${api_name}`
     json=`curl -s -H "Authorization: Bearer $TOKEN" \
     https://api.linode.com/v4/account`
-
+    clear
     if [[ $json =~ "Invalid Token" ]];
     then
         echo "获取失败：令牌无效"
@@ -613,7 +620,7 @@ create_linode() {
     read -p "你需要查询的api名称:" api_name
     TOKEN=`cat ${file_path}/linode/${api_name}`
     
-    echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix}  ap-west（in）
+    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  ap-west（in）
  ${Green_font_prefix}2.${Font_color_suffix}  ca-central（ca）
  ${Green_font_prefix}3.${Font_color_suffix}  ap-southeast（au）
  ${Green_font_prefix}4.${Font_color_suffix}  us-central（us）
@@ -649,7 +656,7 @@ create_linode() {
         region="ap-northeast"
     fi
     
-    echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix}  linode/centos7
+    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  linode/centos7
  ${Green_font_prefix}2.${Font_color_suffix}  linode/centos-stream8
  ${Green_font_prefix}3.${Font_color_suffix}  linode/centos-stream9
  ${Green_font_prefix}4.${Font_color_suffix}  linode/debian10
@@ -691,7 +698,7 @@ create_linode() {
         image="linode/ubuntu21.10"
     fi
     
-    echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix} 1H1G
+    echo -e " ${Green_font_prefix}1.${Font_color_suffix} 1H1G
  ${Green_font_prefix}2.${Font_color_suffix}  1H2G
  ${Green_font_prefix}3.${Font_color_suffix}  2H4G
  ${Green_font_prefix}4.${Font_color_suffix}  4H8G
@@ -724,7 +731,7 @@ create_linode() {
     https://api.linode.com/v4/linode/instances`
     
     ipv4=`echo ${json} | jq -r '.ipv4'`
-    
+    clear
     if [[ $ipv4 =~ "null" ]];
     then
         echo $json
@@ -745,7 +752,7 @@ del_linode() {
     -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
     "https://api.digitalocean.com/v2/droplets"`
     total=`echo $json | jq -r '.meta.total'`
-    
+    clear
     i=-1
     while ((i < ("${total}" - "1" )))
     do
