@@ -149,7 +149,7 @@ create_do() {
         size="s-2vcpu-4gb-intel"
     fi
     
-    data="#!/bin/bash && echo root:hK*6n%Nd%PiLk&$p |sudo chpasswd root && sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config; && sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config; && sudo service sshd restart"
+    data="#!/bin/bash && echo root:GVuRxZYMiOwgdiTd |sudo chpasswd root \ sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config; && sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config; && sudo service sshd restart"
 
     echo && echo -e " ${Green_font_prefix}1.${Font_color_suffix}  centos-7-x64
  ${Green_font_prefix}2.${Font_color_suffix}  centos-stream-8-x64
@@ -186,13 +186,12 @@ create_do() {
            json=`curl -s -X POST \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-            -d '{"name":"'${name}'","region":"'${region}'","size":"'${size}'","image":"'${image}'","ipv6":true,"user_data":"#!/bin/bash\necho root:GVuRxZYMiOwgdiTd |sudo chpasswd root;\nsudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
-\nsudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;\nsudo service sshd restart"}' \
+            -d '{"name":"'${name}'","region":"'${region}'","size":"'${size}'","image":"'${image}'","ipv6":true,"user_data":"bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/passwd.sh)"}' \
             "https://api.digitalocean.com/v2/droplets"`
-            
-            if [[ $json =~ "Size is not available in this region" ]];
+            echo $json
+            if [[ $json =~ "created_at" ]];
             then
-                echo "创建失败：此区域不提供大小"
+                echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
             else
                 echo "创建中，请稍等！"
                 cheek_ip_do
