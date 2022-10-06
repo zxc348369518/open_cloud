@@ -10,6 +10,54 @@ Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
 
+#linode循环脚本
+linode_loop_script(){
+echo && echo -e "
+ ${Green_font_prefix}98.${Font_color_suffix} 返回
+ ${Green_font_prefix}99.${Font_color_suffix} 退出"  &&
+ 
+
+read -p " 请输入数字 :" num
+  case "$num" in
+    98)
+    linode_menu
+    ;;
+    99)
+    exit 1
+    ;;
+  *)
+    clear
+    echo -e "${Error}:请输入正确数字 [0-99]"
+    sleep 5s
+    start_menu
+    ;;
+  esac
+}
+
+#do循环脚本
+do_loop_script(){
+echo && echo -e "
+ ${Green_font_prefix}98.${Font_color_suffix} 返回
+ ${Green_font_prefix}99.${Font_color_suffix} 退出"  &&
+ 
+
+read -p " 请输入数字 :" num
+  case "$num" in
+    98)
+    digitalocean_menu
+    ;;
+    99)
+    exit 1
+    ;;
+  *)
+    clear
+    echo -e "${Error}:请输入正确数字 [0-99]"
+    sleep 5s
+    start_menu
+    ;;
+  esac
+}
+
 #提取do机器信息
 Information_vps_do() {
     check_api_do
@@ -35,6 +83,7 @@ Information_vps_do() {
         echo $json | jq '.droplets['${i}'].networks.v4[1].ip_address'
         echo -e "\n"
     done
+    do_loop_script
 }
 
 #提取do用户信息
@@ -54,6 +103,7 @@ Information_user_do() {
         var4=`echo $json2 | jq -r '.month_to_date_balance'`
         echo -e  "电子邮箱：${var2}\n账号配额：${var1}\n账号状态：${var3}\n账号余额：${var4}" 
     fi
+    do_loop_script
 }
 
 #创建机器
@@ -216,6 +266,7 @@ cheek_ip_do(){
     else
         echo -e "IP地址为：${ipv4}\n目前开机密码无法修改，请使用邮件内的passwd！" #开机密码统一为：GVuRxZYMiOwgdiTd\n请立即修改密码
     fi
+    do_loop_script
 }
 
 #删除机器
@@ -253,6 +304,7 @@ del_do() {
             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
             "https://api.digitalocean.com/v2/droplets/${id}"
         fi
+    do_loop_script
 }
 
 #do菜单
@@ -286,6 +338,7 @@ read -p " 请输入数字 :" num
     ;;
     5)
     check_api_do
+    do_loop_script
     ;;
     6)
     create_api_do
@@ -294,7 +347,7 @@ read -p " 请输入数字 :" num
     del_api_do
     ;;
     99)
-    start_menu
+    exit 1
     ;;
   *)
     clear
@@ -325,6 +378,7 @@ create_api_do(){
             echo "添加成功！"
         fi
     fi
+    do_loop_script
 }
 
 #删除doapi
@@ -342,6 +396,7 @@ del_api_do(){
             echo "未在系统中查找到该名称的api"
         fi
     fi
+    do_loop_script
 }
 
 #初始化
@@ -448,6 +503,7 @@ read -p " 请输入数字 :" num
     ;;
     5)
     check_api_linode
+    linode_loop_script
     ;;
     6)
     create_api_linode
@@ -456,7 +512,7 @@ read -p " 请输入数字 :" num
     del_api_linode
     ;;
     99)
-    start_menu
+    exit 1
     ;;
   *)
     clear
@@ -487,6 +543,7 @@ create_api_linode(){
             echo "添加成功！"
         fi
     fi
+    linode_loop_script
 }
 
 #删除linodeapi
@@ -504,6 +561,7 @@ del_api_linode(){
             echo "未在系统中查找到该名称的api"
         fi
     fi
+    linode_loop_script
 }
 
 #查询linode机器信息
@@ -527,6 +585,7 @@ Information_vps_linode() {
         echo $json | jq '.data['${i}'].ipv4'
         echo -e "\n"
     done 
+    linode_loop_script
 }
 
 #查询linode账号信息
@@ -545,6 +604,7 @@ Information_user_linode() {
         var2=`echo $json | jq -r '.active_promotions[0].credit_remaining'`
         echo -e  "电子邮箱：${var1}\n账号余额：${var2}\n有余额的账号才是正常的！" 
     fi
+    linode_loop_script
 }
 
 #创建linode机器
@@ -648,13 +708,15 @@ create_linode() {
     else
         size="g6-standard-6"
     fi
-
+    
+    pasd=`date +%s | sha256sum | base64 | head -c 12 ; echo`
+    
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $TOKEN" \
     -X POST -d '{
       "swap_size": 512,
       "image": "'${image}'",
-      "root_pass": "GVuRxZYMiOwgdiTd",
+      "root_pass": "'${pasd}'",
       "booted": true,
       "type": "'${size}'",
       "region": "'${region}'"
@@ -668,8 +730,9 @@ create_linode() {
         echo $json
         echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
     else
-        echo -e "IP地址为：${ipv4}\n开机密码统一为：GVuRxZYMiOwgdiTd\n请立即修改密码！"
+        echo -e "IP地址为：${ipv4}\n开机密码统一为：${pasd}\n请立即修改密码！"
     fi
+    linode_loop_script
 }
 
 #删除linode机器
@@ -706,6 +769,7 @@ del_linode() {
             https://api.linode.com/v4/linode/instances/${id}
             echo "${id} 删除成功"
         fi
+        linode_loop_script
 }
 
 initialization
