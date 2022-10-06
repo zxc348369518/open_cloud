@@ -214,7 +214,7 @@ cheek_ip_do(){
     then
         cheek_ip_do
     else
-        echo -e "IP地址为：${ipv4}\n开机密码统一为：GVuRxZYMiOwgdiTd\n请立即修改密码！"
+        echo -e "IP地址为：${ipv4}\n目前开机密码无法修改，请使用邮件内的passwd！" #开机密码统一为：GVuRxZYMiOwgdiTd\n请立即修改密码
     fi
 }
 
