@@ -9,7 +9,6 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
-Version="22.10.2-3"
 
 #提取do机器信息
 Information_vps_do() {
@@ -258,7 +257,7 @@ del_do() {
 #do菜单
 digitalocean_menu() {
     clear
-    echo && echo -e " Digitalocean 开机脚本${Red_font_prefix} [V${Version}] 开源免费${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+    echo && echo -e " Digitalocean 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
@@ -391,7 +390,7 @@ initialization(){
 #启动菜单
 start_menu() {
   clear
-  echo && echo -e " 云服务开机脚本${Red_font_prefix} [V${Version}] 开源免费${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+  echo && echo -e " 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} Digitalocean 
  ${Green_font_prefix}2.${Font_color_suffix} Linode
 ————————————————————————————————————————————————————————————————
@@ -420,7 +419,7 @@ read -p " 请输入数字 :" num
 #linode菜单
 linode_menu() {
     clear
-    echo && echo -e " Linode 开机脚本${Red_font_prefix} [V${Version}] 开源免费${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+    echo && echo -e " Linode 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
