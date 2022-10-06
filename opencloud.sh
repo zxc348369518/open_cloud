@@ -187,9 +187,10 @@ create_do() {
             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
             -d '{"name":"'${name}'","region":"'${region}'","size":"'${size}'","image":"'${image}'","ipv6":true,"user_data":"bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/passwd.sh)"}' \
             "https://api.digitalocean.com/v2/droplets"`
-            echo $json
+            
             if [[ $json =~ "created_at" ]];
             then
+                echo $json
                 echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
             else
                 echo "创建中，请稍等！"
@@ -664,7 +665,8 @@ create_linode() {
     
     if [[ $ipv4 =~ "null" ]];
     then
-        echo "创建失败"
+        echo $json
+        echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
     else
         echo -e "IP地址为：${ipv4}\n开机密码统一为：GVuRxZYMiOwgdiTd\n请立即修改密码！"
     fi
