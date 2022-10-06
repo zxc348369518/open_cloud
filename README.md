@@ -11,7 +11,6 @@
 - /root/opencloud/*
 
 ### 安装代码
-- 所有机器创建的密码均为：GVuRxZYMiOwgdiTd   开机完成后请立即修改密码
 - 使用前先需要安装 jq工具
 - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud.sh)```
 
