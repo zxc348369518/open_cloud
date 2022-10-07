@@ -392,7 +392,7 @@ del_api_do(){
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
         read -e -p "请输入需要删除api的名字：" api_name
-        if test -f "${file_path}/do/api_name"; then
+        if test -f "${file_path}/do/${api_name}"; then
             rm -rf ${file_path}/do/${api_name}
             echo "删除成功！"
         else
