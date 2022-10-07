@@ -74,14 +74,13 @@ Information_vps_do() {
     while ((i < ("${total}" - "1" )))
     do
         ((i++))
-        echo "机器ID："
+        echo
+        echo -n "机器ID："
         echo $json | jq '.droplets['${i}'].id'
-        echo "机器名字："
+        echo -n "机器名字："
         echo $json | jq '.droplets['${i}'].name'
-        echo "机器IP："
-        echo $json | jq '.droplets['${i}'].networks.v4[0].ip_address'
-        echo $json | jq '.droplets['${i}'].networks.v4[1].ip_address'
-        echo -e "\n"
+        echo -n "机器IP："
+        echo -n $json | jq '.droplets['${i}'].networks.v4[0].ip_address'
     done
     do_loop_script
 }
@@ -199,8 +198,6 @@ create_do() {
         size="s-2vcpu-4gb-intel"
     fi
     
-    data="#!/bin/bash && echo root:GVuRxZYMiOwgdiTd |sudo chpasswd root \ sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config; && sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config; && sudo service sshd restart"
-
      echo -e " ${Green_font_prefix}1.${Font_color_suffix}  centos-7-x64
  ${Green_font_prefix}2.${Font_color_suffix}  centos-stream-8-x64
  ${Green_font_prefix}3.${Font_color_suffix}  debian-11-x64
@@ -237,10 +234,11 @@ create_do() {
            json=`curl -s -X POST \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-            -d '{"name":"'${name}'","region":"'${region}'","size":"'${size}'","image":"'${image}'","ipv6":true,"user_data":"bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/passwd.sh)"}' \
+            -d '{"name":"'${name}'","region":"'${region}'","size":"'${size}'","image":"'${image}'","ipv6":true,"user_data":null}' \
             "https://api.digitalocean.com/v2/droplets"`
+            var1=`echo $json | jq -r '.droplet.id'`
             echo ""
-            if [[ $json =~ "created_at" ]];
+            if [[ $var1 == null ]];
             then
                 echo $json
                 echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
