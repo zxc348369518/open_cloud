@@ -9,31 +9,199 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
+pasd="MDg2OTc5MjMx"
 
-#linode循环脚本
-linode_loop_script(){
-echo && echo -e "
- ${Green_font_prefix}98.${Font_color_suffix} 返回linode菜单
+#————————————————————Azure国际————————————————————
+#azure国际创建资源组
+create_resource_azure_gp(){
+    
+    pasd=`date +%s | sha256sum | base64 | head -c 12 ; echo`
+    
+    json=`curl -s -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $az_token" \
+    -X PUT -d '{
+      "Location":"eastus"
+    }' \
+    https://management.azure.com/subscriptions/${az_subid}/resourcegroups/${pasd}?api-version=2021-04-01`
+}
+
+#azure国际创建机器
+create_azure_gp(){
+    azure_ge_token #获取token
+    subid_user_azure_gp #获取subid
+    #create_resource_azure_gp #创建资源组
+}
+
+#azure国际获取token
+azure_ge_token(){
+    check_api_azure_ge
+    read -p "你需要查询的api名称:" api_name
+    
+    appid=`cat ${file_path}/az/ge/${api_name}/appId`
+    pasd=`cat ${file_path}/az/ge/${api_name}/password`
+    tenant=`cat ${file_path}/az/ge/${api_name}/tenant`
+    
+    json=`curl -s -X POST \
+    -d 'grant_type=client_credentials' \
+    -d 'client_id='${appid}'' \
+    -d 'client_secret='${pasd}'' \
+    -d 'resource=https://management.azure.com' \
+    https://login.microsoftonline.com/${tenant}/oauth2/token`
+    
+    az_token=`echo $json | jq -r '.access_token'`
+}
+
+#azure国际查询subid
+subid_user_azure_gp(){
+    json2=`curl -s -X GET \
+    -H 'Authorization:Bearer '${az_token}'' \
+    -H 'api-version: 2020-01-01' \
+    https://management.azure.com/subscriptions?api-version=2020-01-01`
+    az_subid=`echo $json2 | jq -r '.value[0].subscriptionId'`
+}
+
+#azure国际查询账号
+Information_user_azure_gp(){
+    
+    azure_ge_token
+    subid_user_azure_gp
+    
+    echo -n "账号状态："
+    echo $json2 | jq -r '.value[0].state'
+    echo -n "账号类型："
+    echo $json2 | jq -r '.value[0].displayName'
+    
+}
+
+#azure国际循环脚本
+azure_ge_loop_script(){
+echo -e "
+ ${Green_font_prefix}98.${Font_color_suffix} 返回azure（Global Edition）菜单
  ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
  
 
 read -p " 请输入数字 :" num
   case "$num" in
     98)
-    linode_menu
+    azure_ge_menu
     ;;
     99)
     exit 1
     ;;
   *)
     clear
-    echo -e "${Error}:请输入正确数字 [0-99]"
-    sleep 5s
-    start_menu
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    azure_ge_menu
     ;;
   esac
 }
 
+#azure国际菜单
+azure_ge_menu() {
+    clear
+    echo && echo -e " Azure(Global Edition) 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
+ ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
+ ${Green_font_prefix}3.${Font_color_suffix} 创建机器
+ ${Green_font_prefix}4.${Font_color_suffix} 删除机器
+————————————————————————————————————————————————————————————————
+ ${Green_font_prefix}5.${Font_color_suffix} 查询已保存api
+ ${Green_font_prefix}6.${Font_color_suffix} 添加api
+ ${Green_font_prefix}7.${Font_color_suffix} 删除api
+————————————————————————————————————————————————————————————————
+ ${Green_font_prefix}98.${Font_color_suffix} 返回菜单
+ ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
+
+read -p " 请输入数字 :" num
+  case "$num" in
+    1)
+    Information_user_azure_gp
+    ;;
+    2)
+    Information_vps_linode
+    ;;
+    3)
+    create_linode
+    ;;
+    4)
+    del_linode
+    ;;
+    5)
+    check_api_azure_ge
+    azure_ge_loop_script
+    ;;
+    6)
+    create_api_azure_ge
+    ;;
+    7)
+    del_api_azure_ge
+    ;;
+    98)
+    start_menu
+    ;;
+    99)
+    exit 1
+    ;;
+  *)
+    clear
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    azure_ge_menu
+    ;;
+  esac
+}
+
+#查询已保存az国际api
+check_api_azure_ge(){
+    clear
+    echo -e "已绑定的api：`ls ${file_path}/az/ge`"
+}
+
+#创建az国际api
+create_api_azure_ge(){
+    check_api_azure_ge
+    
+    read -e -p "是否需要添加api(默认: N 取消)：" info
+    [[ -z ${info} ]] && info="n"
+    if [[ ${info} == [Yy] ]]; then
+        read -e -p "请为这个api添加一个备注：" api_name
+        read -e -p "输入appId：" appId
+        read -e -p "输入password：" password
+        read -e -p "输入tenant：" tenant
+        if test -d "${file_path}/ge/api_name"; then
+            echo "该备注已经存在，请更换其他名字，或者删除原来api"
+        else
+            mkdir -p /root/opencloud/az/ge/${api_name}
+            echo "${appId}" > ${file_path}/az/ge/${api_name}/appId
+            echo "${password}" > ${file_path}/az/ge/${api_name}/password
+            echo "${tenant}" > ${file_path}/az/ge/${api_name}/tenant
+            echo "添加成功！"
+        fi
+    fi
+    azure_ge_loop_script
+}
+
+#删除az国际api
+del_api_azure_ge(){
+    check_api_azure_ge
+    
+    read -p "你需要删除的api名称:" api_name
+    read -e -p "是否需要删除 ${api_name}(默认: N 取消)：" info
+    [[ -z ${info} ]] && info="n"
+    if [[ ${info} == [Yy] ]]; then
+        if test -d "${file_path}/az/ge/${appId}"; then
+            rm -rf ${file_path}/az/ge/${api_name}
+            echo "删除成功！"
+        else
+            echo "未在系统中查找到该名称的api"
+        fi
+        
+    fi
+    do_loop_script
+}
+
+#————————————————————do————————————————————
 #do循环脚本
 do_loop_script(){
 echo -e "
@@ -51,9 +219,9 @@ read -p " 请输入数字 :" num
     ;;
   *)
     clear
-    echo -e "${Error}:请输入正确数字 [0-99]"
-    sleep 5s
-    start_menu
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    digitalocean_menu
     ;;
   esac
 }
@@ -87,22 +255,31 @@ Information_vps_do() {
 
 #提取do用户信息
 Information_user_do() {
-    check_api_do
-    read -p "你需要查询的api名称:" api_name
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
-    json=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/account"`
-    json2=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/customers/my/balance"`
-    if [[ $json =~ "Unable to authenticate you" ]];
-    then
-        echo "获取失败：无法对您进行身份验证"
-    else
-        clear
+    
+    cd ${file_path}/do
+    o=`ls ${file_path}/do|wc -l`
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        array=(*)
+        var0=`echo ${array[${i}]}`
+        DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${var0}`
+        
+        json=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/account"`
+        json2=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/customers/my/balance"`
         var1=`echo $json | jq -r '.account.droplet_limit'`
         var2=`echo $json | jq -r '.account.email'`
         var3=`echo $json | jq -r '.account.status'`
         var4=`echo $json2 | jq -r '.month_to_date_balance'`
-        echo -e  "电子邮箱：${var2}\n账号配额：${var1}\n账号状态：${var3}\n账号余额：${var4}" 
-    fi
+        
+        if [[ ${var2} == "null" ]];then
+            echo -e  "API名称：${var0}————电子邮箱：${var2}————账号状态：Disabled" 
+        else
+            echo -e  "API名称：${var0}————电子邮箱：${var2}————账号配额：${var1}————账号余额：${var4}————账号状态：${var3}" 
+        fi
+        
+    done
     do_loop_script
 }
 
@@ -234,7 +411,15 @@ create_do() {
            json=`curl -s -X POST \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-            -d '{"name":"'${name}'","region":"'${region}'","size":"'${size}'","image":"'${image}'","ipv6":true,"user_data":null}' \
+            -d '{
+                "name":"'${name}'",
+                "region":"'${region}'",
+                "size":"'${size}'",
+                "image":"'${image}'",
+                "ipv6":true,
+                "user_data":"bash <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/passwd.sh)"
+                
+            }' \
             "https://api.digitalocean.com/v2/droplets"`
             var1=`echo $json | jq -r '.droplet.id'`
             echo ""
@@ -312,7 +497,7 @@ del_do() {
 digitalocean_menu() {
     clear
     echo && echo -e " Digitalocean 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
- ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
+ ${Green_font_prefix}1.${Font_color_suffix} 一键全部API测活
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
  ${Green_font_prefix}4.${Font_color_suffix} 删除机器
@@ -321,7 +506,8 @@ digitalocean_menu() {
  ${Green_font_prefix}6.${Font_color_suffix} 添加api
  ${Green_font_prefix}7.${Font_color_suffix} 删除api
 ————————————————————————————————————————————————————————————————
- ${Green_font_prefix}99.${Font_color_suffix} 退出" &&
+ ${Green_font_prefix}98.${Font_color_suffix} 返回菜单
+ ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
 
 read -p " 请输入数字 :" num
   case "$num" in
@@ -347,22 +533,27 @@ read -p " 请输入数字 :" num
     7)
     del_api_do
     ;;
+    98)
+    start_menu
+    ;;
     99)
     exit 1
     ;;
   *)
     clear
-    echo -e "${Error}:请输入正确数字 [0-99]"
-    sleep 5s
-    start_menu
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    digitalocean_menu
     ;;
   esac
 }
 
 #查询已保存doapi
 check_api_do(){
-    clear
-    echo -e "已绑定的api：`ls ${file_path}/do`"
+        clear
+    cd ${file_path}/do
+    array=(*)
+    echo "已绑定的api："$array
 }
 
 #创建doapi
@@ -402,65 +593,17 @@ del_api_do(){
     do_loop_script
 }
 
-#初始化
-initialization(){
-    depends=("jq")
-    depend=""
-    for i in "${!depends[@]}"; do
-      now_depend="${depends[$i]}"
-      if [ ! -x "$(command -v $now_depend 2>/dev/null)" ]; then
-        echo "$now_depend 未安装"
-        depend="$now_depend $depend"
-      fi
-    done
-    if [ "$depend" ]; then
-      if [ -x "$(command -v apk 2>/dev/null)" ]; then
-        echo "apk包管理器,正在尝试安装依赖:$depend"
-        apk --no-cache add $depend $proxy >>/dev/null 2>&1
-      elif [ -x "$(command -v apt-get 2>/dev/null)" ]; then
-        echo "apt-get包管理器,正在尝试安装依赖:$depend"
-        apt -y install $depend >>/dev/null 2>&1
-      elif [ -x "$(command -v yum 2>/dev/null)" ]; then
-        echo "yum包管理器,正在尝试安装依赖:$depend"
-        yum -y install $depend >>/dev/null 2>&1
-      else
-        red "未找到合适的包管理工具,请手动安装:$depend"
-        exit 1
-      fi
-      for i in "${!depends[@]}"; do
-        now_depend="${depends[$i]}"
-        if [ ! -x "$(command -v $now_depend)" ]; then
-          red "$now_depend 未成功安装,请尝试手动安装!"
-          exit 1
-        fi
-      done
-    fi
-
-    mkdir -p /root/opencloud
-    mkdir -p /root/opencloud/do
-    mkdir -p /root/opencloud/linode
-    mkdir -p /root/opencloud/az
-    mkdir -p /root/opencloud/aws
-    mkdir -p /root/opencloud/vu
-
-    start_menu
-}
-
-#启动菜单
-start_menu() {
-  clear
-  echo && echo -e " 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
- ${Green_font_prefix}1.${Font_color_suffix} Digitalocean 
- ${Green_font_prefix}2.${Font_color_suffix} Linode
-————————————————————————————————————————————————————————————————
- ${Green_font_prefix}99.${Font_color_suffix} 退出" &&
+#————————————————————linode————————————————————
+#linode循环脚本
+linode_loop_script(){
+echo -e "
+ ${Green_font_prefix}98.${Font_color_suffix} 返回linode菜单
+ ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
+ 
 
 read -p " 请输入数字 :" num
   case "$num" in
-    1)
-    digitalocean_menu
-    ;;
-    2)
+    98)
     linode_menu
     ;;
     99)
@@ -468,9 +611,9 @@ read -p " 请输入数字 :" num
     ;;
   *)
     clear
-    echo -e "${Error}:请输入正确数字 [0-99]"
-    sleep 5s
-    start_menu
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    linode_menu
     ;;
   esac
 }
@@ -479,7 +622,7 @@ read -p " 请输入数字 :" num
 linode_menu() {
     clear
     echo && echo -e " Linode 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
- ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
+ ${Green_font_prefix}1.${Font_color_suffix} 一键全部API测活
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
  ${Green_font_prefix}4.${Font_color_suffix} 删除机器
@@ -488,7 +631,8 @@ linode_menu() {
  ${Green_font_prefix}6.${Font_color_suffix} 添加api
  ${Green_font_prefix}7.${Font_color_suffix} 删除api
 ————————————————————————————————————————————————————————————————
- ${Green_font_prefix}99.${Font_color_suffix} 退出" &&
+ ${Green_font_prefix}98.${Font_color_suffix} 返回菜单
+ ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
 
 read -p " 请输入数字 :" num
   case "$num" in
@@ -514,14 +658,17 @@ read -p " 请输入数字 :" num
     7)
     del_api_linode
     ;;
+    98)
+    start_menu
+    ;;
     99)
     exit 1
     ;;
   *)
     clear
-    echo -e "${Error}:请输入正确数字 [0-99]"
-    sleep 5s
-    start_menu
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    linode_menu
     ;;
   esac
 }
@@ -529,12 +676,14 @@ read -p " 请输入数字 :" num
 #查询已保存linode api
 check_api_linode(){
     clear
-    echo -e "已绑定的api：`ls ${file_path}/linode`"
+    cd ${file_path}/linode
+    array=(*)
+    echo "已绑定的api："$array
 }
 
 #创建linode api
 create_api_linode(){
-    check_api_do
+    check_api_linode
     read -e -p "是否需要添加api(默认: N 取消)：" info
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
@@ -595,20 +744,31 @@ Information_vps_linode() {
 
 #查询linode账号信息
 Information_user_linode() {
-    check_api_linode
-    read -p "你需要查询的api名称:" api_name
-    TOKEN=`cat ${file_path}/linode/${api_name}`
-    json=`curl -s -H "Authorization: Bearer $TOKEN" \
-    https://api.linode.com/v4/account`
-    clear
-    if [[ $json =~ "Invalid Token" ]];
-    then
-        echo "获取失败：令牌无效"
-    else
+    
+    cd ${file_path}/linode
+    o=`ls ${file_path}/linode|wc -l`
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        array=(*)
+        var0=`echo ${array[${i}]}`
+        TOKEN=`cat ${file_path}/linode/${var0}`
+        
+        json=`curl -s -H "Authorization: Bearer $TOKEN" \
+        https://api.linode.com/v4/account`
+        
         var1=`echo $json | jq -r '.email'`
         var2=`echo $json | jq -r '.active_promotions[0].credit_remaining'`
-        echo -e  "电子邮箱：${var1}\n账号余额：${var2}\n有余额的账号才是正常的！" 
-    fi
+        
+        if [[ ${var2} == "null" ]];then
+            echo -e  "API名称：${var0}————电子邮箱：${var1}————账号状态：Enabled" 
+        else
+            echo -e  "API名称：${var0}————电子邮箱：${var1}————账号余额：${var2}————账号状态：Active" 
+        fi
+        
+    done
+    
     linode_loop_script
 }
 
@@ -777,4 +937,85 @@ del_linode() {
         linode_loop_script
 }
 
+#————————————————————其他————————————————————
+#初始化
+initialization(){
+    mkdir -p /root/opencloud
+    mkdir -p /root/opencloud/do
+    mkdir -p /root/opencloud/linode
+    mkdir -p /root/opencloud/az
+    mkdir -p /root/opencloud/aws
+    mkdir -p /root/opencloud/vu
+    mkdir -p /root/opencloud/az/ge
+    
+    depends=("jq")
+    depend=""
+    for i in "${!depends[@]}"; do
+      now_depend="${depends[$i]}"
+      if [ ! -x "$(command -v $now_depend 2>/dev/null)" ]; then
+        echo "$now_depend 未安装"
+        depend="$now_depend $depend"
+      fi
+    done
+    if [ "$depend" ]; then
+      if [ -x "$(command -v apk 2>/dev/null)" ]; then
+        echo "apk包管理器,正在尝试安装依赖:$depend"
+        apk --no-cache add $depend $proxy >>/dev/null 2>&1
+      elif [ -x "$(command -v apt-get 2>/dev/null)" ]; then
+        echo "apt-get包管理器,正在尝试安装依赖:$depend"
+        apt -y install $depend >>/dev/null 2>&1
+      elif [ -x "$(command -v yum 2>/dev/null)" ]; then
+        echo "yum包管理器,正在尝试安装依赖:$depend"
+        yum -y install $depend >>/dev/null 2>&1
+      else
+        red "未找到合适的包管理工具,请手动安装:$depend"
+        exit 1
+      fi
+      for i in "${!depends[@]}"; do
+        now_depend="${depends[$i]}"
+        if [ ! -x "$(command -v $now_depend)" ]; then
+          red "$now_depend 未成功安装,请尝试手动安装!"
+          exit 1
+        fi
+      done
+    fi
+
+    start_menu
+}
+
+#启动菜单
+start_menu() {
+  clear
+  echo && echo -e " 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} Digitalocean 
+ ${Green_font_prefix}2.${Font_color_suffix} Linode
+————————————————————————————————————————————————————————————————
+ ${Green_font_prefix}x.${Font_color_suffix} Azure (Global Edition)【开发中】
+ ${Green_font_prefix}x.${Font_color_suffix} aws（未开发）
+ ${Green_font_prefix}x.${Font_color_suffix} vultr（未开发，没有API）
+ ${Green_font_prefix}x.${Font_color_suffix} Azure 世纪互联（未开发，没有API）
+ ${Green_font_prefix}x.${Font_color_suffix} gcp（未开发，没有API）
+ ${Green_font_prefix}x.${Font_color_suffix} 甲骨文（未开发，没有API）
+————————————————————————————————————————————————————————————————
+ ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
+
+read -p " 请输入数字 :" num
+  case "$num" in
+    1)
+    digitalocean_menu
+    ;;
+    2)
+    linode_menu
+    ;;
+    99)
+    exit 1
+    ;;
+  *)
+    clear
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    start_menu
+    ;;
+  esac
+}
 initialization
