@@ -16,7 +16,7 @@
 
 ### 使用脚本
 - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud.sh)```
-- 
+
 ### 运行报错
 - 如果无法运行请先安装 curl
 - Centos运行：```yum install curl -y```
