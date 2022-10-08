@@ -14,10 +14,14 @@
 ### api保存位置
 - /root/opencloud/*
 
-### 安装代码
-- 使用前先需要安装 jq工具
+### 使用脚本
 - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud.sh)```
+- 
+### 运行报错
+- 如果无法运行请先安装 curl
+- Centos运行：```yum install curl -y```
+- Ddebian和Ubuntu运行：```apt-get install curl -y```
 
-### 安装代码
-- [Teleagram群组](https://t.me/openccloud "@openccloud")
+### 联系方式
+- [Teleagram通知频道](https://t.me/openccloud "@openccloud")
 - [Teleagram](https://t.me/LeiGe_233 "LeiGe_233")
