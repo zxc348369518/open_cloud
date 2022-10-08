@@ -15,12 +15,15 @@
 - /root/opencloud/*
 
 ### 使用脚本
--第一次运行必须安装 curl 和 jq，如果是这两个没有安装导致报错的请不要来找我！
 
-Centos系统：
-```yum install curl jq -y```
-Ddebian和Ubuntu系统：
-```yum install curl jq -y```
+-第一次运行必须安装 curl 和 jq，如果是这两个没有安装导致报错的请不要来找我！
+```
+# Centos系统
+yum install curl jq -y
+ 
+# Ddebian和Ubuntu系统
+apt-get install curl jq -y
+```
 
 - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud.sh)```
 
