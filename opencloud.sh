@@ -283,56 +283,44 @@ Information_user_do() {
     do_loop_script
 }
 
-#创建机器
-create_do() {
-    check_api_do
-    read -p "你需要查询的api名称:" api_name
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
-    
-    read -p " 请输入机器名字:" name
-    
+#do服务器位置
+region_do(){
     echo -e " ${Green_font_prefix}1.${Font_color_suffix}  纽约3
  ${Green_font_prefix}2.${Font_color_suffix}  纽约1 
- ${Green_font_prefix}3.${Font_color_suffix}  加利福尼亚1（未开放）
- ${Green_font_prefix}4.${Font_color_suffix}  纽约2（未开放）
- ${Green_font_prefix}5.${Font_color_suffix}  阿姆斯特丹2（未开放）
- ${Green_font_prefix}6.${Font_color_suffix}  新加坡1
- ${Green_font_prefix}7.${Font_color_suffix}  阿姆斯特丹3
- ${Green_font_prefix}8.${Font_color_suffix}  法兰克福1
- ${Green_font_prefix}9.${Font_color_suffix}  加拿大1
- ${Green_font_prefix}10.${Font_color_suffix}  加利福尼亚2（未开放）
- ${Green_font_prefix}11.${Font_color_suffix}  印度
- ${Green_font_prefix}12.${Font_color_suffix}  加利福尼亚3
- ${Green_font_prefix}13.${Font_color_suffix}  悉尼"
+ ${Green_font_prefix}3.${Font_color_suffix}  新加坡1
+ ${Green_font_prefix}4.${Font_color_suffix}  阿姆斯特丹3
+ ${Green_font_prefix}5.${Font_color_suffix}  法兰克福1
+ ${Green_font_prefix}6.${Font_color_suffix}  加拿大1
+ ${Green_font_prefix}7.${Font_color_suffix}  印度
+ ${Green_font_prefix}8.${Font_color_suffix}  加利福尼亚3
+ ${Green_font_prefix}9.${Font_color_suffix}  悉尼"
     read -e -p "请选择你的服务器位置:" region
     if [[ ${region} == "1" ]]; then
         region="nyc3"
     elif [[ ${region} == "2" ]]; then
         region="nyc1"
     elif [[ ${region} == "3" ]]; then
-        region="sfo1"
-    elif [[ ${region} == "4" ]]; then
-        region="nyc2"
-    elif [[ ${region} == "5" ]]; then
-        region="ams2"
-    elif [[ ${region} == "6" ]]; then
         region="sgp1"
-    elif [[ ${region} == "7" ]]; then
+    elif [[ ${region} == "4" ]]; then
         region="ams3"
-    elif [[ ${region} == "8" ]]; then
+    elif [[ ${region} == "5" ]]; then
         region="fra1"
-    elif [[ ${region} == "9" ]]; then
+    elif [[ ${region} == "6" ]]; then
         region="tor1"
-    elif [[ ${region} == "10" ]]; then
-        region="sfo2"
-    elif [[ ${region} == "11" ]]; then
+    elif [[ ${region} == "7" ]]; then
         region="blr1"
-    elif [[ ${region} == "12" ]]; then
+    elif [[ ${region} == "8" ]]; then
         region="sfo3"
-    else
+    elif [[ ${region} == "9" ]]; then
         region="syd1"
+    else
+        echo "输入错误"
+        do_loop_script
     fi
-    
+}
+
+#do服务器大小
+size_do(){
     echo -e " ${Green_font_prefix}1.${Font_color_suffix}  s-1vcpu-512mb-10gb
  ${Green_font_prefix}2.${Font_color_suffix}  s-1vcpu-1gb 
  ${Green_font_prefix}3.${Font_color_suffix}  s-1vcpu-1gb-amd
@@ -371,11 +359,17 @@ create_do() {
         size="s-2vcpu-4gb"
     elif [[ ${size} == "12" ]]; then
         size="s-2vcpu-4gb-amd"
-    else
+    elif [[ ${size} == "13" ]]; then    
         size="s-2vcpu-4gb-intel"
+    else
+        echo "输入错误"
+        do_loop_script
     fi
-    
-     echo -e " ${Green_font_prefix}1.${Font_color_suffix}  centos-7-x64
+}
+
+#do服务器镜像
+image_do(){
+    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  centos-7-x64
  ${Green_font_prefix}2.${Font_color_suffix}  centos-stream-8-x64
  ${Green_font_prefix}3.${Font_color_suffix}  debian-11-x64
  ${Green_font_prefix}4.${Font_color_suffix}  debian-10-x64
@@ -398,10 +392,25 @@ create_do() {
         image="ubuntu-20-04-x64"
     elif [[ ${image} == "7" ]]; then
         image="ubuntu-18-04-x64"
-    else
+    elif [[ ${image} == "8" ]]; then
         image="centos-stream-9-x64"
+    else
+        echo "输入错误"
+        do_loop_script
     fi
+}
+
+#创建机器
+create_do() {
+    check_api_do
+    read -p "你需要查询的api名称:" api_name
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
     
+    read -p " 请输入机器名字:" name
+    
+    region_do
+    size_do
+
     clear
      echo -e "请确认？ [Y/n]
 机器名字：${name}\n服务器位置：${region}\n服务器规格：${size}\n机器系统: ${image}"
@@ -772,12 +781,8 @@ Information_user_linode() {
     linode_loop_script
 }
 
-#创建linode机器
-create_linode() {
-    check_api_linode
-    read -p "你需要查询的api名称:" api_name
-    TOKEN=`cat ${file_path}/linode/${api_name}`
-    
+#linnode服务器位置
+region_linode(){
     echo -e " ${Green_font_prefix}1.${Font_color_suffix}  ap-west（in）
  ${Green_font_prefix}2.${Font_color_suffix}  ca-central（ca）
  ${Green_font_prefix}3.${Font_color_suffix}  ap-southeast（au）
@@ -810,10 +815,16 @@ create_linode() {
         region="ap-south"
     elif [[ ${region} == "10" ]]; then
         region="eu-central"
-    else
+    elif [[ ${region} == "11" ]]; then
         region="ap-northeast"
+    else
+        echo "输入错误"
+        linode_loop_script
     fi
-    
+}
+
+#linode服务器镜像
+image_linode(){
     echo -e " ${Green_font_prefix}1.${Font_color_suffix}  linode/centos7
  ${Green_font_prefix}2.${Font_color_suffix}  linode/centos-stream8
  ${Green_font_prefix}3.${Font_color_suffix}  linode/centos-stream9
@@ -852,10 +863,16 @@ create_linode() {
         image="linode/centos8"
     elif [[ ${image} == "12" ]]; then
         image="linode/ubuntu21.04"
-    else
+     elif [[ ${image} == "13" ]]; then   
         image="linode/ubuntu21.10"
+    else
+        echo "输入错误"
+        linode_loop_script
     fi
-    
+}
+
+#linode服务器大小
+size_linode(){
     echo -e " ${Green_font_prefix}1.${Font_color_suffix} 1H1G
  ${Green_font_prefix}2.${Font_color_suffix}  1H2G
  ${Green_font_prefix}3.${Font_color_suffix}  2H4G
@@ -870,9 +887,23 @@ create_linode() {
         size="g6-standard-2"
     elif [[ ${size} == "4" ]]; then
         size="g6-standard-4"
-    else
+    elif [[ ${size} == "5" ]]; then    
         size="g6-standard-6"
+    else
+        echo "输入错误"
+        linode_loop_script
     fi
+}
+
+#创建linode机器
+create_linode() {
+    check_api_linode
+    read -p "你需要查询的api名称:" api_name
+    TOKEN=`cat ${file_path}/linode/${api_name}`
+    
+    region_linode
+    image_linode
+    size_linode
     
     pasd=`date +%s | sha256sum | base64 | head -c 12 ; echo`
     
