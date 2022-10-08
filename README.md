@@ -24,7 +24,7 @@ yum install curl jq -y
 # Ddebian和Ubuntu系统
 apt-get install curl jq -y
 ```
-
+安装完成可以直接运行一下脚本
 - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud.sh)```
 
 ### 联系方式
