@@ -30,4 +30,4 @@ apt-get install curl jq -y
 
 ### 联系方式
 - [Teleagram通知频道](https://t.me/openccloud "@openccloud")
-- [Teleagram](https://t.me/LeiGe_233 "LeiGe_233")
+- 如果遇到有问题或者BUG请提交issues！
