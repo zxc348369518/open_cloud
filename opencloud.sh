@@ -1071,11 +1071,7 @@ Information_user_do() {
         var3=`echo $json | jq -r '.account.status'`
         var4=`echo $json2 | jq -r '.month_to_date_balance'`
         
-        if [[ ${var3} == "active" ]];then
-            echo -e  "API名称：${var0}————电子邮箱：${var2}————账号配额：${var1}————账号余额：${var4}————账号状态：${var3}" 
-        else
-            echo -e  "API名称：${var0}————电子邮箱：${var2}————账号状态：Disabled" 
-        fi
+        echo -e  "API名称：${var0}————电子邮箱：${var2}————账号配额：${var1}————账号余额：${var4}————账号状态：${var3}" 
         
     done
     do_loop_script
