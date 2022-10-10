@@ -1849,4 +1849,4 @@ read -p " 请输入数字 :" num
     ;;
   esac
 }
-start_menu
+initialization
