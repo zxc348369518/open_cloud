@@ -632,11 +632,7 @@ Information_user_azure_gp(){
         var1=`echo $json | jq -r '.value[0].displayName'`
         var2=`echo $json | jq -r '.value[0].state'`
         
-        if [[ ${var2} == "Enabled" ]];then
-            echo -e  "API名称：${var0}————账号类型：${var1}————账号状态：Enabled" 
-        else
-            echo -e  "API名称：${var0}————账号类型：${var1}————————账号状态：${var2}" 
-        fi
+        echo -e  "API名称：${var0}————账号类型：${var1}————————账号状态：${var2}" 
         
     done
     
