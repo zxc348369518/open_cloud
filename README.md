@@ -1,8 +1,7 @@
 # 云服务开机脚本 本地Shell版
 
 ### 支持云服务（持续更新）
-- Digitalocean
-- Linode
+- Digitalocean、Linode
 - Azure（Global Edition）
 > Ps：目前测试账紧缺，如果你有空闲或者多余的请联系我们，这样可以加快开发的速度！
 
