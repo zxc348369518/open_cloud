@@ -1800,14 +1800,14 @@ del_linode() {
 #————————————————————其他————————————————————
 #初始化
 initialization(){
-    mkdir -p ${file_path}
-    mkdir -p ${file_path}/do
-    mkdir -p ${file_path}/linode
-    mkdir -p ${file_path}/az
-    mkdir -p ${file_path}/aws
-    mkdir -p ${file_path}/vu
-    mkdir -p ${file_path}/az/ge
-
+    mkdir -p /root/opencloud
+    mkdir -p /root/opencloud/do
+    mkdir -p /root/opencloud/linode
+    mkdir -p /root/opencloud/az
+    mkdir -p /root/opencloud/aws
+    mkdir -p /root/opencloud/vu
+    mkdir -p /root/opencloud/az/ge
+    
     start_menu
 }
 
