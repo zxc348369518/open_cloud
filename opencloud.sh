@@ -1603,9 +1603,9 @@ Information_user_linode() {
         var2=`echo $json | jq -r '.active_promotions[0].credit_remaining'`
         
         if [[ ${var2} == "null" ]];then
-            echo -e  "API名称：${var0}————电子邮箱：${var1}————账号状态：Enabled" 
+            echo -e  "API名称：${var0}————电子邮箱：${var1}————账号状态：Disabled" 
         else
-            echo -e  "API名称：${var0}————电子邮箱：${var1}————账号余额：${var2}————账号状态：Active" 
+            echo -e  "API名称：${var0}————电子邮箱：${var1}————账号余额：${var2}————账号状态：Enabled" 
         fi
         
     done
