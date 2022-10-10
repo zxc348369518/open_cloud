@@ -1355,8 +1355,7 @@ read -p " 请输入数字 :" num
 #查询已保存doapi
 check_api_do(){
     clear
-    cd ${file_path}/do
-    array=(*)
+    ls ${file_path}/do
     echo "已绑定的api："$array
 }
 
@@ -1498,8 +1497,7 @@ read -p " 请输入数字 :" num
 #查询已保存linode api
 check_api_linode(){
     clear
-    cd ${file_path}/linode
-    array=(*)
+    ls ${file_path}/linode
     echo "已绑定的api："$array
 }
 
@@ -1819,7 +1817,7 @@ start_menu() {
   echo && echo -e " 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} Digitalocean 
  ${Green_font_prefix}2.${Font_color_suffix} Linode
- ${Green_font_prefix}3.${Font_color_suffix} Azure (Global Edition)
+ ${Green_font_prefix}x.${Font_color_suffix} Azure (Global Edition)
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}x.${Font_color_suffix} aws（未开发）
  ${Green_font_prefix}x.${Font_color_suffix} vultr（未开发，没有API）
