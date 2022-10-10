@@ -1,2 +1,5 @@
 #Azure国际查地区
 https://learn.microsoft.com/zh-cn/rest/api/resources/subscriptions/list-locations?tabs=HTTP#code-try-0
+
+#Azure国际大小
+https://learn.microsoft.com/zh-cn/rest/api/compute/virtual-machine-sizes/list?tabs=HTTP
