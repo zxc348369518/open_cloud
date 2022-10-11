@@ -1,0 +1,36 @@
+{
+	"opencloud":[
+		{
+			"name":"centos-7-x64",
+			"id":"centos-7-x64"
+		},
+		{
+			"name":"centos-stream-8-x64",
+			"id":"centos-stream-8-x64"
+		},
+		{
+			"name":"centos-stream-9-x64",
+			"id":"centos-stream-9-x64"
+		},
+		{
+			"name":"debian-10-x64",
+			"id":"debian-10-x64"
+		},
+		{
+			"name":"debian-11-x64",
+			"id":"debian-11-x64"
+		},
+		{
+			"name":"ubuntu-18-04-x64",
+			"id":"ubuntu-18-04-x64"
+		},
+		{
+			"name":"ubuntu-20-04-x64",
+			"id":"ubuntu-20-04-x64"
+		},
+		{
+			"name":"ubuntu-22-04-x64",
+			"id":"ubuntu-22-04-x64"
+		}
+	]
+}
