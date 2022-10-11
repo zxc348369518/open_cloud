@@ -1195,6 +1195,8 @@ create_do() {
 
     read -p " 请输入机器名字:" name
     
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
+    
     region_do
     size_do
     image_do
