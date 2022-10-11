@@ -1813,6 +1813,7 @@ start_menu() {
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}x.${Font_color_suffix} aws（未开发）
  ${Green_font_prefix}x.${Font_color_suffix} vultr（未开发，没有API）
+————————————————————————————————————————————————————————————————
  ${Green_font_prefix}x.${Font_color_suffix} Azure 世纪互联（未开发，没有API）
  ${Green_font_prefix}x.${Font_color_suffix} gcp（未开发，没有API）
  ${Green_font_prefix}x.${Font_color_suffix} 甲骨文（未开发，没有API）
