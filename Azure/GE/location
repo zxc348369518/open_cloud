@@ -1,0 +1,48 @@
+{
+	"opencloud":[
+		{
+			"name":"东亚 中国香港",
+			"id":"eastasia"
+		},
+		{
+			"name":"东南亚 新加坡",
+			"id":"southeastasia"
+		},
+		{
+			"name":"日本东部 东京",
+			"id":"japaneast"
+		},
+		{
+			"name":"日本西部 大阪",
+			"id":"japanwest"
+		},
+		{
+			"name":"韩国中部 首尔",
+			"id":"koreacentral"
+		},
+		{
+			"name":"美国西部3 凤凰城",
+			"id":"westus3"
+		},
+		{
+			"name":"英国南部 伦敦",
+			"id":"uksouth"
+		},
+		{
+			"name":"印度中部 浦那",
+			"id":"centralindia"
+		},
+		{
+			"name":"巴西南部 圣保罗州",
+			"id":"brazilsouth"
+		},
+		{
+			"name":"西欧 荷兰",
+			"id":"westeurope"
+		},
+		{
+			"name":"巴黎",
+			"id":"francecentral"
+		}
+	]
+}
