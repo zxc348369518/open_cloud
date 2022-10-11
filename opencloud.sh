@@ -885,7 +885,7 @@ region_do(){
         echo $json | jq -r '.opencloud['${i}'].name'
     done
     read -e -p "请选择你的服务器位置（编号）:" b
-        size=`echo $json | jq -r '.opencloud['${b}'].id'`
+        region=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
 #do服务器大小
