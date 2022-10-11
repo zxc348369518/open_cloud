@@ -1197,6 +1197,7 @@ create_do() {
     
     region_do
     size_do
+    image_do
 
     clear
      echo -e "请确认？ [Y/n]
