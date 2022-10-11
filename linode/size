@@ -1,0 +1,24 @@
+{
+	"opencloud":[
+		{
+			"name":"1C1G",
+			"id":"g6-nanode-1"
+		},
+		{
+			"name":"1C2G",
+			"id":"g6-standard-1"
+		},
+		{
+			"name":"2C4G",
+			"id":"g6-standard-2"
+		},
+		{
+			"name":"4C8G",
+			"id":"g6-standard-4"
+		},
+		{
+			"name":"6C16G",
+			"id":"g6-standard-6"
+		}
+	]
+}
