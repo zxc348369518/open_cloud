@@ -11,7 +11,7 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
 #————————————————————Azure（Global Edition）————————————————————
 #azure国际创建vm
-create_vm_azure_gp(){
+create_vm_azure_ge(){
     
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -73,216 +73,48 @@ create_vm_azure_gp(){
 }
 
 #vm镜像
-image_azure_gp(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix} Debian_9
- ${Green_font_prefix}2.${Font_color_suffix} Debian_10_gen2
- ${Green_font_prefix}3.${Font_color_suffix} Debian_11_gen2
- ${Green_font_prefix}4.${Font_color_suffix} Ubuntu 16.04_gen2
- ${Green_font_prefix}5.${Font_color_suffix} Ubuntu_18_04_gen2
- ${Green_font_prefix}6.${Font_color_suffix} Ubuntu_20_04_gen2
- ${Green_font_prefix}7.${Font_color_suffix} Centos 7.9_gen2
- ${Green_font_prefix}8.${Font_color_suffix} Centos 8.5_gen2
- ${Green_font_prefix}9.${Font_color_suffix} Windows Datacenter 2022
- ${Green_font_prefix}10.${Font_color_suffix} Windows Datacenter 2019
- ${Green_font_prefix}11.${Font_color_suffix} Windows Datacenter 2016
- ${Green_font_prefix}12.${Font_color_suffix} Windows Datacenter 2012
- ${Green_font_prefix}13.${Font_color_suffix} Windows 10 21H2_gen2
- ${Green_font_prefix}13.${Font_color_suffix} Windows 11 21H2"
-    read -e -p "请选择你的VM系统:" sku
-    if [[ ${sku} == "1" ]]; then
-        sku="9"
-        publisher="credativ"
-        version="latest"
-        offer="Debian"
-        create_azure_gp_vm
-    elif [[ ${sku} == "2" ]]; then
-        sku="10-gen2"
-        publisher="Debian"
-        version="latest"
-        offer="debian-10"
-        create_azure_gp_vm
-    elif [[ ${sku} == "3" ]]; then
-        sku="11-gen2"
-        publisher="Debian"
-        version="latest"
-        offer="debian-11"
-        create_azure_gp_vm
-    elif [[ ${sku} == "4" ]]; then
-        sku="16_04-lts-gen2"
-        publisher="Canonical"
-        version="latest"
-        offer="UbuntuServer"
-        create_azure_gp_vm
-    elif [[ ${sku} == "5" ]]; then
-        sku="18_04-lts-gen2"
-        publisher="Canonical"
-        version="latest"
-        offer="UbuntuServer"
-    elif [[ ${sku} == "6" ]]; then
-        sku="20_04-lts-gen2"
-        publisher="Canonical"
-        version="latest"
-        offer="0001-com-ubuntu-server-focal"
-        create_azure_gp_vm
-    elif [[ ${sku} == "7" ]]; then
-        sku="7_9-gen2"
-        publisher="OpenLogic"
-        version="latest"
-        offer="CentOS"
-        create_azure_gp_vm
-    elif [[ ${sku} == "8" ]]; then
-        sku="8_5-gen2"
-        publisher="OpenLogic"
-        version="latest"
-        offer="CentOS"
-        create_azure_gp_vm
-    elif [[ ${sku} == "9" ]]; then
-        sku="2022-Datacenter-smalldisk"
-        publisher="MicrosoftWindowsServer"
-        version="latest"
-        offer="WindowsServer"
-        create_azure_gp_vm
-    elif [[ ${sku} == "10" ]]; then
-        sku="2019-Datacenter-smalldisk"
-        publisher="MicrosoftWindowsServer"
-        version="latest"
-        offer="WindowsServer"
-        create_azure_gp_vm
-    elif [[ ${sku} == "11" ]]; then
-        sku="2016-Datacenter-smalldisk"
-        publisher="MicrosoftWindowsServer"
-        version="latest"
-        offer="WindowsServer"
-        create_azure_gp_vm
-    elif [[ ${sku} == "13" ]]; then
-        sku="2012-Datacenter-smalldisk"
-        publisher="MicrosoftWindowsServer"
-        version="latest"
-        offer="WindowsServer"
-        create_azure_gp_vm
-    elif [[ ${sku} == "13" ]]; then
-        sku="win10-21h2-pro-zh-cn-g2"
-        publisher="MicrosoftWindowsDesktop"
-        version="latest"
-        offer="Windows-10"
-    elif [[ ${sku} == "14" ]]; then
-        sku="win11-21h2-pro-zh-cn"
-        publisher="MicrosoftWindowsDesktop"
-        version="latest"
-        offer="Windows-11"
-        create_azure_gp_vm
-    else
-        echo "输入错误"
-        azure_ge_loop_script
-    fi
+image_azure_ge(){
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/GE/image)`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
+    read -e -p "请选择你的服务器系统（编号）:" b
+        sku=`echo $json | jq -r '.opencloud['${b}'].sku'`
+        publisher=`echo $json | jq -r '.opencloud['${b}'].publisher'`
+        version=`echo $json | jq -r '.opencloud['${b}'].version'`
+        offer=`echo $json | jq -r '.opencloud['${b}'].WindowsServer'`
 }
 
 #VM实例大小
-mSize_azure_gp(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  b系列
- ${Green_font_prefix}2.${Font_color_suffix}  f系列
- ${Green_font_prefix}3.${Font_color_suffix}  d系列"
-    read -e -p "请选择你的VM大小系列:" vmSize
-    if [[ ${vmSize} == "1" ]]; then
-        b_vmSize_azure_gp
-    elif [[ ${vmSize} == "2" ]]; then
-        f_vmSize_azure_gp
-    elif [[ ${vmSize} == "3" ]]; then
-        d_vmSize_azure_gp
-    else
-        echo "输入错误"
-        azure_ge_loop_script
-    fi
-}
-
-#f系列VM实例大小
-f_vmSize_azure_gp(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  Standard_F1s（1C2G）
- ${Green_font_prefix}2.${Font_color_suffix}  Standard_F2s_v2（2C4G）
- ${Green_font_prefix}3.${Font_color_suffix}  Standard_F4s_v2（4C8G）
- ${Green_font_prefix}4.${Font_color_suffix}  Standard_F8s_v2（8C16G）"
-    read -e -p "请选择你的VM大小系列:" vmSize
-    if [[ ${vmSize} == "1" ]]; then
-        vmSize="Standard_F1s"
-        image_azure_gp
-    elif [[ ${vmSize} == "2" ]]; then
-        vmSize="Standard_F2s_v2"
-        image_azure_gp
-    elif [[ ${vmSize} == "3" ]]; then
-        vmSize="Standard_F4s_v2"
-        image_azure_gp
-    elif [[ ${vmSize} == "4" ]]; then
-        vmSize="Standard_F8s_v2"
-        image_azure_gp
-
-    else
-        echo "输入错误"
-        azure_ge_loop_script
-    fi
-}
-
-#d系列VM实例大小
-d_vmSize_azure_gp(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  Standard_DS1_v2（1C3.5G）
- ${Green_font_prefix}2.${Font_color_suffix}  Standard_DS2_v2（2C7G）
- ${Green_font_prefix}3.${Font_color_suffix}  Standard_DS3_v2（1C14G）"
-    read -e -p "请选择你的VM大小系列:" vmSize
-    if [[ ${vmSize} == "1" ]]; then
-        vmSize="Standard_DS1_v2"
-        image_azure_gp
-    elif [[ ${vmSize} == "2" ]]; then
-        vmSize="Standard_B1s"
-        image_azure_gp
-    elif [[ ${vmSize} == "3" ]]; then
-        vmSize="Standard_DS3_v2"
-        image_azure_gp
-    else
-        echo "输入错误"
-        azure_ge_loop_script
-    fi
-}
-
-#b系列VM实例大小
-b_vmSize_azure_gp(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  Standard_B1ls（1C0.5G）
- ${Green_font_prefix}2.${Font_color_suffix}  Standard_B1s（1C1G）
- ${Green_font_prefix}3.${Font_color_suffix}  Standard_B1ms（1C2G）
- ${Green_font_prefix}4.${Font_color_suffix}  Standard_B2s（2C4G）
- ${Green_font_prefix}5.${Font_color_suffix}  Standard_B2ms（2C8G）
- ${Green_font_prefix}6.${Font_color_suffix}  Standard_B4ms（4C16G）"
-    read -e -p "请选择你的VM大小系列:" vmSize
-    if [[ ${vmSize} == "1" ]]; then
-        vmSize="Standard_B1ls"
-        image_azure_gp
-    elif [[ ${vmSize} == "2" ]]; then
-        vmSize="Standard_B1s"
-        image_azure_gp
-    elif [[ ${vmSize} == "3" ]]; then
-        vmSize="Standard_B1ms"
-        image_azure_gp
-    elif [[ ${vmSize} == "4" ]]; then
-        vmSize="Standard_B2s"
-        image_azure_gp
-    elif [[ ${vmSize} == "5" ]]; then
-        vmSize="Standard_B2ms"
-        image_azure_gp
-    elif [[ ${vmSize} == "6" ]]; then
-        vmSize=""
-    else
-        echo "输入错误"
-        azure_ge_loop_script
-    fi
+vmSize_azure_ge(){
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/GE/vmSize)`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
+    read -e -p "请选择你的服务器位置（编号）:" b
+        vmSize=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
 #VM硬盘
-disk_azure_gp(){
+disk_azure_ge(){
     read -e -p "硬盘大小位多少GB(默认: 64GB)：" disk
     [[ -z ${disk} ]] && disk="64"
-    mSize_azure_gp
 }
 
 #azure国际创建网络接口
-create_nic_azure_gp(){
+create_nic_azure_ge(){
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
     -X PUT -d '{
@@ -320,7 +152,7 @@ create_nic_azure_gp(){
 }
 
 #azure国际创建公网ip
-create_public_ip_azure_gp(){
+create_public_ip_azure_ge(){
     
 
     declare -l ddns="${resource_name}"
@@ -359,7 +191,7 @@ create_public_ip_azure_gp(){
 }
 
 #azure国际创建虚拟网络子网
-create_Network_submets_azure_gp(){
+create_Network_submets_azure_ge(){
     
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -385,7 +217,7 @@ create_Network_submets_azure_gp(){
 }
 
 #azure国际创建虚拟网络
-create_Network_azure_gp(){
+create_Network_azure_ge(){
     
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -411,7 +243,7 @@ create_Network_azure_gp(){
 }
 
 #azure国际创建资源组
-create_resource_azure_gp(){
+create_resource_azure_ge(){
     
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -431,10 +263,15 @@ create_resource_azure_gp(){
     fi
 }
 
-#azure国际创建vm
-create_azure_gp_vm(){
+#azure国际准备创建vm
+create_azure_ge_vm(){
+    
+    location_azure_ge
+    disk_azure_ge
+    vmSize_azure_ge
+    
     echo  "正在创建资源组，请稍后！"
-    create_resource_azure_gp
+    create_resource_azure_ge
     
     mkdir ${file_path}/az/ge/${api_name}/resource/${remark}
     echo "${resource_name}" > ${file_path}/az/ge/${api_name}/resource/${remark}/resource_name
@@ -442,28 +279,28 @@ create_azure_gp_vm(){
 
     
     echo "正在创建虚拟网络，请稍后！"
-    create_Network_azure_gp
+    create_Network_azure_ge
     
     echo "正在创建虚拟网络-子网，请稍后！"
-    create_Network_submets_azure_gp
+    create_Network_submets_azure_ge
     
     echo "${subnet_id}" > ${file_path}/az/ge/${api_name}/resource/${remark}/subnet_id
     
     echo "正在创建公网ip，请稍后！"
-    create_public_ip_azure_gp
+    create_public_ip_azure_ge
     
     echo "${public_ip}" > ${file_path}/az/ge/${api_name}/resource/${remark}/public_ip
     
     echo "正在创建网络接口，请稍后！"
-    create_nic_azure_gp
+    create_nic_azure_ge
     
     echo "${vnet_id}" > ${file_path}/az/ge/${api_name}/resource/${remark}/vnet_id
     
     echo "正在创建VM，请稍后！"
-    create_vm_azure_gp
+    create_vm_azure_ge
     
     echo "正在获取网络参数，请稍后！"
-    get_ip_azure_gp
+    get_ip_azure_ge
     
     clear
     echo "开机完成！"
@@ -475,7 +312,7 @@ create_azure_gp_vm(){
 }
 
 #抓取IP azure国际
-get_ip_azure_gp(){
+get_ip_azure_ge(){
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
     -X GET\
@@ -484,7 +321,7 @@ get_ip_azure_gp(){
 }
 
 #azure国际校验信息
-create_azure_gp(){
+create_azure_ge(){
     clear
     check_api_azure_ge
     read -p "你需要创建vm的api名称:" api_name
@@ -509,7 +346,7 @@ create_azure_gp(){
     azure_ge_token
     
     echo "正在获取subid，请稍后！"
-    subid_user_azure_gp
+    subid_user_azure_ge
     
     var2=`echo $json | jq -r '.value[0].state'`
     if [[ ${var2} != "Enabled" ]];then
@@ -517,60 +354,23 @@ create_azure_gp(){
             echo "账号状态：${var2}"
             exit
     fi
-    location_azure_gp
+    create_azure_ge_vm
 }
 
 #azure国际选择位置
-location_azure_gp(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  (US) West US 3【美国西部 3】
- ${Green_font_prefix}2.${Font_color_suffix}  (Europe) UK South【英国南部】
- ${Green_font_prefix}3.${Font_color_suffix}  (US) South Central US【美国中南部】
- ${Green_font_prefix}4.${Font_color_suffix}  (Europe) West Europe【西欧】
- ${Green_font_prefix}5.${Font_color_suffix}  (Asia Pacific) Central India【印度中部】
- ${Green_font_prefix}6.${Font_color_suffix}  (Asia Pacific) Japan East【日本东部】
- ${Green_font_prefix}7.${Font_color_suffix}  (Asia Pacific) Korea Central【韩国中部】
- ${Green_font_prefix}8.${Font_color_suffix}  (Europe) France Central【法国中部】
- ${Green_font_prefix}9.${Font_color_suffix}  (Europe) Norway East【挪威东部】
- ${Green_font_prefix}10.${Font_color_suffix}  (South America) Brazil South【巴西南部】
- ${Green_font_prefix}11.${Font_color_suffix}  (Asia Pacific) East Asia【香港】"
-    read -e -p "请选择你的服务器位置:" location
-    if [[ ${location} == "1" ]]; then
-        location="westus3"
-        disk_azure_gp
-    elif [[ ${location} == "2" ]]; then
-        location="uksouth"
-        disk_azure_gp
-    elif [[ ${location} == "3" ]]; then
-        location="westeurope"
-        disk_azure_gp
-    elif [[ ${location} == "4" ]]; then
-        location="centralindia"
-        disk_azure_gp
-    elif [[ ${location} == "5" ]]; then
-        location="japaneast"
-        disk_azure_gp
-    elif [[ ${location} == "6" ]]; then
-        location="koreacentral"
-        disk_azure_gp
-    elif [[ ${location} == "7" ]]; then
-        location="koreacentral"
-        disk_azure_gp
-    elif [[ ${location} == "8" ]]; then
-        location="francecentral"
-        disk_azure_gp
-    elif [[ ${location} == "9" ]]; then
-        location="norwayeast"
-        disk_azure_gp
-    elif [[ ${location} == "10" ]]; then
-        location="brazilsouth"
-        disk_azure_gp
-    elif [[ ${location} == "11" ]]; then
-        location="eastasia"
-        disk_azure_gp
-    else
-        echo "输入错误"
-        azure_ge_loop_script
-    fi
+location_azure_ge(){
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/GE/location)`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
+    read -e -p "请选择你的服务器位置（编号）:" b
+        location=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
 #azure国际获取token
@@ -594,7 +394,7 @@ azure_ge_token(){
 }
 
 #azure国际查询subid
-subid_user_azure_gp(){
+subid_user_azure_ge(){
     json=`curl -s -X GET \
     -H 'Authorization:Bearer '${az_token}'' \
     -H 'api-version: 2020-01-01' \
@@ -611,7 +411,7 @@ subid_user_azure_gp(){
 }
 
 #azure国际测活
-Information_user_azure_gp(){
+Information_user_azure_ge(){
     
     cd ${file_path}/az/ge
     o=`ls ${file_path}/az/ge|wc -l`
@@ -627,7 +427,7 @@ Information_user_azure_gp(){
         tenant=`cat ${file_path}/az/ge/${var0}/tenant`
         
         azure_ge_token
-        subid_user_azure_gp
+        subid_user_azure_ge
         
         var1=`echo $json | jq -r '.value[0].displayName'`
         var2=`echo $json | jq -r '.value[0].state'`
@@ -684,7 +484,7 @@ del_azure_ge(){
     resource_name=`cat ${file_path}/az/ge/${api_name}/resource/${remark}/resource_name`
     
     azure_ge_token
-    subid_user_azure_gp
+    subid_user_azure_ge
 
     curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -715,13 +515,13 @@ azure_ge_menu() {
 read -p " 请输入数字 :" num
   case "$num" in
     1)
-    Information_user_azure_gp
+    Information_user_azure_ge
     ;;
     2)
     change_ip_azure_ge
     ;;
     3)
-    create_azure_gp
+    create_azure_ge
     ;;
     4)
     del_azure_ge
@@ -815,7 +615,7 @@ change_ip_azure_ge(){
     location=`cat ${file_path}/az/ge/${api_name}/resource/${remark}/location`
 
     azure_ge_token
-    subid_user_azure_gp
+    subid_user_azure_ge
 
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -890,7 +690,7 @@ vultr_ge_menu() {
 read -p " 请输入数字 :" num
   case "$num" in
     1)
-    Information_user_azure_gp
+    Information_user_azure_ge
     ;;
     2)
     Information_vps_linode
@@ -1074,119 +874,50 @@ Information_user_do() {
 
 #do服务器位置
 region_do(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  纽约3
- ${Green_font_prefix}2.${Font_color_suffix}  纽约1 
- ${Green_font_prefix}3.${Font_color_suffix}  新加坡1
- ${Green_font_prefix}4.${Font_color_suffix}  阿姆斯特丹3
- ${Green_font_prefix}5.${Font_color_suffix}  法兰克福1
- ${Green_font_prefix}6.${Font_color_suffix}  加拿大1
- ${Green_font_prefix}7.${Font_color_suffix}  印度
- ${Green_font_prefix}8.${Font_color_suffix}  加利福尼亚3
- ${Green_font_prefix}9.${Font_color_suffix}  悉尼"
-    read -e -p "请选择你的服务器位置:" region
-    if [[ ${region} == "1" ]]; then
-        region="nyc3"
-    elif [[ ${region} == "2" ]]; then
-        region="nyc1"
-    elif [[ ${region} == "3" ]]; then
-        region="sgp1"
-    elif [[ ${region} == "4" ]]; then
-        region="ams3"
-    elif [[ ${region} == "5" ]]; then
-        region="fra1"
-    elif [[ ${region} == "6" ]]; then
-        region="tor1"
-    elif [[ ${region} == "7" ]]; then
-        region="blr1"
-    elif [[ ${region} == "8" ]]; then
-        region="sfo3"
-    elif [[ ${region} == "9" ]]; then
-        region="syd1"
-    else
-        echo "输入错误"
-        do_loop_script
-    fi
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/digitalocean/region)`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
+    read -e -p "请选择你的服务器位置（编号）:" b
+        size=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
 #do服务器大小
 size_do(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  s-1vcpu-512mb-10gb
- ${Green_font_prefix}2.${Font_color_suffix}  s-1vcpu-1gb 
- ${Green_font_prefix}3.${Font_color_suffix}  s-1vcpu-1gb-amd
- ${Green_font_prefix}4.${Font_color_suffix}  s-1vcpu-1gb-intel
- ${Green_font_prefix}5.${Font_color_suffix}  s-1vcpu-2gb
- ${Green_font_prefix}6.${Font_color_suffix}  s-1vcpu-2gb-amd
- ${Green_font_prefix}7.${Font_color_suffix}  s-1vcpu-2gb-intel
- ${Green_font_prefix}8.${Font_color_suffix}  s-2vcpu-2gb
- ${Green_font_prefix}9.${Font_color_suffix}  s-2vcpu-2gb-amd
- ${Green_font_prefix}10.${Font_color_suffix}  s-2vcpu-2gb-intel
- ${Green_font_prefix}11.${Font_color_suffix}  s-2vcpu-4gb
- ${Green_font_prefix}12.${Font_color_suffix}  s-2vcpu-4gb-amd
- ${Green_font_prefix}13.${Font_color_suffix}  s-2vcpu-4gb-intel"
-    read -p " 请输入机器规格:" size
-    if [[ ${size} == "1" ]]; then
-        size="s-1vcpu-512mb-10gb"
-    elif [[ ${size} == "2" ]]; then
-        size="s-1vcpu-1gb"
-    elif [[ ${size} == "3" ]]; then
-        size="s-1vcpu-1gb-amd"
-    elif [[ ${size} == "4" ]]; then
-        size="s-1vcpu-1gb-intel"
-    elif [[ ${size} == "5" ]]; then
-        size="s-1vcpu-2gb"
-    elif [[ ${size} == "6" ]]; then
-        size="s-1vcpu-2gb-amd"
-    elif [[ ${size} == "7" ]]; then
-        size="s-1vcpu-2gb-intel"
-    elif [[ ${size} == "8" ]]; then
-        size="s-2vcpu-2gb"
-    elif [[ ${size} == "9" ]]; then
-        size="s-2vcpu-2gb-amd"
-    elif [[ ${size} == "10" ]]; then
-        size="s-2vcpu-2gb-intel"
-    elif [[ ${size} == "11" ]]; then
-        size="s-2vcpu-4gb"
-    elif [[ ${size} == "12" ]]; then
-        size="s-2vcpu-4gb-amd"
-    elif [[ ${size} == "13" ]]; then    
-        size="s-2vcpu-4gb-intel"
-    else
-        echo "输入错误"
-        do_loop_script
-    fi
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/digitalocean/size)`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
+    read -e -p "请选择你的服务器大小（编号）:" b
+        size=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
 #do服务器镜像
 image_do(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  centos-7-x64
- ${Green_font_prefix}2.${Font_color_suffix}  centos-stream-8-x64
- ${Green_font_prefix}3.${Font_color_suffix}  debian-11-x64
- ${Green_font_prefix}4.${Font_color_suffix}  debian-10-x64
- ${Green_font_prefix}5.${Font_color_suffix}  ubuntu-22-04-x64
- ${Green_font_prefix}6.${Font_color_suffix}  ubuntu-20-04-x64
- ${Green_font_prefix}7.${Font_color_suffix}  ubuntu-18-04-x64
- ${Green_font_prefix}8.${Font_color_suffix}  centos-stream-9-x64"
-    read -p " 请输入机器系统:" image
-    if [[ ${image} == "1" ]]; then
-        image="centos-7-x64"
-    elif [[ ${image} == "2" ]]; then
-        image="centos-stream-8-x64"
-    elif [[ ${image} == "3" ]]; then
-        image="debian-11-x64"
-    elif [[ ${image} == "4" ]]; then
-        image="debian-10-x64"
-    elif [[ ${image} == "5" ]]; then
-        image="ubuntu-22-04-x64"
-    elif [[ ${image} == "6" ]]; then
-        image="ubuntu-20-04-x64"
-    elif [[ ${image} == "7" ]]; then
-        image="ubuntu-18-04-x64"
-    elif [[ ${image} == "8" ]]; then
-        image="centos-stream-9-x64"
-    else
-        echo "输入错误"
-        do_loop_script
-    fi
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/digitalocean/image)`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
+    read -e -p "请选择你的服务器系统（编号）:" b
+        image=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
 #创建机器
@@ -1607,116 +1338,51 @@ Information_user_linode() {
 
 #linnode服务器位置
 region_linode(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  ap-west（in）
- ${Green_font_prefix}2.${Font_color_suffix}  ca-central（ca）
- ${Green_font_prefix}3.${Font_color_suffix}  ap-southeast（au）
- ${Green_font_prefix}4.${Font_color_suffix}  us-central（us）
- ${Green_font_prefix}5.${Font_color_suffix}  us-west（us）
- ${Green_font_prefix}6.${Font_color_suffix}  us-southeast（us）
- ${Green_font_prefix}7.${Font_color_suffix}  us-east（us）
- ${Green_font_prefix}8.${Font_color_suffix}  eu-west（uk）
- ${Green_font_prefix}9.${Font_color_suffix}  ap-south（sg）
- ${Green_font_prefix}10.${Font_color_suffix}  eu-central（de）
- ${Green_font_prefix}11.${Font_color_suffix}  ap-northeast（JP）"
-    read -e -p "请选择你的服务器位置:" region
-    if [[ ${region} == "1" ]]; then
-        region="ap-west"
-    elif [[ ${region} == "2" ]]; then
-        region="ca-central"
-    elif [[ ${region} == "3" ]]; then
-        region="ap-southeast"
-    elif [[ ${region} == "4" ]]; then
-        region="us-central"
-    elif [[ ${region} == "5" ]]; then
-        region="us-west"
-    elif [[ ${region} == "6" ]]; then
-        region="us-southeast"
-    elif [[ ${region} == "7" ]]; then
-        region="us-east"
-    elif [[ ${region} == "8" ]]; then
-        region="eu-west"
-    elif [[ ${region} == "9" ]]; then
-        region="ap-south"
-    elif [[ ${region} == "10" ]]; then
-        region="eu-central"
-    elif [[ ${region} == "11" ]]; then
-        region="ap-northeast"
-    else
-        echo "输入错误"
-        linode_loop_script
-    fi
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/linode/region)`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
+    read -e -p "请选择你的服务器位置（编号）:" b
+        region=`echo $json | jq -r '.opencloud['${b}'].id'`
+    
 }
 
 #linode服务器镜像
 image_linode(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix}  linode/centos7
- ${Green_font_prefix}2.${Font_color_suffix}  linode/centos-stream8
- ${Green_font_prefix}3.${Font_color_suffix}  linode/centos-stream9
- ${Green_font_prefix}4.${Font_color_suffix}  linode/debian10
- ${Green_font_prefix}5.${Font_color_suffix}  linode/debian11
- ${Green_font_prefix}6.${Font_color_suffix}  linode/debian9
- ${Green_font_prefix}7.${Font_color_suffix}  linode/ubuntu16.04lts
- ${Green_font_prefix}8.${Font_color_suffix}  linode/ubuntu18.04
- ${Green_font_prefix}9.${Font_color_suffix}  linode/ubuntu20.04
- ${Green_font_prefix}10.${Font_color_suffix}  linode/ubuntu22.04
- ${Green_font_prefix}11.${Font_color_suffix}  linode/centos8
- ${Green_font_prefix}12.${Font_color_suffix}  linode/ubuntu21.04
- ${Green_font_prefix}13.${Font_color_suffix}  linode/ubuntu21.10"
-    read -e -p "请选择你的服务器位置:" image
-    if [[ ${image} == "1" ]]; then
-        image="linode/centos7"
-    elif [[ ${image} == "2" ]]; then
-        image="linode/centos-stream8"
-    elif [[ ${image} == "3" ]]; then
-        image="linode/centos-stream9"
-    elif [[ ${image} == "4" ]]; then
-        image="linode/debian10"
-    elif [[ ${image} == "5" ]]; then
-        image="linode/debian11"
-    elif [[ ${image} == "6" ]]; then
-        image="linode/debian9"
-    elif [[ ${image} == "7" ]]; then
-        image="linode/ubuntu16.04lts"
-    elif [[ ${image} == "8" ]]; then
-        image="linode/ubuntu18.04"
-    elif [[ ${image} == "9" ]]; then
-        image="linode/ubuntu20.04"
-    elif [[ ${image} == "10" ]]; then
-        image="linode/ubuntu22.04"
-    elif [[ ${image} == "11" ]]; then
-        image="linode/centos8"
-    elif [[ ${image} == "12" ]]; then
-        image="linode/ubuntu21.04"
-     elif [[ ${image} == "13" ]]; then   
-        image="linode/ubuntu21.10"
-    else
-        echo "输入错误"
-        linode_loop_script
-    fi
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/linode/image)`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
+    read -e -p "请选择你的服务器系统（编号）:" b
+        image=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
 #linode服务器大小
 size_linode(){
-    echo -e " ${Green_font_prefix}1.${Font_color_suffix} 1H1G
- ${Green_font_prefix}2.${Font_color_suffix}  1H2G
- ${Green_font_prefix}3.${Font_color_suffix}  2H4G
- ${Green_font_prefix}4.${Font_color_suffix}  4H8G
- ${Green_font_prefix}5.${Font_color_suffix}  6H16G"
-    read -p " 请输入机器规格:" size
-    if [[ ${size} == "1" ]]; then
-        size="g6-nanode-1"
-    elif [[ ${size} == "2" ]]; then
-        size="g6-standard-1"
-    elif [[ ${size} == "3" ]]; then
-        size="g6-standard-2"
-    elif [[ ${size} == "4" ]]; then
-        size="g6-standard-4"
-    elif [[ ${size} == "5" ]]; then    
-        size="g6-standard-6"
-    else
-        echo "输入错误"
-        linode_loop_script
-    fi
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/linode/size)`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
+    read -e -p "请选择你的服务器大小（编号）:" b
+        size=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
 #创建linode机器
