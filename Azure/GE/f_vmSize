@@ -1,0 +1,20 @@
+{
+	"opencloud":[
+		{
+			"name":"Standard_F1s（1C2G）",
+			"id":"Standard_F1s"
+		},
+		{
+			"name":"Standard_F2s_v2（2C4G）",
+			"id":"Standard_F2s_v2"
+		},
+		{
+			"name":"Standard_F4s_v2（4C8G）",
+			"id":"Standard_F4s_v2"
+		},
+		{
+			"name":"Standard_F8s_v2（8C16G）",
+			"id":"Standard_F8s_v2"
+		}
+	]
+}
