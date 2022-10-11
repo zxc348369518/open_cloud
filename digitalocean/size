@@ -1,10 +1,6 @@
 {
 	"opencloud":[
 		{
-			"name":"s-1vcpu-512mb-10gb",
-			"id":"s-1vcpu-512mb-10gb"
-		},
-		{
 			"name":"s-1vcpu-1gb",
 			"id":"s-1vcpu-1gb"
 		},
