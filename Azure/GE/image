@@ -15,7 +15,7 @@
 			"offer":"debian-10"
 		},
 		{
-			"name":"11-gen2",
+			"name":"Debian_11-gen2",
 			"sku":"11-gen2",
 			"publisher":"Debian",
 			"version":"latest",
