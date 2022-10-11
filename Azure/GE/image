@@ -1,0 +1,102 @@
+{
+	"opencloud":[
+		{
+			"name":"Debian_9",
+			"sku":"9",
+			"publisher":"credativ",
+			"version":"latest",
+			"offer":"Debian"
+		},
+		{
+			"name":"Debian_10_gen2",
+			"sku":"10-gen2",
+			"publisher":"Debian",
+			"version":"latest",
+			"offer":"debian-10"
+		},
+		{
+			"name":"11-gen2",
+			"sku":"11-gen2",
+			"publisher":"Debian",
+			"version":"latest",
+			"offer":"debian-11"
+		},
+		{
+			"name":"Ubuntu 16.04_gen2",
+			"sku":"16_04-lts-gen2",
+			"publisher":"Canonical",
+			"version":"latest",
+			"offer":"UbuntuServer"
+		},
+		{
+			"name":"Ubuntu_18_04_gen2",
+			"sku":"18_04-lts-gen2",
+			"publisher":"Canonical",
+			"version":"latest",
+			"offer":"UbuntuServer"
+		},
+		{
+			"name":"Ubuntu_20_04_gen2",
+			"sku":"20_04-lts-gen2",
+			"publisher":"Canonical",
+			"version":"latest",
+			"offer":"0001-com-ubuntu-server-focal"
+		},
+		{
+			"name":"Centos 7.9_gen2",
+			"sku":"7_9-gen2",
+			"publisher":"OpenLogic",
+			"version":"latest",
+			"offer":"CentOS"
+		},
+		{
+			"name":"Centos 8.5_gen2",
+			"sku":"8_5-gen2",
+			"publisher":"OpenLogic",
+			"version":"latest",
+			"offer":"CentOS"
+		},
+		{
+			"name":"Windows Datacenter 2012",
+			"sku":"2012-Datacenter-smalldisk",
+			"publisher":"MicrosoftWindowsServer",
+			"version":"latest",
+			"offer":"WindowsServer"
+		},
+		{
+			"name":"Windows Datacenter 2016",
+			"sku":"2016-Datacenter-smalldisk",
+			"publisher":"MicrosoftWindowsServer",
+			"version":"latest",
+			"offer":"WindowsServer"
+		},
+		{
+			"name":"Windows Datacenter 2019",
+			"sku":"2019-Datacenter-smalldisk",
+			"publisher":"MicrosoftWindowsServer",
+			"version":"latest",
+			"offer":"WindowsServer"
+		},
+		{
+			"name":"Windows Datacenter 2022",
+			"sku":"2022-Datacenter-smalldisk",
+			"publisher":"MicrosoftWindowsServer",
+			"version":"latest",
+			"offer":"WindowsServer"
+		},
+		{
+			"name":"Windows 10 21H2_gen2",
+			"sku":"win10-21h2-pro-zh-cn-g2",
+			"publisher":"MicrosoftWindowsDesktop",
+			"version":"latest",
+			"offer":"Windows-10"
+		},
+		{
+			"name":"Windows 11 21H2",
+			"sku":"win11-21h2-pro-zh-cn",
+			"publisher":"MicrosoftWindowsDesktop",
+			"version":"latest",
+			"offer":"Windows-11"
+		}
+	]
+}
