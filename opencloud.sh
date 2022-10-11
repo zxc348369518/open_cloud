@@ -1031,18 +1031,17 @@ Information_vps_do() {
     -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
     "https://api.digitalocean.com/v2/droplets"`
     total=`echo $json | jq -r '.meta.total'`
-    
+    echo API名称：${api_name}
     i=-1
     while ((i < ("${total}" - "1" )))
     do
         ((i++))
-        echo
-        echo -n "机器ID："
-        echo $json | jq '.droplets['${i}'].id'
-        echo -n "机器名字："
-        echo $json | jq '.droplets['${i}'].name'
-        echo -n "机器IP："
-        echo -n $json | jq '.droplets['${i}'].networks.v4[0].ip_address'
+        echo -n  "机器ID："
+        echo  $json | jq '.droplets['${i}'].id'
+        echo -n  "机器名字："
+        echo  $json | jq '.droplets['${i}'].name'
+        echo -n  "机器IP："
+        echo  $json | jq '.droplets['${i}'].networks.v4[0].ip_address'
     done
     do_loop_script
 }
@@ -1192,44 +1191,43 @@ image_do(){
 
 #创建机器
 create_do() {
-
     read -p " 请输入机器名字:" name
-    
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
     
     region_do
     size_do
     image_do
 
     clear
+    
      echo -e "请确认？ [Y/n]
 机器名字：${name}\n服务器位置：${region}\n服务器规格：${size}\n机器系统: ${image}"
         read -e -p "(默认: N 取消):" state
         [[ -z ${state} ]] && state="n"
         if [[ ${state} == [Yy] ]]; then
-           json=`curl -s -X POST \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-            -d '{
+
+             json=`curl -s -X POST \
+             -H "Content-Type: application/json" \
+             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
+             -d '{
                 "name":"'${name}'",
                 "region":"'${region}'",
                 "size":"'${size}'",
                 "image":"'${image}'",
-                "ipv6":true,
-                "user_data":"bash <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/passwd.sh)"
-                
-            }' \
-            "https://api.digitalocean.com/v2/droplets"`
-            var1=`echo $json | jq -r '.droplet.id'`
-            echo ""
-            if [[ $var1 == null ]];
-            then
-                echo $json
-                echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
-            else
-                echo "创建中，请稍等！"
-                cheek_ip_do
-            fi
+                "backups":"false",
+                "ipv6":"true"
+             }' \
+             https://api.digitalocean.com/v2/droplets`
+  
+           var1=`echo $json | jq -r '.droplet.id'`
+           echo ""
+           if [[ $var1 == null ]];
+           then
+               echo $json
+               echo "创建失败"
+           else
+               echo "创建中，请稍等！"
+               cheek_ip_do
+           fi
         fi
 
 }
@@ -1264,19 +1262,18 @@ del_do() {
     -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
     "https://api.digitalocean.com/v2/droplets"`
     total=`echo $json | jq -r '.meta.total'`
-    
+    echo API名称：${api_name}
     i=-1
     while ((i < ("${total}" - "1" )))
     do
         ((i++))
-        echo "机器ID："
-        echo $json | jq '.droplets['${i}'].id'
-        echo "机器名字："
-        echo $json | jq '.droplets['${i}'].name'
-        echo "机器IP："
-        echo $json | jq '.droplets['${i}'].networks.v4[0].ip_address'
-        echo $json | jq '.droplets['${i}'].networks.v4[1].ip_address'
-        echo -e "\n"
+        echo
+        echo -n  "机器ID："
+        echo  $json | jq '.droplets['${i}'].id'
+        echo -n  "机器名字："
+        echo  $json | jq '.droplets['${i}'].name'
+        echo -n  "机器IP："
+        echo  $json | jq '.droplets['${i}'].networks.v4[0].ip_address'
     done
     
     read -e -p "请输入需要删除机器的id号：" id
@@ -1287,7 +1284,6 @@ del_do() {
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
             "https://api.digitalocean.com/v2/droplets/${id}"
-            echo "ID为 ${id} 删除成功！"
         fi
     do_loop_script
 }
@@ -1350,8 +1346,9 @@ read -p " 请输入数字 :" num
 #查询已保存doapi
 check_api_do(){
     clear
+    
+    echo "已绑定的api："
     ls ${file_path}/do
-    echo "已绑定的api："$array
 }
 
 #do检查账号是否存存活
