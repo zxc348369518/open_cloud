@@ -1,0 +1,12 @@
+{
+	"opencloud":[
+		{
+			"name":"Amazon Linux 2 Kernel 5.10（支持免费套餐）",
+			"id":"ami-026b57f3c383c2eec"
+		},
+		{
+			"name":"Amazon Linux 2 AMI（支持免费套餐）",
+			"id":"ami-0464d49b8794eba32"
+		}
+	]
+}
