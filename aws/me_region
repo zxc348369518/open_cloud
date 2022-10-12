@@ -1,0 +1,12 @@
+{
+	"opencloud":[
+		{
+			"name":"中东（巴林）",
+			"id":"me-south-1"
+		},
+		{
+			"name":"中东（阿联酋）",
+			"id":"me-central-1"
+		}
+	]
+}
