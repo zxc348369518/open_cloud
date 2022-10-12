@@ -21,7 +21,7 @@
 			"id":"SUSE_Linux"
 		},
 		{
-			"name":"Debian",
+			"name":"Debian（雅加达；没有镜像）",
 			"id":"Debian"
 		}
 	]
