@@ -180,7 +180,7 @@ del_api_aws(){
     aws_loop_script
 }
 
-#————————————————————Azure（Global Edition）————————————————————
+#————————————————————Azure————————————————————
 #azure创建vm
 create_vm_azure(){
     
@@ -583,8 +583,8 @@ subid_user_azure(){
 #azure测活
 Information_user_azure(){
     
-    cd ${file_path}/az/ge
-    o=`ls ${file_path}/az/ge|wc -l`
+    cd ${file_path}/az
+    o=`ls ${file_path}/az|wc -l`
     i=-1
     while ((i < ("${o}" - "1" )))
     do
@@ -613,7 +613,7 @@ Information_user_azure(){
 #azure循环脚本
 azure_loop_script(){
 echo -e "
- ${Green_font_prefix}98.${Font_color_suffix} 返回azure（Global Edition）菜单
+ ${Green_font_prefix}98.${Font_color_suffix} 返回Azure菜单
  ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
  
 
@@ -669,7 +669,7 @@ del_azure(){
 #azure菜单
 azure_menu() {
     clear
-    echo && echo -e " Azure(Global Edition) 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+    echo && echo -e " Azure 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 一键测活
  ${Green_font_prefix}2.${Font_color_suffix} 更换VM IP
  ${Green_font_prefix}3.${Font_color_suffix} 创建资源组(VM)
@@ -725,7 +725,7 @@ read -p " 请输入数字 :" num
 check_api_azure(){
     clear
     echo "已绑定的api："
-    ls ${file_path}/az/ge
+    ls ${file_path}/az
 }
 
 #创建azapi
@@ -1523,7 +1523,7 @@ start_menu() {
  ${Green_font_prefix}1.${Font_color_suffix} Digitalocean 
  ${Green_font_prefix}2.${Font_color_suffix} Linode
  ${Green_font_prefix}3.${Font_color_suffix} vultr（未开发，没有API）
- ${Green_font_prefix}4.${Font_color_suffix} Azure (Global Edition)
+ ${Green_font_prefix}4.${Font_color_suffix} Azure
  ${Green_font_prefix}5.${Font_color_suffix} aws（开发中）
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
@@ -1544,7 +1544,7 @@ read -p " 请输入数字 :" num
     azure_menu
     ;;
     5)
-    echo "目前该项目正在开发" #aws_menu
+    echo "目前该项目正在开发"  #aws_menu
     ;;
     99)
     exit 1
