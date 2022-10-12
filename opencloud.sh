@@ -9,9 +9,180 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
+#
+#————————————————————AWS————————————————————
+#aws选择api
+aws_select_api(){
+    check_api_aws
+    read -p "你需要操作的api名称:" api_name
+    key_id=`cat ${file_path}/aws/${api_name}/key_id`
+    access_key=`cat ${file_path}/aws/${api_name}/access_key`
+    aws configure set region us-west-2
+    aws configure set aws_access_key_id ${key_id}
+    aws configure set aws_secret_access_key ${access_key}
+}
+
+#aws测活
+Information_user_aws(){
+    cd ${file_path}/aws
+    o=`ls ${file_path}/aws|wc -l`
+    i=-1
+    echo "CPU配额大于0账号为正常！"
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        array=(*)
+        var0=`echo ${array[${i}]}`
+        
+        key_id=`cat ${file_path}/aws/${var0}/key_id`
+        access_key=`cat ${file_path}/aws/${var0}/access_key`
+        aws configure set region us-west-2
+        aws configure set aws_access_key_id ${key_id}
+        aws configure set aws_secret_access_key ${access_key}
+        
+        json=`aws service-quotas get-service-quota \
+        --service-code ec2 \
+        --quota-code L-1216C47A`
+        
+        echo -e  "API名称：${var0}————CPU配额：`echo $json | jq -r '.Quota.Value'`"
+    done
+    aws_loop_script
+}
+
+#安装aws cli
+install_aws_cli(){
+    curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+    ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
+}
+
+#aws循环脚本
+aws_loop_script(){
+echo -e "
+ ${Green_font_prefix}98.${Font_color_suffix} 返回AWS菜单
+ ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
+ 
+
+read -p " 请输入数字 :" num
+  case "$num" in
+    98)
+    aws_menu
+    ;;
+    99)
+    exit 1
+    ;;
+  *)
+    clear
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    aws_menu
+    ;;
+  esac
+}
+
+#aws菜单
+aws_menu() {
+    clear
+    echo && echo -e " AWS 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} 一键全部API测活
+ ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
+ ${Green_font_prefix}3.${Font_color_suffix} 创建机器
+ ${Green_font_prefix}4.${Font_color_suffix} 删除机器
+————————————————————————————————————————————————————————————————
+ ${Green_font_prefix}5.${Font_color_suffix} 查询已保存api
+ ${Green_font_prefix}6.${Font_color_suffix} 添加api
+ ${Green_font_prefix}7.${Font_color_suffix} 删除api
+————————————————————————————————————————————————————————————————
+ ${Green_font_prefix}98.${Font_color_suffix} 返回菜单
+ ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
+
+read -p " 请输入数字 :" num
+  case "$num" in
+    1)
+    Information_user_aws
+    ;;
+    2)
+    Information_vps_linode
+    ;;
+    3)
+    Check_liveness_linode
+    ;;
+    4)
+    del_linode
+    ;;
+    5)
+    check_api_aws
+    aws_loop_script
+    ;;
+    6)
+    create_api_aws
+    ;;
+    7)
+    del_api_aws
+    ;;
+    98)
+    start_menu
+    ;;
+    99)
+    exit 1
+    ;;
+  *)
+    clear
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    aws_menu
+    ;;
+  esac
+}
+
+#查询已保存aws api
+check_api_aws(){
+    clear
+    ls ${file_path}/aws
+    echo "已绑定的api："$array
+}
+
+#创建aws api
+create_api_aws(){
+    check_api_aws
+    
+    read -e -p "请为这个api添加一个备注：" api_name
+    if [ -d "${file_path}/aws/${api_name}" ]; then
+        echo "该备注已经存在，请更换其他名字，或者删除原来api"
+    else
+        mkdir ${file_path}/aws/${api_name}
+        read -e -p "输入access_key_id：" key_id
+        read -e -p "输入secret_access_key" access_key
+        echo "${key_id}" > ${file_path}/aws/${api_name}/key_id
+        echo "${access_key}" > ${file_path}/aws/${api_name}/access_key
+        echo "添加成功！"
+    fi
+    
+    aws_loop_script
+}
+
+#删除aws api
+del_api_aws(){
+    check_api_aws
+    read -p "你需要删除的api名称:" api_name
+    read -e -p "是否需要删除 ${api_name}(默认: N 取消)：" info
+    [[ -z ${info} ]] && info="n"
+    if [[ ${info} == [Yy] ]]; then
+        read -e -p "请输入需要删除api的名字：" api_name
+        if test -f "${file_path}/aws/${api_name}"; then
+            rm -rf ${file_path}/aws/${api_name}
+            echo "删除成功！"
+        else
+            echo "未在系统中查找到该名称的api"
+        fi
+    fi
+    aws_loop_script
+}
+
 #————————————————————Azure（Global Edition）————————————————————
-#azure国际创建vm
-create_vm_azure_ge(){
+#azure创建vm
+create_vm_azure(){
     
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -73,8 +244,8 @@ create_vm_azure_ge(){
 }
 
 #vm镜像
-image_azure_ge(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/GE/image)`
+image_azure(){
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -92,8 +263,8 @@ image_azure_ge(){
 }
 
 #VM实例大小
-vmSize_azure_ge(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/GE/vmSize)`
+vmSize_azure(){
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/vmSize)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -108,13 +279,13 @@ vmSize_azure_ge(){
 }
 
 #VM硬盘
-disk_azure_ge(){
+disk_azure(){
     read -e -p "硬盘大小位多少GB(默认: 64GB)：" disk
     [[ -z ${disk} ]] && disk="64"
 }
 
-#azure国际创建网络接口
-create_nic_azure_ge(){
+#azure创建网络接口
+create_nic_azure(){
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
     -X PUT -d '{
@@ -151,8 +322,8 @@ create_nic_azure_ge(){
     fi
 }
 
-#azure国际创建公网ip
-create_public_ip_azure_ge(){
+#azure创建公网ip
+create_public_ip_azure(){
     
 
     declare -l ddns="${resource_name}"
@@ -190,8 +361,8 @@ create_public_ip_azure_ge(){
     fi
 }
 
-#azure国际创建虚拟网络子网
-create_Network_submets_azure_ge(){
+#azure创建虚拟网络子网
+create_Network_submets_azure(){
     
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -216,8 +387,8 @@ create_Network_submets_azure_ge(){
     fi
 }
 
-#azure国际创建虚拟网络
-create_Network_azure_ge(){
+#azure创建虚拟网络
+create_Network_azure(){
     
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -242,8 +413,8 @@ create_Network_azure_ge(){
     fi
 }
 
-#azure国际创建资源组
-create_resource_azure_ge(){
+#azure创建资源组
+create_resource_azure(){
     
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -263,44 +434,43 @@ create_resource_azure_ge(){
     fi
 }
 
-#azure国际准备创建vm
-create_azure_ge_vm(){
-    
-    location_azure_ge
-    disk_azure_ge
-    vmSize_azure_ge
+#azure准备创建vm
+create_azure_vm(){
+    location_azure
+    disk_azure
+    vmSize_azure
     
     echo  "正在创建资源组，请稍后！"
-    create_resource_azure_ge
+    create_resource_azure
     
-    mkdir ${file_path}/az/ge/${api_name}/resource/${remark}
-    echo "${resource_name}" > ${file_path}/az/ge/${api_name}/resource/${remark}/resource_name
-    echo "${location}" > ${file_path}/az/ge/${api_name}/resource/${remark}/location
+    mkdir ${file_path}/az/${api_name}/resource/${remark}
+    echo "${resource_name}" > ${file_path}/az/${api_name}/resource/${remark}/resource_name
+    echo "${location}" > ${file_path}/az/${api_name}/resource/${remark}/location
 
     
     echo "正在创建虚拟网络，请稍后！"
-    create_Network_azure_ge
+    create_Network_azure
     
     echo "正在创建虚拟网络-子网，请稍后！"
-    create_Network_submets_azure_ge
+    create_Network_submets_azure
     
-    echo "${subnet_id}" > ${file_path}/az/ge/${api_name}/resource/${remark}/subnet_id
+    echo "${subnet_id}" > ${file_path}/az/${api_name}/resource/${remark}/subnet_id
     
     echo "正在创建公网ip，请稍后！"
-    create_public_ip_azure_ge
+    create_public_ip_azure
     
-    echo "${public_ip}" > ${file_path}/az/ge/${api_name}/resource/${remark}/public_ip
+    echo "${public_ip}" > ${file_path}/az/${api_name}/resource/${remark}/public_ip
     
     echo "正在创建网络接口，请稍后！"
-    create_nic_azure_ge
+    create_nic_azure
     
-    echo "${vnet_id}" > ${file_path}/az/ge/${api_name}/resource/${remark}/vnet_id
+    echo "${vnet_id}" > ${file_path}/az/${api_name}/resource/${remark}/vnet_id
     
     echo "正在创建VM，请稍后！"
-    create_vm_azure_ge
+    create_vm_azure
     
     echo "正在获取网络参数，请稍后！"
-    get_ip_azure_ge
+    get_ip_azure
     
     clear
     echo "开机完成！"
@@ -308,11 +478,11 @@ create_azure_ge_vm(){
     echo "DDNS：${fqdn}"
     echo "用户名：${resource_name}"
     echo "密码：${resource_name}-"
-    azure_ge_loop_script
+    azure_loop_script
 }
 
-#抓取IP azure国际
-get_ip_azure_ge(){
+#抓取IP azure
+get_ip_azure(){
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
     -X GET\
@@ -320,21 +490,21 @@ get_ip_azure_ge(){
     ip=`echo $json | jq -r '.properties.ipAddress'`
 }
 
-#azure国际校验信息
-create_azure_ge(){
+#azure校验信息
+create_azure(){
     clear
-    check_api_azure_ge
+    check_api_azure
     read -p "你需要创建vm的api名称:" api_name
     read -p "你需要给这个资源组一个备注:" remark
     
-    if [ -d "${file_path}/az/ge/${api_name}/resource/${remark}" ]; then
+    if [ -d "${file_path}/az/${api_name}/resource/${remark}" ]; then
         echo "这个备注你已经拥有了，需要使用脚本的删除资源组重新尝试"
         exit
     fi
     
-    appid=`cat ${file_path}/az/ge/${api_name}/appId`
-    pasd=`cat ${file_path}/az/ge/${api_name}/password`
-    tenant=`cat ${file_path}/az/ge/${api_name}/tenant`
+    appid=`cat ${file_path}/az/${api_name}/appId`
+    pasd=`cat ${file_path}/az/${api_name}/password`
+    tenant=`cat ${file_path}/az/${api_name}/tenant`
     
     resource_name=`tr -dc "A-Z-0-9-a-z" < /dev/urandom | head -c 12`
     
@@ -343,10 +513,10 @@ create_azure_ge(){
     clear
     
     echo  "正在获取token，请稍后！"
-    azure_ge_token
+    azure_token
     
     echo "正在获取subid，请稍后！"
-    subid_user_azure_ge
+    subid_user_azure
     
     var2=`echo $json | jq -r '.value[0].state'`
     if [[ ${var2} != "Enabled" ]];then
@@ -354,12 +524,12 @@ create_azure_ge(){
             echo "账号状态：${var2}"
             exit
     fi
-    create_azure_ge_vm
+    create_azure_vm
 }
 
-#azure国际选择位置
-location_azure_ge(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/GE/location)`
+#azure选择位置
+location_azure(){
+    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/location)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -373,8 +543,8 @@ location_azure_ge(){
         location=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
-#azure国际获取token
-azure_ge_token(){
+#azure获取token
+azure_token(){
     json=`curl -s -X POST \
     -d 'grant_type=client_credentials' \
     -d 'client_id='${appid}'' \
@@ -393,8 +563,8 @@ azure_ge_token(){
     fi
 }
 
-#azure国际查询subid
-subid_user_azure_ge(){
+#azure查询subid
+subid_user_azure(){
     json=`curl -s -X GET \
     -H 'Authorization:Bearer '${az_token}'' \
     -H 'api-version: 2020-01-01' \
@@ -410,8 +580,8 @@ subid_user_azure_ge(){
     fi
 }
 
-#azure国际测活
-Information_user_azure_ge(){
+#azure测活
+Information_user_azure(){
     
     cd ${file_path}/az/ge
     o=`ls ${file_path}/az/ge|wc -l`
@@ -422,12 +592,12 @@ Information_user_azure_ge(){
         array=(*)
         var0=`echo ${array[${i}]}`
         
-        appid=`cat ${file_path}/az/ge/${var0}/appId`
-        pasd=`cat ${file_path}/az/ge/${var0}/password`
-        tenant=`cat ${file_path}/az/ge/${var0}/tenant`
+        appid=`cat ${file_path}/az/${var0}/appId`
+        pasd=`cat ${file_path}/az/${var0}/password`
+        tenant=`cat ${file_path}/az/${var0}/tenant`
         
-        azure_ge_token
-        subid_user_azure_ge
+        azure_token
+        subid_user_azure
         
         var1=`echo $json | jq -r '.value[0].displayName'`
         var2=`echo $json | jq -r '.value[0].state'`
@@ -436,12 +606,12 @@ Information_user_azure_ge(){
         
     done
     
-    azure_ge_loop_script
+    azure_loop_script
     
 }
 
-#azure国际循环脚本
-azure_ge_loop_script(){
+#azure循环脚本
+azure_loop_script(){
 echo -e "
  ${Green_font_prefix}98.${Font_color_suffix} 返回azure（Global Edition）菜单
  ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
@@ -450,7 +620,7 @@ echo -e "
 read -p " 请输入数字 :" num
   case "$num" in
     98)
-    azure_ge_menu
+    azure_menu
     ;;
     99)
     exit 1
@@ -459,32 +629,32 @@ read -p " 请输入数字 :" num
     clear
     echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
     sleep 2s
-    azure_ge_menu
+    azure_menu
     ;;
   esac
 }
 
-#azure国际资源组备注
-check_api_remark_azure_ge(){
+#azure资源组备注
+check_api_remark_azure(){
     echo "当前api已绑定备注的有："
-    ls ${file_path}/az/ge/${api_name}/resource
+    ls ${file_path}/az/${api_name}/resource
 }
 
-#azure国际删除机器
-del_azure_ge(){
+#azure删除机器
+del_azure(){
     
-    check_api_azure_ge
+    check_api_azure
     read -p "你需要删除的api名称:" api_name
-    check_api_remark_azure_ge
+    check_api_remark_azure
     read -p "你需要删除的备注:" remark
     
-    appid=`cat ${file_path}/az/ge/${api_name}/appId`
-    pasd=`cat ${file_path}/az/ge/${api_name}/password`
-    tenant=`cat ${file_path}/az/ge/${api_name}/tenant`
-    resource_name=`cat ${file_path}/az/ge/${api_name}/resource/${remark}/resource_name`
+    appid=`cat ${file_path}/az/${api_name}/appId`
+    pasd=`cat ${file_path}/az/${api_name}/password`
+    tenant=`cat ${file_path}/az/${api_name}/tenant`
+    resource_name=`cat ${file_path}/az/${api_name}/resource/${remark}/resource_name`
     
-    azure_ge_token
-    subid_user_azure_ge
+    azure_token
+    subid_user_azure
 
     curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -492,12 +662,12 @@ del_azure_ge(){
     https://management.azure.com/subscriptions/${az_subid}/resourcegroups/${resource_name}?api-version=2021-04-01
     
     echo "删除完成！"
-    rm -rf ${file_path}/az/ge/${api_name}/resource/${remark}
-    azure_ge_loop_script
+    rm -rf ${file_path}/az/${api_name}/resource/${remark}
+    azure_loop_script
 }
 
-#azure国际菜单
-azure_ge_menu() {
+#azure菜单
+azure_menu() {
     clear
     echo && echo -e " Azure(Global Edition) 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 一键测活
@@ -515,26 +685,26 @@ azure_ge_menu() {
 read -p " 请输入数字 :" num
   case "$num" in
     1)
-    Information_user_azure_ge
+    Information_user_azure
     ;;
     2)
-    change_ip_azure_ge
+    change_ip_azure
     ;;
     3)
-    create_azure_ge
+    create_azure
     ;;
     4)
-    del_azure_ge
+    del_azure
     ;;
     5)
-    check_api_azure_ge
-    azure_ge_loop_script
+    check_api_azure
+    azure_loop_script
     ;;
     6)
-    create_api_azure_ge
+    create_api_azure
     ;;
     7)
-    del_api_azure_ge
+    del_api_azure
     ;;
     98)
     start_menu
@@ -546,49 +716,49 @@ read -p " 请输入数字 :" num
     clear
     echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
     sleep 2s
-    azure_ge_menu
+    azure_menu
     ;;
   esac
 }
 
-#查询已保存az国际api
-check_api_azure_ge(){
+#查询已保存azapi
+check_api_azure(){
     clear
     echo "已绑定的api："
     ls ${file_path}/az/ge
 }
 
-#创建az国际api
-create_api_azure_ge(){
-    check_api_azure_ge
+#创建azapi
+create_api_azure(){
+    check_api_azure
 
         read -e -p "请为这个api添加一个备注：" api_name
         read -e -p "输入appId：" appId
         read -e -p "输入password：" password
         read -e -p "输入tenant：" tenant
-        if test -d "${file_path}/ge/${api_name}"; then
+        if test -d "${file_path}/${api_name}"; then
             echo "该备注已经存在，请更换其他名字，或者删除原来api"
         else
-            mkdir -p /root/opencloud/az/ge/${api_name}
-            echo "${appId}" > ${file_path}/az/ge/${api_name}/appId
-            echo "${password}" > ${file_path}/az/ge/${api_name}/password
-            echo "${tenant}" > ${file_path}/az/ge/${api_name}/tenant
-            mkdir -p ${file_path}/az/ge/${api_name}/resource
+            mkdir -p /root/opencloud/az/${api_name}
+            echo "${appId}" > ${file_path}/az/${api_name}/appId
+            echo "${password}" > ${file_path}/az/${api_name}/password
+            echo "${tenant}" > ${file_path}/az/${api_name}/tenant
+            mkdir -p ${file_path}/az/${api_name}/resource
             echo "添加成功！"
         fi
-    azure_ge_loop_script
+    azure_loop_script
 }
 
-#删除az国际api
-del_api_azure_ge(){
-    check_api_azure_ge
+#删除azapi
+del_api_azure(){
+    check_api_azure
     
     read -p "你需要删除的api名称:" api_name
     read -e -p "是否需要删除 ${api_name}(默认: N 取消)：" info
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
-        if test -d "${file_path}/az/ge/${appId}"; then
-            rm -rf ${file_path}/az/ge/${api_name}
+        if test -d "${file_path}/az/${appId}"; then
+            rm -rf ${file_path}/az/${api_name}
             echo "删除成功！"
         else
             echo "未在系统中查找到该名称的api"
@@ -598,24 +768,24 @@ del_api_azure_ge(){
     do_loop_script
 }
 
-#az国际 vm换IP
-change_ip_azure_ge(){
+#az vm换IP
+change_ip_azure(){
     
-    check_api_azure_ge
+    check_api_azure
     read -p "你需要使用的api名称:" api_name
-    check_api_remark_azure_ge
+    check_api_remark_azure
     read -p "你需要更换资源组的备注:" remark
     
-    appid=`cat ${file_path}/az/ge/${api_name}/appId`
-    pasd=`cat ${file_path}/az/ge/${api_name}/password`
-    tenant=`cat ${file_path}/az/ge/${api_name}/tenant`
-    resource_name=`cat ${file_path}/az/ge/${api_name}/resource/${remark}/resource_name`
-    public_ip=`cat ${file_path}/az/ge/${api_name}/resource/${remark}/public_ip`
-    subnet_id=`cat ${file_path}/az/ge/${api_name}/resource/${remark}/subnet_id`
-    location=`cat ${file_path}/az/ge/${api_name}/resource/${remark}/location`
+    appid=`cat ${file_path}/az/${api_name}/appId`
+    pasd=`cat ${file_path}/az/${api_name}/password`
+    tenant=`cat ${file_path}/az/${api_name}/tenant`
+    resource_name=`cat ${file_path}/az/${api_name}/resource/${remark}/resource_name`
+    public_ip=`cat ${file_path}/az/${api_name}/resource/${remark}/public_ip`
+    subnet_id=`cat ${file_path}/az/${api_name}/resource/${remark}/subnet_id`
+    location=`cat ${file_path}/az/${api_name}/resource/${remark}/location`
 
-    azure_ge_token
-    subid_user_azure_ge
+    azure_token
+    subid_user_azure
 
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
@@ -670,136 +840,11 @@ change_ip_azure_ge(){
     
 }
 
-#————————————————————vultr————————————————————
-#vultr菜单
-vultr_ge_menu() {
-    clear
-    echo && echo -e " vultr 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
- ${Green_font_prefix}1.${Font_color_suffix} 查询账号信息
- ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
- ${Green_font_prefix}3.${Font_color_suffix} 创建机器
- ${Green_font_prefix}4.${Font_color_suffix} 删除机器
-————————————————————————————————————————————————————————————————
- ${Green_font_prefix}5.${Font_color_suffix} 查询已保存api
- ${Green_font_prefix}6.${Font_color_suffix} 添加api
- ${Green_font_prefix}7.${Font_color_suffix} 删除api
-————————————————————————————————————————————————————————————————
- ${Green_font_prefix}98.${Font_color_suffix} 返回菜单
- ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
-
-read -p " 请输入数字 :" num
-  case "$num" in
-    1)
-    Information_user_azure_ge
-    ;;
-    2)
-    Information_vps_linode
-    ;;
-    3)
-    create_linode
-    ;;
-    4)
-    del_linode
-    ;;
-    5)
-    check_api_vultr
-    vultr_loop_script
-    ;;
-    6)
-    create_api_vultr
-    ;;
-    7)
-    del_api_vultr
-    ;;
-    98)
-    start_menu
-    ;;
-    99)
-    exit 1
-    ;;
-  *)
-    clear
-    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
-    sleep 2s
-    vultr_menu
-    ;;
-  esac
-}
-
-#vultr循环脚本
-vultr_loop_script(){
-echo -e "
- ${Green_font_prefix}98.${Font_color_suffix} 返回Vultr菜单
- ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
- 
-
-read -p " 请输入数字 :" num
-  case "$num" in
-    98)
-    vultr_ge_menu
-    ;;
-    99)
-    exit 1
-    ;;
-  *)
-    clear
-    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
-    sleep 2s
-    vultr_ge_menu
-    ;;
-  esac
-}
-
-#查询已保存vultr
-check_api_vultr(){
-    clear
-    cd ${file_path}/vu
-    array=(*)
-    echo "已绑定的api："$array
-}
-
-#创建vultr api
-create_api_vultr(){
-    check_api_vultr
-    
-    read -e -p "是否需要添加api(默认: N 取消)：" info
-    [[ -z ${info} ]] && info="n"
-    if [[ ${info} == [Yy] ]]; then
-        read -e -p "请为这个api添加一个备注：" api_name
-        read -e -p "输入api：" VULTR_API_KEY
-        if test -f "${file_path}/vu/${api_name}"; then
-            echo "该备注已经存在，请更换其他名字，或者删除原来api"
-        else
-            echo "${VULTR_API_KEY}" > ${file_path}/vu/${api_name}
-            echo "添加成功！"
-        fi
-    fi
-    vultr_loop_script
-}
-
-#删除vultr api
-del_api_vultr(){
-    check_api_vultr
-    read -p "你需要删除的api名称:" api_name
-    read -e -p "是否需要删除 ${api_name}(默认: N 取消)：" info
-    [[ -z ${info} ]] && info="n"
-    if [[ ${info} == [Yy] ]]; then
-        read -e -p "请输入需要删除api的名字：" api_name
-        if test -f "${file_path}/vu/${api_name}"; then
-            rm -rf ${file_path}/vu/${api_name}
-            echo "删除成功！"
-        else
-            echo "未在系统中查找到该名称的api"
-        fi
-    fi
-    vultr_loop_script
-}
-
 #————————————————————Digitalocean————————————————————
 #do循环脚本
 do_loop_script(){
 echo -e "
- ${Green_font_prefix}98.${Font_color_suffix} 返回do菜单
+ ${Green_font_prefix}98.${Font_color_suffix} 返回Digitalocean菜单
  ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
  
 
@@ -965,7 +1010,7 @@ create_do() {
 
 #获取doip
 cheek_ip_do(){
-    
+
     var1=`echo $json | jq -r '.droplet.id'`
     json=`curl -s -X GET \
     -H "Content-Type: application/json" \
@@ -1104,18 +1149,15 @@ Check_liveness_do(){
 create_api_do(){
     check_api_do
     
-    read -e -p "是否需要添加api(默认: N 取消)：" info
-    [[ -z ${info} ]] && info="n"
-    if [[ ${info} == [Yy] ]]; then
-        read -e -p "请为这个api添加一个备注：" api_name
-        read -e -p "输入api：" api_key
-        if test -f "${file_path}/do/${api_name}"; then
-            echo "该备注已经存在，请更换其他名字，或者删除原来api"
-        else
-            echo "${api_key}" > ${file_path}/do/${api_name}
-            echo "添加成功！"
-        fi
+    read -e -p "请为这个api添加一个备注：" api_name
+    read -e -p "输入api：" api_key
+    if test -f "${file_path}/do/${api_name}"; then
+        echo "该备注已经存在，请更换其他名字，或者删除原来api"
+    else
+        echo "${api_key}" > ${file_path}/do/${api_name}
+        echo "添加成功！"
     fi
+    
     do_loop_script
 }
 
@@ -1227,18 +1269,16 @@ check_api_linode(){
 #创建linode api
 create_api_linode(){
     check_api_linode
-    read -e -p "是否需要添加api(默认: N 取消)：" info
-    [[ -z ${info} ]] && info="n"
-    if [[ ${info} == [Yy] ]]; then
-        read -e -p "请为这个api添加一个备注：" api_name
-        read -e -p "输入api：" api_key
-        if test -f "${file_path}/linode/api_name"; then
-            echo "该备注已经存在，请更换其他名字，或者删除原来api"
-        else
-            echo "${api_key}" > ${file_path}/linode/${api_name}
-            echo "添加成功！"
-        fi
-    fi
+    
+    read -e -p "请为这个api添加一个备注：" api_name
+    read -e -p "输入api：" api_key
+    
+    if test -f "${file_path}/linode/api_name"; then
+        echo "该备注已经存在，请更换其他名字，或者删除原来api"
+    else
+        echo "${api_key}" > ${file_path}/linode/${api_name}
+        echo "添加成功！"
+    fi  
     linode_loop_script
 }
 
@@ -1270,17 +1310,14 @@ Information_vps_linode() {
         https://api.linode.com/v4/linode/instances`
       
     clear  
+    echo $json
     total=`echo $json | jq -r '.results'`
     echo "查询结果为空代表 账号下没有任何机器 或者 账号已经失效了"
     i=-1
     while ((i < ("${total}" - "1" )))
     do
         ((i++))
-        echo "机器ID："
-        echo $json | jq '.data['${i}'].id'
-        echo "机器ipv4："
-        echo $json | jq '.data['${i}'].ipv4'
-        echo -e "\n"
+        echo -e "机器ID：`echo $json | jq '.data['${i}'].id'`————IP：`$json | jq '.data['${i}'].ipv4'`\n"
     done 
     linode_loop_script
 }
@@ -1464,7 +1501,17 @@ initialization(){
     mkdir -p /root/opencloud/az
     mkdir -p /root/opencloud/aws
     mkdir -p /root/opencloud/vu
-    mkdir -p /root/opencloud/az/ge
+    
+    if test  -f "/usr/local/bin/aws"; then
+        echo "需要初始化，2秒后进行！"
+        sleep 2s
+        install_aws_cli
+    fi
+    
+    if [ -d "${file_path}/az/${api_name}/resource/${remark}" ]; then
+        cp -r /root/opencloud/az/ge/. /root/opencloud/az
+        rm -rf /root/opencloud/az/ge
+    fi
     
     start_menu
 }
@@ -1475,14 +1522,9 @@ start_menu() {
   echo && echo -e " 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} Digitalocean 
  ${Green_font_prefix}2.${Font_color_suffix} Linode
- ${Green_font_prefix}3.${Font_color_suffix} Azure (Global Edition)
-————————————————————————————————————————————————————————————————
- ${Green_font_prefix}x.${Font_color_suffix} aws（未开发）
- ${Green_font_prefix}x.${Font_color_suffix} vultr（未开发，没有API）
-————————————————————————————————————————————————————————————————
- ${Green_font_prefix}x.${Font_color_suffix} Azure 世纪互联（未开发，没有API）
- ${Green_font_prefix}x.${Font_color_suffix} gcp（未开发，没有API）
- ${Green_font_prefix}x.${Font_color_suffix} 甲骨文（未开发，没有API）
+ ${Green_font_prefix}3.${Font_color_suffix} vultr（未开发，没有API）
+ ${Green_font_prefix}4.${Font_color_suffix} Azure (Global Edition)
+ ${Green_font_prefix}5.${Font_color_suffix} aws（开发中）
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
 
@@ -1495,7 +1537,14 @@ read -p " 请输入数字 :" num
     linode_menu
     ;;
     3)
-    azure_ge_menu
+    clear
+    echo "目前该项目尚未开发，作者没有API" #vultr_menu
+    ;;
+    4)
+    azure_menu
+    ;;
+    5)
+    echo "正在努力的开发中" #aws_menu
     ;;
     99)
     exit 1
