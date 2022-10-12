@@ -83,8 +83,9 @@ read -p " 请输入数字 :" num
 
 #aws菜单
 aws_menu() {
-    clear
-    echo && echo -e " AWS 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+  clear
+  echo && echo -e "AWS 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
+项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 一键全部API测活
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
@@ -669,7 +670,8 @@ del_azure(){
 #azure菜单
 azure_menu() {
     clear
-    echo && echo -e " Azure 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+  echo && echo -e "Azure 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
+项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 一键测活
  ${Green_font_prefix}2.${Font_color_suffix} 更换VM IP
  ${Green_font_prefix}3.${Font_color_suffix} 创建资源组(VM)
@@ -1066,8 +1068,9 @@ del_do() {
 
 #do菜单
 digitalocean_menu() {
-    clear
-    echo && echo -e " Digitalocean 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+  clear
+  echo && echo -e "Digitalocean 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
+项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 一键全部API测活
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
@@ -1207,7 +1210,8 @@ read -p " 请输入数字 :" num
 #linode菜单
 linode_menu() {
     clear
-    echo && echo -e " Linode 开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+  echo && echo -e "Linode 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
+项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 一键全部API测活
  ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
  ${Green_font_prefix}3.${Font_color_suffix} 创建机器
@@ -1521,7 +1525,8 @@ initialization(){
 #启动菜单
 start_menu() {
   clear
-  echo && echo -e " 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud @LeiGe_233${Font_color_suffix}
+  echo && echo -e "云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
+项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} Digitalocean 
  ${Green_font_prefix}2.${Font_color_suffix} Linode
  ${Green_font_prefix}3.${Font_color_suffix} vultr（未开发，没有API）
@@ -1546,7 +1551,8 @@ read -p " 请输入数字 :" num
     azure_menu
     ;;
     5)
-    echo "目前该项目正在开发"  #aws_menu
+    clear
+    echo "目前该项目正在开发中，请稍等" #aws_menu
     ;;
     99)
     exit 1
