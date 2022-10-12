@@ -1,0 +1,32 @@
+{
+	"opencloud":[
+		{
+			"name":"Amazon Linux（支持免费套餐）",
+			"id":"Amazon_Linux"
+		},
+		{
+			"name":"MacOS",
+			"id":"m"
+		},
+		{
+			"name":"Ubuntu（支持免费套餐）",
+			"id":"Ubuntu"
+		},
+		{
+			"name":"Windows（支持免费套餐）",
+			"id":"Windows"
+		},
+		{
+			"name":"Red Hat（支持免费套餐）",
+			"id":"Red_Hat"
+		},
+		{
+			"name":"SUSE Linux（支持免费套餐）",
+			"id":"SUSE_Linux"
+		},
+		{
+			"name":"Debian（支持免费套餐）",
+			"id":"Debian"
+		}
+	]
+}
