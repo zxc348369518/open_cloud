@@ -1,7 +1,7 @@
 {
 	"opencloud":[
 		{
-			"name":"Centos7",
+			"name":"Centos7 ",
 			"id":"linode/centos7"
 		},
 		{
