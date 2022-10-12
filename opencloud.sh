@@ -1502,10 +1502,12 @@ initialization(){
     mkdir -p /root/opencloud/aws
     mkdir -p /root/opencloud/vu
     
-    if test  -f "/usr/local/bin/aws"; then
+    if [ ! -f "/usr/local/bin/aws" ]; then
         echo "需要初始化，2秒后进行！"
         sleep 2s
         install_aws_cli
+        rm -rf /root/aws
+        rm -rf awscliv2.zip
     fi
     
     if [ -d "${file_path}/az/${api_name}/resource/${remark}" ]; then
