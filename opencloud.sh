@@ -245,7 +245,7 @@ create_vm_azure(){
 
 #vm镜像
 image_azure(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -264,7 +264,7 @@ image_azure(){
 
 #VM实例大小
 vmSize_azure(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/vmSize)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/vmSize)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -529,7 +529,7 @@ create_azure(){
 
 #azure选择位置
 location_azure(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/Azure/location)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/location)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -919,7 +919,7 @@ Information_user_do() {
 
 #do服务器位置
 region_do(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/digitalocean/region)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/digitalocean/region)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -935,7 +935,7 @@ region_do(){
 
 #do服务器大小
 size_do(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/digitalocean/size)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/digitalocean/size)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -951,7 +951,7 @@ size_do(){
 
 #do服务器镜像
 image_do(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/digitalocean/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/digitalocean/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -1375,7 +1375,7 @@ Information_user_linode() {
 
 #linnode服务器位置
 region_linode(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/linode/region)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/region)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -1392,7 +1392,7 @@ region_linode(){
 
 #linode服务器镜像
 image_linode(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/linode/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -1408,7 +1408,7 @@ image_linode(){
 
 #linode服务器大小
 size_linode(){
-    json=`cat <(curl -Ls https://github.com/LG-leige/open_cloud/raw/main/linode/size)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/size)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -1544,7 +1544,7 @@ read -p " 请输入数字 :" num
     azure_menu
     ;;
     5)
-    echo "正在努力的开发中" #aws_menu
+    echo "目前该项目正在开发" #aws_menu
     ;;
     99)
     exit 1
