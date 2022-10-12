@@ -1,31 +1,27 @@
 {
 	"opencloud":[
 		{
-			"name":"Amazon Linux（支持免费套餐）",
+			"name":"Amazon Linux",
 			"id":"Amazon_Linux"
 		},
 		{
-			"name":"MacOS",
-			"id":"m"
-		},
-		{
-			"name":"Ubuntu（支持免费套餐）",
+			"name":"Ubuntu",
 			"id":"Ubuntu"
 		},
 		{
-			"name":"Windows（支持免费套餐）",
+			"name":"Windows（未经测试）",
 			"id":"Windows"
 		},
 		{
-			"name":"Red Hat（支持免费套餐）",
+			"name":"Red Hat",
 			"id":"Red_Hat"
 		},
 		{
-			"name":"SUSE Linux（支持免费套餐）",
+			"name":"SUSE Linux",
 			"id":"SUSE_Linux"
 		},
 		{
-			"name":"Debian（支持免费套餐）",
+			"name":"Debian",
 			"id":"Debian"
 		}
 	]
