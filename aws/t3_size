@@ -1,0 +1,32 @@
+{
+	"opencloud":[
+		{
+			"name":"t3.nano 2C0.5G",
+			"id":"t3.nano"
+		},
+		{
+			"name":"t3.micro 2C1G 可使用免费套餐",
+			"id":"t3.micro"
+		},
+		{
+			"name":"t3.small 2C2G",
+			"id":"t3.small"
+		},
+		{
+			"name":"t3.medium 2C4G",
+			"id":"t3.medium"
+		},
+		
+		{	"name":"t3.large 2C8G",
+			"id":"t3.large"
+		},
+		{
+			"name":"t3.xlarge 4C16G",
+			"id":"t3.xlarge"
+		},
+		{
+			"name":"t3.2xlarge 8C32G",
+			"id":"t3.2xlarge"
+		}
+	]
+}
