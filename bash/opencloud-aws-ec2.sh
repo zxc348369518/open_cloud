@@ -290,7 +290,7 @@ create_ec2_security_group_aws(){
 
 #AWS获取VPC ID
 get_vpcid_aws_EC2(){
-    json=`aws  ec2 describe-vpcs `
+    json=`aws  ec2 describe-vpcs`
     vpcid=`echo $json | jq -r '.Vpcs[0].VpcId'`
     echo "${vpcid}" > ${file_path}/aws/${api_name}/${region}/vpcid
     echo "——————成功！"
@@ -386,10 +386,18 @@ aws_EC2_select_api(){
     
     key_id=`cat ${file_path}/aws/${api_name}/key_id`
     access_key=`cat ${file_path}/aws/${api_name}/access_key`
-    
-    aws configure set region ${region}
-    aws configure set aws_EC2_access_key_id ${key_id}
-    aws configure set aws_EC2_secret_access_key ${access_key}
+    if test -f "/root/.aws/credentials"; then
+        rm -rf /root/.aws/credentials
+    fi 
+    if test -f "/root/.aws/config"; then
+        rm -rf /root/.aws/config
+    fi 
+    echo "[default]
+aws_EC2_access_key_id = ${key_id}
+aws_EC2_secret_access_key = ${access_key}" > /root/.aws/credentials
+    echo "[default]
+region = ${region}
+output = json" > /root/.aws/credentials
     
 }
 
@@ -533,6 +541,7 @@ create_api_aws_EC2(){
         read -e -p "输入secret_access_key：" access_key
         echo "${key_id}" > ${file_path}/aws/${api_name}/key_id
         echo "${access_key}" > ${file_path}/aws/${api_name}/access_key
+        
         echo "添加成功！"
     fi
     
