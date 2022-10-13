@@ -13,7 +13,7 @@ file_path="/root/opencloud"
 ssh_key(){
     
     if [[ ! -f "${file_path}/aws/${api_name}/${region}/opencloud.pem" ]]; then
-        json=`aws ec2 create-key-pair --key-name opencloud --query 'opercloud' --output text > ${file_path}/aws/${api_name}/${region}/opencloud.pem`
+        json=`aws ec2 create-key-pair --key-name opencloud --query 'opencloud' --output text > ${file_path}/aws/${api_name}/${region}/opencloud.pem`
     else
         keydata=`cat ${file_path}/aws/${api_name}/${region}/opencloud.pem`
     fi
@@ -348,12 +348,15 @@ create_ec2_AWS(){
     echo -n "正在获取VPCID，请稍等！"
     get_vpcid_aws_EC2
     
-    echo -n "正在创建安全组，请稍等！"
-    create_ec2_security_group_aws
+    if test -f "${file_path}/aws/${api_name}/${region}/security_group"; then
+        echo -n "正在创建安全组，请稍等！"
+        create_ec2_security_group_aws
+        
+        echo -n "正在配置安全组，请稍等！"
+        set_ec2_security_group_aws
+    fi
     
-    echo -n "正在配置安全组，请稍等！"
-    set_ec2_security_group_aws
-
+    
     echo -n "正在获取子网ID，请稍等！"
     get_SubnetId_aws_EC2
     
