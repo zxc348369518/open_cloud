@@ -34,7 +34,7 @@ initialization(){
         rm -rf awscliv2.zip
     fi
     
-    if [ -d "${file_path}/az/${api_name}/resource/${remark}" ]; then
+    if [ -d "${file_path}/az/ge/${api_name}" ]; then
         cp -r /root/opencloud/az/ge/. /root/opencloud/az
         rm -rf /root/opencloud/az/ge
     fi
