@@ -1,0 +1,12 @@
+{
+	"opencloud":[
+		{
+			"name":"Amazon Linux 2 Kernel 5.10 AMI 2.0.20220912.1 x86_64 HVM gp2",
+			"id":"ami-06672d07f62285d1d"
+		},
+		{
+			"name":"Amazon Linux 2 AMI 2.0.20220912.1 x86_64 HVM gp2",
+			"id":"ami-023665fdad063c8a9"
+		}
+	]
+}

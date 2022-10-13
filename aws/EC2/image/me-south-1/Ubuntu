@@ -2,15 +2,15 @@
 	"opencloud":[
 		{
 			"name":"Ubuntu, 22.04 LTS, amd64 jammy image build on 2022-09-12",
-			"id":"ami-096800910c1b781ba"
+			"id":"ami-03de2671163dff759"
 		}
 		{
 			"name":"Ubuntu, 20.04 LTS, amd64 focal image build on 2022-09-14",
-			"id":"ami-0fd8802f94ed1c969"
+			"id":"ami-00df83d12eb4b3c4e"
 		},
 		{
 			"name":"Ubuntu, 18.04 LTS, amd64 bionic image build on 2022-09-01",
-			"id":"ami-00f499a80f4608e1b"
+			"id":"ami-0a8a2d77c90395dae"
 		}
 	]
 }

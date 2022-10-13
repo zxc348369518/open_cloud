@@ -1,0 +1,32 @@
+{
+	"opencloud":[
+		{
+			"name":"Microsoft Windows Server 2022 Full Locale English AMI provided by Amazon",
+			"id":"ami-0e141cfb786615299"
+		},
+		{
+			"name":"Microsoft Windows Server 2022 Core Locale English AMI provided by Amazon",
+			"id":"ami-0a3809d2e4b04b01c"
+		},
+		{
+			"name":"Microsoft Windows Server 2019 with Desktop Experience Locale English AMI provided by Amazon",
+			"id":"ami-0db5ce6866987ceab"
+		},
+		{
+			"name":"Microsoft Windows Server 2019 Core Locale English AMI provided by Amazon",
+			"id":"ami-067f5cdadfa259e28"
+		},
+		{
+			"name":"Microsoft Windows Server 2016 with Desktop Experience Locale English AMI provided by Amazon",
+			"id":"ami-020954f65f246dc1a"
+		},
+		{
+			"name":"Microsoft Windows Server 2016 Core Locale English AMI provided by Amazon",
+			"id":"ami-0329a3bd50acd580e"
+		},
+		{
+			"name":"Microsoft Windows Server 2012 R2 RTM 64-bit Locale English AMI provided by Amazon",
+			"id":"ami-09ec460f6e7fe445e"
+		}
+	]
+}

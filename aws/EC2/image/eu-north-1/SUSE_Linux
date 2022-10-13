@@ -1,0 +1,12 @@
+{
+	"opencloud":[
+		{
+			"name":"SUSE Linux Enterprise Server 15 SP4 (HVM, 64-bit, SSD-Backed)",
+			"id":"ami-0296ddf56358a33d1"
+		},
+		{
+			"name":"SUSE Linux Enterprise Server 12 SP5 (HVM, 64-bit, SSD-Backed)",
+			"id":"ami-0f9992014a0176116"
+		}
+	]
+}
