@@ -50,20 +50,20 @@ start_menu() {
 read -p " 请输入数字 :" num
   case "$num" in
     1)
-    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/digitalocean/opencloud-digitalocean.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/opencloud-digitalocean.sh)
     ;;
     2)
-    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/opencloud-linode.sh)
     ;;
     3)
     clear
     echo "目前该项目尚未开发，作者没有API" #vultr_menu
     ;;
     4)
-    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/opencloud-Azure.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/opencloud-Azure.sh)
     ;;
     5)
-    echo "目前该项目正在开发，请耐心等待" #aws_EC2_menu
+    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/oopencloud-aws-ec2.sh)
     ;;
     99)
     exit 1
