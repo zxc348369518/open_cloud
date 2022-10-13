@@ -343,7 +343,7 @@ create_ec2_AWS(){
     clear
     echo "`date` 正在进行创建AWS EC2 操作" && echo
     
-    if [[ ! -f "${file_path}/aws/${api_name}/${region}/security_group" ]]; then
+    if [[ -f "${file_path}/aws/${api_name}/${region}/security_group" ]]; then
         echo -n "正在创建安全组，请稍等！"
         get_vpcid_aws_EC2
         create_ec2_security_group_aws
@@ -355,11 +355,11 @@ create_ec2_AWS(){
         echo "——————成功！"
     fi
 
-    if [[ ! -f "${file_path}/aws/${api_name}/${region}/SubnetId" ]]; then
+    if [[ -f "${file_path}/aws/${api_name}/${region}/SubnetId" ]]; then
         echo -n "正在获取子网ID，请稍等！"
         get_SubnetId_aws_EC2
     else
-        echo -n "正在获取安全组，请稍等！"
+        echo -n "正在获取子网ID，请稍等！"
         SubnetId=`cat ${file_path}/aws/${api_name}/${region}/SubnetId`
         echo "——————成功！"
     fi
@@ -413,7 +413,7 @@ Information_user_aws_EC2(){
     o=`ls ${file_path}/aws|wc -l`
     i=-1
     clear
-    echo "`date` 正在进行获取windows登录密码" && echo
+    echo "`date` 正在进行使用 AWS EC2 测活功能" && echo
     echo ""
     while ((i < ("${o}" - "1" )))
     do
