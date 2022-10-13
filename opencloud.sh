@@ -51,7 +51,7 @@ start_menu() {
  ${Green_font_prefix}2.${Font_color_suffix} Linode
  ${Green_font_prefix}3.${Font_color_suffix} vultr（未开发，没有API）
  ${Green_font_prefix}4.${Font_color_suffix} Azure
- ${Green_font_prefix}5.${Font_color_suffix} AWS EC2【暂时停用，正在修复BUG】
+ ${Green_font_prefix}5.${Font_color_suffix} AWS EC2
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
 
@@ -71,7 +71,7 @@ read -p " 请输入数字 :" num
     bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/opencloud-Azure.sh)
     ;;
     5)
-    echo "停用中" #bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/opencloud-aws-ec2.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/opencloud-aws-ec2.sh)
     ;;
     99)
     exit 1
