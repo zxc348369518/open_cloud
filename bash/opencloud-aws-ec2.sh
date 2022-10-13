@@ -386,6 +386,9 @@ aws_EC2_select_api(){
     
     key_id=`cat ${file_path}/aws/${api_name}/key_id`
     access_key=`cat ${file_path}/aws/${api_name}/access_key`
+    
+    mkdir -p /root/.aws
+    
     if test -f "/root/.aws/credentials"; then
         rm -rf /root/.aws/credentials
     fi 
