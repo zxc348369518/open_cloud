@@ -495,7 +495,7 @@ read -p " 请输入数字 :" num
     get_win_passwd
     ;;
     6)
-    create_api_aws_EC2
+    check_api_aws_EC2
     ;;
     7)
     del_api_aws_EC2
