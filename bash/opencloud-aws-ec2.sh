@@ -292,6 +292,7 @@ create_ec2_security_group_aws(){
 get_vpcid_aws_EC2(){
     json=`aws  ec2 describe-vpcs`
     vpcid=`echo $json | jq -r '.Vpcs[0].VpcId'`
+    vpcid=`cat ${file_path}/aws/${api_name}/${region}/vpcid`
 }
 
 #aws选择区域
@@ -333,22 +334,31 @@ create_ec2_AWS(){
     
     mkdir -p ${file_path}/aws/${api_name}/${region}
     
+    check_remark_aws_EC2
     read -e -p "请给这台服务器一个备注（尽量不要重复，数据会替换的）:" remark
     mkdir -p ${file_path}/aws/${api_name}/${region}/remark/${remark}
-    
-    check_remark_aws_EC2
     
     read -e -p "需要给这台服务器设置多少硬盘呢（数量：GB）:" vda
     
     clear
     echo "`date` 正在进行创建AWS EC2 操作" && echo
     
+    if test ! -f "${file_path}/aws/${api_name}/${region}/vpcid"; then
+        echo -n "正在获取VPCID，请稍等！"
+        get_vpcid_aws_EC2
+        echo "——————成功！"
+    else
+        echo -n "正在获取安全组，请稍等！"
+        vpcid=`cat ${file_path}/aws/${api_name}/${region}/security_group`
+        echo "——————成功！"
+    fi
+    
     if test ! -f "${file_path}/aws/${api_name}/${region}/security_group"; then
         echo -n "正在创建安全组，请稍等！"
         get_vpcid_aws_EC2
         create_ec2_security_group_aws
         echo -n "正在配置安全组，请稍等！"
-    set_ec2_security_group_aws 
+        set_ec2_security_group_aws 
     else
         echo -n "正在获取安全组，请稍等！"
         sgid=`cat ${file_path}/aws/${api_name}/${region}/security_group`
