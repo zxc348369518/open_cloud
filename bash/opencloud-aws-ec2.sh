@@ -154,7 +154,7 @@ create_win_aws_EC2(){
     --security-group-ids ${sgid} \
     --subnet-id ${SubnetId} \
     --region ${region} \
-    --block-device-mappings "[{\"DeviceName\":\"/dev/xvda\",\"Ebs\":{\"VolumeSize\":8,\"DeleteOnTermination\":true}}]"`
+    --block-device-mappings "[{\"DeviceName\":\"/dev/xvda\",\"Ebs\":{\"VolumeSize\":${vds},\"DeleteOnTermination\":true}}]"`
     
     InstanceId=`echo $json | jq -r '.Instances[0].InstanceId'`
     
@@ -190,7 +190,7 @@ sudo service sshd restart;
     --security-group-ids ${sgid} \
     --subnet-id ${SubnetId} \
     --region ${region} \
-    --block-device-mappings "[{\"DeviceName\":\"/dev/xvda\",\"Ebs\":{\"VolumeSize\":8,\"DeleteOnTermination\":true}}]"`
+    --block-device-mappings "[{\"DeviceName\":\"/dev/xvda\",\"Ebs\":{\"VolumeSize\":${vds},\"DeleteOnTermination\":true}}]"`
     
     InstanceId=`echo $json | jq -r '.Instances[0].InstanceId'`
     
@@ -337,6 +337,8 @@ create_ec2_AWS(){
     mkdir -p ${file_path}/aws/${api_name}/${region}/remark/${remark}
     
     check_remark_aws_EC2
+    
+    read -e -p "需要给这台服务器设置多少硬盘呢（数量：GB）:" vda
     
     clear
     echo "`date` 正在进行创建AWS EC2 操作" && echo
