@@ -383,24 +383,13 @@ aws_EC2_select_api(){
     check_api_aws_EC2
     read -p "你需要操作的api名称:" api_name
     region_ec2_aws
-    
     key_id=`cat ${file_path}/aws/${api_name}/key_id`
     access_key=`cat ${file_path}/aws/${api_name}/access_key`
     
-    mkdir -p /root/.aws
-    
-    if test -f "/root/.aws/credentials"; then
-        rm -rf /root/.aws/credentials
-    fi 
-    if test -f "/root/.aws/config"; then
-        rm -rf /root/.aws/config
-    fi 
-    echo "[default]
-aws_EC2_access_key_id = ${key_id}
-aws_EC2_secret_access_key = ${access_key}" > /root/.aws/credentials
-    echo "[default]
-region = ${region}
-output = json" > /root/.aws/config
+    export AWS_ACCESS_KEY_ID=${key_id}
+    export AWS_SECRET_ACCESS_KEY=${access_key}
+    export AWS_DEFAULT_REGION=${region}
+    export AWS_DEFAULT_OUTPUT=json
     
 }
 
