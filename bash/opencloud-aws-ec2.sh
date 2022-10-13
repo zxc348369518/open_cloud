@@ -13,7 +13,7 @@ file_path="/root/opencloud"
 ssh_key(){
     
     if [[ ! -f "${file_path}/aws/${api_name}/${region}/opencloud.pem" ]]; then
-        json=`aws ec2 create-key-pair --key-name opencloud --query 'operncloud' --output text > ${file_path}/aws/${api_name}/${region}/opencloud.pem`
+        json=`aws ec2 create-key-pair --key-name opencloud --query 'opercloud' --output text > ${file_path}/aws/${api_name}/${region}/opencloud.pem`
     else
         keydata=`cat ${file_path}/aws/${api_name}/${region}/opencloud.pem`
     fi
@@ -309,8 +309,8 @@ region_ec2_aws(){
         echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
         echo $json | jq -r '.opencloud['${i}'].name'
     done
-    read -e -p "请选择你的服务器所在地区（编号）:" b
-        id=`echo $json | jq -r '.opencloud['${b}'].id'`
+    read -e -p "请选择你的服务器所在地区（编号）:" region_num
+        id=`echo $json | jq -r '.opencloud['${region_num}'].id'`
     
     clear
     json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/EC2/region/${id}) `
@@ -359,7 +359,7 @@ create_ec2_AWS(){
     
     echo -n "正在创建EC2，请稍等！"
     
-    if [[ $b != "2" ]]; then
+    if [[ $b == "2" ]]; then
         ssh_key
         create_win_aws_EC2
     else
@@ -370,7 +370,7 @@ create_ec2_AWS(){
     sleep 10s
     get_ip_aws_EC2
     
-    if [[ $b != "2" ]]; then
+    if [[ $b == "2" ]]; then
         echo -e "开机成功\n实例ID：${InstanceId}\nIP地址：${ip}\n登录密码需要再次运行脚本，选择win登录获取模块即可"
     else
         echo -e "开机成功\n实例ID：${InstanceId}\nIP地址：${ip}\n用户名：root\n密码：${pasd}"
