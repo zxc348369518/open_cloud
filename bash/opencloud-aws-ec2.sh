@@ -140,6 +140,7 @@ get_ip_aws_EC2(){
     --instance-ids ${ids} \
     --region ${region} `
     ip=`echo $json | jq -r '.Reservations[0].Instances[0].PublicIpAddress'`
+    echo "${InstanceId}" > ${file_path}/aws/${api_name}/${region}/remark/${remark}/InstanceId
     
 }
 
@@ -160,8 +161,6 @@ create_win_aws_EC2(){
     
     if [[ $InstanceId != null ]]; then
         echo "——————成功！"
-        
-        echo "${InstanceId}" > ${file_path}/aws/${api_name}/${region}/remark/${remark}/InstanceId
     else
         echo $json
         echo ""
@@ -196,8 +195,6 @@ sudo service sshd restart;
     
     if [[ $InstanceId != null ]]; then
         echo "——————成功！"
-        
-        echo "${InstanceId}" > ${file_path}/aws/${api_name}/${region}/remark/${remark}/InstanceId
     else
         echo $json
         echo ""
