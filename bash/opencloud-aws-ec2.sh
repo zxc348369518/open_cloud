@@ -470,9 +470,9 @@ aws_EC2_menu() {
  ${Green_font_prefix}4.${Font_color_suffix} 删除机器
  ${Green_font_prefix}5.${Font_color_suffix} 获取windows登录密码
 ————————————————————————————————————————————————————————————————
- ${Green_font_prefix}5.${Font_color_suffix} 查询已保存api
- ${Green_font_prefix}6.${Font_color_suffix} 添加api
- ${Green_font_prefix}7.${Font_color_suffix} 删除api
+ ${Green_font_prefix}6.${Font_color_suffix} 查询已保存api
+ ${Green_font_prefix}7.${Font_color_suffix} 添加api
+ ${Green_font_prefix}8.${Font_color_suffix} 删除api
 ————————————————————————————————————————————————————————————————
  ${Green_font_prefix}98.${Font_color_suffix} 返回菜单
  ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
@@ -498,6 +498,9 @@ read -p " 请输入数字 :" num
     create_api_aws_EC2
     ;;
     7)
+    del_api_aws_EC2
+    ;;
+    8)
     del_api_aws_EC2
     ;;
     98)
