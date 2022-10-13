@@ -400,7 +400,7 @@ aws_EC2_access_key_id = ${key_id}
 aws_EC2_secret_access_key = ${access_key}" > /root/.aws/credentials
     echo "[default]
 region = ${region}
-output = json" > /root/.aws/credentials
+output = json" > /root/.aws/config
     
 }
 
