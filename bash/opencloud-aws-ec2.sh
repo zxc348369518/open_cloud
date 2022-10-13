@@ -343,7 +343,7 @@ create_ec2_AWS(){
     clear
     echo "`date` 正在进行创建AWS EC2 操作" && echo
     
-    if [[ -f "${file_path}/aws/${api_name}/${region}/security_group" ]]; then
+    if test ! -f "${file_path}/aws/${api_name}/${region}/security_group"; then
         echo -n "正在创建安全组，请稍等！"
         get_vpcid_aws_EC2
         create_ec2_security_group_aws
@@ -355,7 +355,7 @@ create_ec2_AWS(){
         echo "——————成功！"
     fi
 
-    if [[ -f "${file_path}/aws/${api_name}/${region}/SubnetId" ]]; then
+    if test ! -f "${file_path}/aws/${api_name}/${region}/SubnetId" ; then
         echo -n "正在获取子网ID，请稍等！"
         get_SubnetId_aws_EC2
     else
@@ -552,8 +552,8 @@ del_api_aws_EC2(){
     read -e -p "是否需要删除 ${api_name}(默认: N 取消)：" info
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
-        read -e -p "请输入需要删除api的名字：" api_name
-        if test -f "${file_path}/aws/${api_name}"; then
+    
+        if test ! -f "${file_path}/aws/${api_name}"; then
             rm -rf ${file_path}/aws/${api_name}
             echo "删除成功！"
         else
