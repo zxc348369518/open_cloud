@@ -412,7 +412,8 @@ Information_user_aws_EC2(){
     cd ${file_path}/aws
     o=`ls ${file_path}/aws|wc -l`
     i=-1
-    echo "提示：CPU配额大于0账号为正常"
+    clear
+    echo "`date` 正在进行获取windows登录密码" && echo
     echo ""
     while ((i < ("${o}" - "1" )))
     do
