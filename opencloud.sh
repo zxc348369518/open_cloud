@@ -63,7 +63,7 @@ read -p " 请输入数字 :" num
     bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/opencloud-Azure.sh)
     ;;
     5)
-    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/oopencloud-aws-ec2.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/bash/opencloud-aws-ec2.sh)
     ;;
     99)
     exit 1
