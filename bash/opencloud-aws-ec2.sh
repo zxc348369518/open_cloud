@@ -435,7 +435,6 @@ Information_user_aws_EC2(){
     aws_EC2_loop_script
 }
 
-
 #aws循环脚本
 aws_EC2_loop_script(){
 echo -e "
@@ -496,13 +495,9 @@ read -p " 请输入数字 :" num
     get_win_passwd
     ;;
     6)
-    check_api_aws_EC2
-    aws_EC2_loop_script
-    ;;
-    7)
     create_api_aws_EC2
     ;;
-    8)
+    7)
     del_api_aws_EC2
     ;;
     98)
