@@ -435,13 +435,6 @@ Information_user_aws_EC2(){
     aws_EC2_loop_script
 }
 
-#安装aws cli
-install_aws_EC2_cli(){
-    curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
-    sudo ./aws/install
-    ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
-}
 
 #aws循环脚本
 aws_EC2_loop_script(){
