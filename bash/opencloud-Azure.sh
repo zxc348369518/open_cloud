@@ -19,7 +19,7 @@ create_vm_azure(){
                 "name": "'${resource_name}'",
                 "properties": {
                     "hardwareProfile": {
-                        "vmSize": "Standard_B1s"
+                        "vmSize": "'${vmSize}'"
                     },
                     "storageProfile": {
                         "imageReference": {
@@ -87,7 +87,7 @@ image_azure(){
         sku=`echo $json | jq -r '.opencloud['${b}'].sku'`
         publisher=`echo $json | jq -r '.opencloud['${b}'].publisher'`
         version=`echo $json | jq -r '.opencloud['${b}'].version'`
-        offer=`echo $json | jq -r '.opencloud['${b}'].WindowsServer'`
+        offer=`echo $json | jq -r '.opencloud['${b}'].offer'`
 }
 
 #VM实例大小
@@ -102,7 +102,7 @@ vmSize_azure(){
         echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
         echo $json | jq -r '.opencloud['${i}'].name'
     done
-    read -e -p "请选择你的服务器位置（编号）:" b
+    read -e -p "请选择你的服务器实例大小（编号）:" b
         vmSize=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
@@ -267,6 +267,7 @@ create_azure_vm(){
     location_azure
     disk_azure
     vmSize_azure
+    image_azure
     
     echo  "正在创建资源组，请稍后！"
     create_resource_azure
