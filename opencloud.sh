@@ -64,7 +64,7 @@ read -p " 请输入数字 :" num
     bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/file/opencloud-linode.sh)
     ;;
     3)
-    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/file/opencloud-vultr.sh)
+    echo "目前处于开发阶段，请稍等！"
     ;;
     4)
     bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/file/opencloud-Azure.sh)
