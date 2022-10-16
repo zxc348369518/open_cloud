@@ -44,24 +44,19 @@ Information_vps_do() {
     -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
     "https://api.digitalocean.com/v2/droplets"`
     total=`echo $json | jq -r '.meta.total'`
-    echo API名称：${api_name}
+    echo "`date` 正在进行查询 ${api_name} 已创建的机器" && echo
     i=-1
     while ((i < ("${total}" - "1" )))
     do
         ((i++))
-        echo -n  "机器ID："
-        echo  $json | jq '.droplets['${i}'].id'
-        echo -n  "机器名字："
-        echo  $json | jq '.droplets['${i}'].name'
-        echo -n  "机器IP："
-        echo  $json | jq '.droplets['${i}'].networks.v4[0].ip_address'
+        echo  "机器ID：`echo $json | jq '.droplets['${i}'].id'`——————机器名字：`echo $json | jq '.droplets['${i}'].name'`——————机器IP：`echo $json | jq '.droplets['${i}'].networks.v4[0].ip_address'`"
     done
     do_loop_script
 }
 
 #do一键测活
 Information_user_do() {
-    
+    clear
     cd ${file_path}/do
     o=`ls ${file_path}/do|wc -l`
     i=-1
@@ -135,20 +130,36 @@ image_do(){
 
 #创建机器
 create_do() {
+    clear
     read -p " 请输入机器名字:" name
-    
+    clear
     region_do
+    clear
     size_do
+    clear
     image_do
 
     clear
     
-     echo -e "请确认？ [Y/n]
+    echo -e "请确认？ [Y/n]
 机器名字：${name}\n服务器位置：${region}\n服务器规格：${size}\n机器系统: ${image}"
         read -e -p "(默认: N 取消):" state
         [[ -z ${state} ]] && state="n"
         if [[ ${state} == [Yy] ]]; then
-
+        clear
+echo "`date` 正在进行创建 vm"
+pasd=`date +%s | sha256sum | base64 | head -c 12 ; echo`
+            echo "#!/bin/bash
+                
+sudo service iptables stop 2> /dev/null ; chkconfig iptables off 2> /dev/null ;
+sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/sysconfig/selinux;
+sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/selinux/config;
+sudo setenforce 0;
+echo root:${pasd} |sudo chpasswd root;
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+sudo service sshd restart;" > ${file_path}/userdata
+            
              json=`curl -s -X POST \
              -H "Content-Type: application/json" \
              -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
@@ -158,10 +169,11 @@ create_do() {
                 "size":"'${size}'",
                 "image":"'${image}'",
                 "backups":"false",
-                "ipv6":"true"
+                "ipv6":"true",
+                "user_data":"'"$(cat ${file_path}/userdata)"'"
              }' \
              https://api.digitalocean.com/v2/droplets`
-  
+            rm -rf ${file_path}/userdata
            var1=`echo $json | jq -r '.droplet.id'`
            echo ""
            if [[ $var1 == null ]];
@@ -190,7 +202,7 @@ cheek_ip_do(){
     then
         cheek_ip_do
     else
-        echo -e "IP地址为：${ipv4}\n机器的登录密码需要使用邮件内的passwd！\n如果有大佬知道怎么样可以自定义passwd可以联系我"
+        echo -e "IP地址为：${ipv4}\n用户名：root\n密码：${pasd}"
     fi
     do_loop_script
 }
@@ -206,18 +218,14 @@ del_do() {
     -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
     "https://api.digitalocean.com/v2/droplets"`
     total=`echo $json | jq -r '.meta.total'`
+    echo "`date` 正在进行查询 ${api_name} 已创建的机器" && echo
     echo API名称：${api_name}
     i=-1
     while ((i < ("${total}" - "1" )))
     do
         ((i++))
-        echo
-        echo -n  "机器ID："
-        echo  $json | jq '.droplets['${i}'].id'
-        echo -n  "机器名字："
-        echo  $json | jq '.droplets['${i}'].name'
-        echo -n  "机器IP："
-        echo  $json | jq '.droplets['${i}'].networks.v4[0].ip_address'
+        echo "机器ID：`echo  $json | jq '.droplets['${i}'].id'`——————机器名字：`echo  $json | jq '.droplets['${i}'].name'`——————机器IP：`echo  $json | jq '.droplets['${i}'].networks.v4[0].ip_address'`"
+        
     done
     
     read -e -p "请输入需要删除机器的id号：" id
