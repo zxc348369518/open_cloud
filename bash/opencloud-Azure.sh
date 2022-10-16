@@ -11,7 +11,6 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
 #azure创建vm
 create_vm_azure(){
-    
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $az_token" \
     -X PUT -d '{
@@ -53,10 +52,12 @@ create_vm_azure(){
                                 }
                             }
                         ]
-                    }
+                    },
+                    "userData": "IyEvYmluL2Jhc2gKICAgICAgICAgICAgICAgIApzdWRvIHNlcnZpY2UgaXB0YWJsZXMgc3RvcCAyPiAvZGV2L251bGwgOyBjaGtjb25maWcgaXB0YWJsZXMgb2ZmIDI+IC9kZXYvbnVsbCA7CnN1ZG8gc2VkIC1pLmJhayAnL15TRUxJTlVYPS9jU0VMSU5VWD1kaXNhYmxlZCcgL2V0Yy9zeXNjb25maWcvc2VsaW51eDsKc3VkbyBzZWQgLWkuYmFrICcvXlNFTElOVVg9L2NTRUxJTlVYPWRpc2FibGVkJyAvZXRjL3NlbGludXgvY29uZmlnOwpzdWRvIHNldGVuZm9yY2UgMDsKZWNobyByb290OlhTOGdoQGFvME5ZVDhybEQgfHN1ZG8gY2hwYXNzd2Qgcm9vdDsKc3VkbyBzZWQgLWkgJ3MvXiNcP1Blcm1pdFJvb3RMb2dpbi4qL1Blcm1pdFJvb3RMb2dpbiB5ZXMvZycgL2V0Yy9zc2gvc3NoZF9jb25maWc7CnN1ZG8gc2VkIC1pICdzL14jXD9QYXNzd29yZEF1dGhlbnRpY2F0aW9uLiovUGFzc3dvcmRBdXRoZW50aWNhdGlvbiB5ZXMvZycgL2V0Yy9zc2gvc3NoZF9jb25maWc7CnN1ZG8gc2VydmljZSBzc2hkIHJlc3RhcnQ7"
                 }
  } '\
     https://management.azure.com/subscriptions/${az_subid}/resourceGroups/${resource_name}/providers/Microsoft.Compute/virtualMachines/${resource_name}?api-version=2021-03-01`
+    rm -rf ${file_path}/userdata
     
     var=`echo $json | jq -r '.type'`
     
@@ -64,7 +65,6 @@ create_vm_azure(){
     then
         sleep 30s
     else
-        clear
         echo $json
         echo "VM创建失败"
         exit 1
@@ -264,10 +264,17 @@ create_resource_azure(){
 
 #azure准备创建vm
 create_azure_vm(){
+    clear
     location_azure
+    clear
     disk_azure
+    clear
     vmSize_azure
+    clear
     image_azure
+    
+    clear
+    echo "`date` 正在进行创建vm" && echo
     
     echo  "正在创建资源组，请稍后！"
     create_resource_azure
@@ -301,12 +308,13 @@ create_azure_vm(){
     echo "正在获取网络参数，请稍后！"
     get_ip_azure
     
-    clear
+    echo
     echo "开机完成！"
     echo "IP：${ip}"
     echo "DDNS：${fqdn}"
-    echo "用户名：${resource_name}"
-    echo "密码：${resource_name}-"
+    echo "用户名：root"
+    echo "密码：XS8gh@ao0NYT8rlD"
+    echo "密码为固定密码，请立即修改！"
     azure_loop_script
 }
 
