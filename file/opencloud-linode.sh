@@ -259,14 +259,12 @@ create_linode() {
     image_linode
     size_linode
     
-    pasd=`date +%s | sha256sum | base64 | head -c 12 ; echo`
-    
     json=`curl -s -H "Content-Type: application/json" \
     -H "Authorization: Bearer $TOKEN" \
     -X POST -d '{
       "swap_size": 512,
       "image": "'${image}'",
-      "root_pass": "'${pasd}'",
+      "root_pass": "Opencloud@Leige",
       "booted": true,
       "type": "'${size}'",
       "region": "'${region}'"
@@ -280,7 +278,7 @@ create_linode() {
         echo $json
         echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
     else
-        echo -e "IP地址为：${ipv4}\n开机密码统一为：${pasd}\n请立即修改密码！"
+        echo -e "IP地址为：${ipv4}\n开机密码统一为：Opencloud@Leige\n密码为固定密码，请立即修改！"
     fi
     linode_loop_script
 }
