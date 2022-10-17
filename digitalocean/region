@@ -1,40 +1,44 @@
 {
 	"opencloud":[
 		{
-			"name":"纽约1 ",
+			"name":"New York 1（美国纽约）",
 			"id":"nyc1"
 		},
 		{
-			"name":"纽约3",
-			"id":"nyc3"
+			"name":"San Francisco 1（美国旧金山）",
+			"id":"sfo1"
 		},
 		{
-			"name":"新加坡1",
+			"name":"Singapore 1（新加坡）",
 			"id":"sgp1"
 		},
 		{
-			"name":"阿姆斯特丹3",
-			"id":"ams3"
+			"name":"London 1（英国伦敦）",
+			"id":"lon1"
 		},
 		{
-			"name":"法兰克福1",
+			"name":"New York 3（美国纽约）",
 			"id":"fra1"
 		},
 		{
-			"name":"加拿大1",
+			"name":"Amsterdam 3（荷兰）",
+			"id":"ams3"
+		},
+		{
+			"name":"Frankfurt 1（德国）",
+			"id":"fra1"
+		},
+		{
+			"name":"Toronto 1（加拿大）",
 			"id":"tor1"
 		},
 		{
-			"name":"印度1",
+			"name":"Bangalore 1（印度）",
 			"id":"blr1"
 		},
 		{
-			"name":"加利福尼亚3",
+			"name":"San Francisco 3（美国旧金山）",
 			"id":"sfo3"
-		},
-		{
-			"name":"悉尼1",
-			"id":"syd1"
 		}
 	]
 }
