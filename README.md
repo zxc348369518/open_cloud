@@ -28,6 +28,7 @@ apt-get install curl jq -y
 
 安装完成可以直接运行一下脚本（这个脚本会初始化，如果跳过他可能会报错）
 - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud.sh)```
+- 开机密码固定为：Opencloud@Leige 请登录后立即修改密码，Windows系统除外！
 
 ### 联系方式
 - [Teleagram通知频道](https://t.me/openccloud "@openccloud")
