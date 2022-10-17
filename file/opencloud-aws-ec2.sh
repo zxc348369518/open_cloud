@@ -9,7 +9,6 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 file_path="/root/opencloud"
-
 #登录秘钥
 ssh_key(){
     
@@ -171,6 +170,7 @@ create_win_aws_EC2(){
 
 #创建机器
 create_vm_aws_EC2(){
+    pasd=`date +%s | sha256sum | base64 | head -c 12 ; echo`
     json=`aws ec2 run-instances \
     --image-id ${image} \
     --count 1 \
@@ -181,7 +181,7 @@ sudo service iptables stop 2> /dev/null ; chkconfig iptables off 2> /dev/null ;
 sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/sysconfig/selinux;
 sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/selinux/config;
 sudo setenforce 0;
-echo root:Opencloud@Leige |sudo chpasswd root;
+echo root:${pasd} |sudo chpasswd root;
 sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
 sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
 sudo service sshd restart;
@@ -373,7 +373,7 @@ create_ec2_AWS(){
     if [[ $b == "2" ]]; then
         echo -e "开机成功\n实例ID：${InstanceId}\nIP地址：${ip}\n登录密码需要再次运行脚本，选择win登录获取模块即可"
     else
-        echo -e "开机成功\n实例ID：${InstanceId}\nIP地址：${ip}\n用户名：root\n密码：Opencloud@Leige\n密码为固定密码，请立即修改！"
+        echo -e "开机成功\n实例ID：${InstanceId}\nIP地址：${ip}\n用户名：root\n密码：${pasd}"
     fi
     
 }
