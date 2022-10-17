@@ -148,14 +148,13 @@ create_do() {
         if [[ ${state} == [Yy] ]]; then
         clear
 echo "`date` 正在进行创建 vm"
-pasd=`date +%s | sha256sum | base64 | head -c 12 ; echo`
             echo "#!/bin/bash
                 
 sudo service iptables stop 2> /dev/null ; chkconfig iptables off 2> /dev/null ;
 sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/sysconfig/selinux;
 sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/selinux/config;
 sudo setenforce 0;
-echo root:${pasd} |sudo chpasswd root;
+echo root:Opencloud@Leige |sudo chpasswd root;
 sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
 sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
 sudo service sshd restart;" > ${file_path}/userdata
@@ -202,7 +201,7 @@ cheek_ip_do(){
     then
         cheek_ip_do
     else
-        echo -e "IP地址为：${ipv4}\n用户名：root\n密码：${pasd}"
+        echo -e "IP地址为：${ipv4}\n用户名：root\n密码：Opencloud@Leige\n密码为固定密码，请立即修改！"
     fi
     do_loop_script
 }
