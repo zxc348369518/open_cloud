@@ -1,0 +1,32 @@
+{
+	"opencloud":[
+		{
+			"name":"Bangalore（印度 班加罗尔）",
+			"id":"blr"
+		},
+		{
+			"name":"Mumbai（印度 孟买）",
+			"id":"bom"
+		},
+		{
+			"name":"Delhi NCR（印度 德里）",
+			"id":"del"
+		},
+		{
+			"name":"Seoul（韩国 汉城）",
+			"id":"icn"
+		},
+		{
+			"name":"Tokyo（日本 东京）",
+			"id":"nrt"
+		},
+		{
+			"name":"Singapore（新加坡）",
+			"id":"sgp"
+		},
+		{
+			"name":"Toronto（加拿大 多伦多）",
+			"id":"yto"
+		}
+	]
+}

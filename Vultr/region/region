@@ -1,0 +1,20 @@
+{
+	"opencloud":[
+		{
+			"name":"美国地区",
+			"id":"America"
+		},
+		{
+			"name":"欧洲地区",
+			"id":"Europe"
+		},
+		{
+			"name":"澳大利亚地区",
+			"id":"Australia"
+		},
+		{
+			"name":"亚洲地区",
+			"id":"Asia"
+		}
+	]
+}
