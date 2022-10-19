@@ -1,0 +1,40 @@
+{
+	"opencloud":[
+		{
+			"name":"CentOS 7 x64",
+			"id":"167"
+		},
+		{
+			"name":"CentOS 7 SELinux x64",
+			"id":"384"
+		},
+		{
+			"name":"CentOS 8 Stream x64",
+			"id":"401"
+		},
+		{
+			"name":"CentOS 9 Stream x64",
+			"id":"542"
+		},
+		{
+			"name":"Debian 10 x64 (buster)",
+			"id":"352"
+		},
+		{
+			"name":"Debian 11 x64 (bullseye)",
+			"id":"477"
+		},
+		{
+			"name":"Ubuntu 18.04 LTS x64",
+			"id":"270"
+		},
+		{
+			"name":"Ubuntu 20.04 LTS x64",
+			"id":"387"
+		},
+		{
+			"name":"Ubuntu 22.04 LTS x64",
+			"id":"1743"
+		}
+	]
+}
