@@ -21,6 +21,10 @@
 			"id":"koreacentral"
 		},
 		{
+			"name":"韩国南部 釜山",
+			"id":"koreasouth"
+		},
+		{
 			"name":"美国西部3 凤凰城",
 			"id":"westus3"
 		},
