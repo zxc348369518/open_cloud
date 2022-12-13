@@ -15,7 +15,7 @@ apt-get install curl jq -y
  - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)```
 
 ### Linode
- - ```新版本正在架构，请耐心等待！```
+ - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)```
 
 ### AWS（国际版）
  - ```新版本正在架构，请耐心等待！```
