@@ -171,18 +171,18 @@ create_do() {
     read -e -p "是否需要使用那个API？(编号)：" num
     
     clear
+    echo -e "`date` 正在进行Digitalocean创建vm操作
     
-    echo -e "请确认？ [Y/n]
 使用账号：${a[num]}
 机器备注：${name}
 服务器位置：${region}
 服务器规格：${size}
 机器系统: ${image}"
-        read -e -p "(默认: N 取消):" state
+        read -e -p "请确认开机信息？(默认: N 取消):" state
         [[ -z ${state} ]] && state="n"
         if [[ ${state} == [Yy] ]]; then
         clear
-echo "`date` 正在进行创建 vm"
+echo "`date` 正在进行Digitalocean创建vm操作"
             echo "#!/bin/bash
                 
 sudo service iptables stop 2> /dev/null ; chkconfig iptables off 2> /dev/null ;
