@@ -368,6 +368,7 @@ initialization(){
 
 #删除doapi
 del_api_do(){
+    clear
     cd ${file_path}/do/account
     o=`ls -l|grep -c "^d"`
     a=(`ls ${file_path}/do/account`)
