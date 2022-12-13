@@ -3,6 +3,7 @@
 ### 使用脚本
 
 - 第一次运行必须安装 curl 和 jq，如果是这两个没有安装导致报错的请不要来找我！
+- 若机器身上使用过1.0版本的请先执行命令 rm -rf /root/opencloud/ 以便环境为最干净！
 ```
 # Centos系统
 yum install curl jq -y
