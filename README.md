@@ -11,6 +11,7 @@ yum install curl jq -y
 # Ddebian和Ubuntu系统
 apt-get install curl jq -y
 ```
+- 常用功能（记录API、创建linux、删除vm、查询账号状态）
 
 ## Digitalocean 
  - 支持常用功能
