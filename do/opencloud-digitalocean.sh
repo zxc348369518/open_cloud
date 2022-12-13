@@ -176,6 +176,8 @@ create_do() {
 
     read -e -p "是否需要使用那个API？(编号)：" num
     
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/account/${a[num]}/token`
+    
     clear
     echo -e "`date` 正在进行Digitalocean创建vm操作
     
@@ -402,7 +404,7 @@ create_api_do(){
 			echo "添加成功！"
 		else
 			echo "该备注已经存在，请更换其他名字，或者删除原来api"
-		fi
+    fi
     
     do_loop_script
 }
