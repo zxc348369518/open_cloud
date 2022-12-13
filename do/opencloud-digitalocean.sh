@@ -246,7 +246,8 @@ cheek_ip_do(){
         echo ${var1} > ${file_path}/do/account/${a[num]}/${name}/id
         echo ${ipv4} > ${file_path}/do/account/${a[num]}/${name}/ip
         clear
-        echo -e "vm创建成功！
+        echo -e "`date` Digitalocean创建vm完成！
+        
 使用账号：${a[num]}
 机器备注：${name}
 服务器位置：${region}
