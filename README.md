@@ -13,19 +13,30 @@ apt-get install curl jq -y
 ```
 
 ### Digitalocean 
- - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)```
+```
+# 支持常用功能
+bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)
+```
 
 ### Linode
- - ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)```
+```
+# 支持常用功能
+bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)
+```
 
-### AWS（国际版）
- - ```新版本正在架构，请耐心等待！```
+### AWS
+```
+新版本正在架构，请耐心等待！
+```
 
-### Azure（国际版）
- - ```新版本正在架构，请耐心等待！```
+### Azure
+```新版本正在架构，请耐心等待！
+ ```
 
 ### Vultr
- - ```未完成```
+```
+未完成
+```
 
 ### 主要特性
 - opencloud 利用 云服务的api调用 进行创建机器 删除机器等操作
