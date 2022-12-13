@@ -8,7 +8,7 @@ Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
-file_path="/root/opencloud"
+file_path="/root/opencloud/do"
 #do循环脚本
 do_loop_script(){
 echo -e "
@@ -38,9 +38,9 @@ Information_user_do() {
     clear
     echo "`date` 正在进行Digitalocean测活api操作"
     echo
-    cd ${file_path}/do/account
+    cd ${file_path}/account
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/do/account`)
+    a=(`ls ${file_path}/account`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -56,7 +56,7 @@ Information_user_do() {
     echo "`date` 正在进行Digitalocean测活api操作"
     echo
     
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${a[num]}/token`
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/${a[num]}/token`
 
         json=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/account"`
         json2=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/customers/my/balance"`
@@ -162,9 +162,9 @@ create_do() {
     clear
     echo "`date` 正在进行Digitalocean创建vm操作"
     echo
-    cd ${file_path}/do/account
+    cd ${file_path}/account
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/do/account`)
+    a=(`ls ${file_path}/account`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -176,7 +176,7 @@ create_do() {
 
     read -e -p "是否需要使用那个API？(编号)：" num
     
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/account/${a[num]}/token`
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/account/${a[num]}/token`
     
     clear
     echo -e "`date` 正在进行Digitalocean创建vm操作
@@ -191,16 +191,6 @@ create_do() {
         if [[ ${state} == [Yy] ]]; then
         clear
 echo "`date` 正在进行Digitalocean创建vm操作"
-            echo "#!/bin/bash
-                
-sudo service iptables stop 2> /dev/null ; chkconfig iptables off 2> /dev/null ;
-sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/sysconfig/selinux;
-sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/selinux/config;
-sudo setenforce 0;
-echo root:Opencloud@Leige |sudo chpasswd root;
-sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
-sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
-sudo service sshd restart;" > ${file_path}/userdata
             
              json=`curl -s -X POST \
              -H "Content-Type: application/json" \
@@ -244,9 +234,9 @@ cheek_ip_do(){
     then
         cheek_ip_do
     else
-        mkdir ${file_path}/do/account/${a[num]}/${name}
-        echo ${var1} > ${file_path}/do/account/${a[num]}/${name}/id
-        echo ${ipv4} > ${file_path}/do/account/${a[num]}/${name}/ip
+        mkdir ${file_path}/account/${a[num]}/${name}
+        echo ${var1} > ${file_path}/account/${a[num]}/${name}/id
+        echo ${ipv4} > ${file_path}/account/${a[num]}/${name}/ip
         clear
         echo -e "`date` Digitalocean创建vm完成！
         
@@ -269,9 +259,9 @@ del_do() {
     clear
     echo "`date` 正在进行Digitalocean删除vm操作"
     echo
-    cd ${file_path}/do/account
+    cd ${file_path}/account
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/do/account`)
+    a=(`ls ${file_path}/account`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -283,15 +273,15 @@ del_do() {
     
     read -e -p "是否需要删除那个API？(编号)：" num
     
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${a[num]}/token`
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/${a[num]}/token`
     
     clear
     echo "`date` 正在进行Digitalocean删除vm操作"
     echo
     
-    cd ${file_path}/do/account/${a[num]}/vm
+    cd ${file_path}/account/${a[num]}/vm
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/do/account/${a[num]}/vm`)
+    a=(`ls ${file_path}/account/${a[num]}/vm`)
     i=-1
     echo "${a[num]}名下已创建的机器"
     while ((i < ("${o}" - "1" )))
@@ -384,7 +374,7 @@ read -p " 请输入数字 :" num
 #查询已保存doapi
 check_api_do(){
     echo "已保存的api有："
-    ls ${file_path}/do/account
+    ls ${file_path}/account
 }
 
 #创建doapi
@@ -398,9 +388,9 @@ create_api_do(){
     read -e -p "请新的api添加一个备注：" api_name
     read -e -p "输入api：" api_key
 	
-	if [ ! -d "${file_path}/do/account/${api_name}" ]; then
-			mkdir ${file_path}/do/account/${api_name}
-			echo "${api_key}" > ${file_path}/do/account/${api_name}/token
+	if [ ! -d "${file_path}/account/${api_name}" ]; then
+			mkdir ${file_path}/account/${api_name}
+			echo "${api_key}" > ${file_path}/account/${api_name}/token
 			echo "添加成功！"
 		else
 			echo "该备注已经存在，请更换其他名字，或者删除原来api"
@@ -411,9 +401,22 @@ create_api_do(){
 
 #初始化
 initialization(){
-    mkdir -p ${file_path}/do
-    mkdir -p ${file_path}/do/account
-    mkdir -p ${file_path}/do/account/default（勿删）
+    mkdir -p ${file_path}
+    mkdir -p ${file_path}/account
+    mkdir -p ${file_path}/account/default（勿删）
+
+    if [ ! -f "${file_path}/userdata" ]; then
+        echo "#!/bin/bash
+                
+sudo service iptables stop 2> /dev/null ; chkconfig iptables off 2> /dev/null ;
+sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/sysconfig/selinux;
+sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/selinux/config;
+sudo setenforce 0;
+echo root:Opencloud@Leige |sudo chpasswd root;
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+sudo service sshd restart;" > ${file_path}/userdata
+    fi
     digitalocean_menu
 }
 
@@ -422,9 +425,9 @@ del_api_do(){
     clear
     echo "`date` 正在进行Digitalocean删除api操作"
     echo
-    cd ${file_path}/do/account
+    cd ${file_path}/account
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/do/account`)
+    a=(`ls ${file_path}/account`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -441,10 +444,10 @@ del_api_do(){
     read -e -p "是否需要删除备注为 ${a[num]} 的API(默认: N 取消)：" info
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
-		if [ ! -d "${file_path}/do/account/${api_name}" ]; then
+		if [ ! -d "${file_path}/account/${api_name}" ]; then
 			echo "未在系统中查找到该名称的api"
 		else
-			rm -rf ${file_path}/do/account/${a[num]}
+			rm -rf ${file_path}/account/${a[num]}
             echo "删除成功！"
 		fi
 	

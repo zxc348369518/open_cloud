@@ -8,7 +8,7 @@ Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
-file_path="/root/opencloud"
+file_path="/root/opencloud/linode"
 #linode循环脚本
 linode_loop_script(){
 echo -e "
@@ -87,15 +87,15 @@ read -p " 请输入数字 :" num
 #linode一键测活
 Information_user_linode() {
     
-    cd ${file_path}/linode
-    o=`ls ${file_path}/linode|wc -l`
+    cd ${file_path}
+    o=`ls ${file_path}|wc -l`
     i=-1
     while ((i < ("${o}" - "1" )))
     do
         ((i++))
         array=(*)
         var0=`echo ${array[${i}]}`
-        TOKEN=`cat ${file_path}/linode/${var0}`
+        TOKEN=`cat ${file_path}/${var0}`
         
         json=`curl -s -H "Authorization: Bearer $TOKEN" \
         https://api.linode.com/v4/account`
@@ -117,7 +117,7 @@ Information_user_linode() {
 #查询已保存linode api
 check_api_linode(){
     echo "已绑定的api："
-    ls ${file_path}/linode/account
+    ls ${file_path}/account
 }
 
 #创建linode机器
@@ -145,9 +145,9 @@ create_linode() {
     clear
     echo "`date` 正在进行Linode创建vm操作"
     echo
-    cd ${file_path}/linode/account
+    cd ${file_path}/account
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/linode/account`)
+    a=(`ls ${file_path}/account`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -159,7 +159,7 @@ create_linode() {
 
     read -e -p "是否需要使用那个API？(编号)：" num
     
-    TOKEN=`cat ${file_path}/linode/account/${a[num]}/token`
+    TOKEN=`cat ${file_path}/account/${a[num]}/token`
     
     clear
     echo "`date` 正在进行Linode创建vm操作
@@ -197,8 +197,8 @@ create_linode() {
         echo $json
         echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
     else
-        mkdir ${file_path}/linode/account/${a[num]}/${name}
-        echo ${id} > ${file_path}/linode/account/${a[num]}/${name}/id
+        mkdir ${file_path}/account/${a[num]}/${name}
+        echo ${id} > ${file_path}/account/${a[num]}/${name}/id
         echo ${ipv4} > ${file_path}/dlinodeo/account/${a[num]}/${name}/ipv4
         echo ${ipv6} > ${file_path}/dlinodeo/account/${a[num]}/${name}/ipv6
         
@@ -224,9 +224,9 @@ del_linode() {
     clear
     echo "`date` 正在进行Linode删除vm操作"
     echo
-    cd ${file_path}/linode/account
+    cd ${file_path}/account
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/linode/account`)
+    a=(`ls ${file_path}/account`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -238,15 +238,15 @@ del_linode() {
     
     read -e -p "是否需要删除那个API？(编号)：" num
     
-    token=`cat ${file_path}/linode/${a[num]}/token`
+    token=`cat ${file_path}/${a[num]}/token`
     
     clear
     echo "`date` 正在进行Linode删除vm操作"
     echo
     
-    cd ${file_path}/linode/account/${a[num]}/vm
+    cd ${file_path}/account/${a[num]}/vm
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/linode/account/${a[num]}/vm`)
+    a=(`ls ${file_path}/account/${a[num]}/vm`)
     i=-1
     echo "${a[num]}名下已创建的机器"
     while ((i < ("${o}" - "1" )))
@@ -352,9 +352,9 @@ size_linode(){
 
 #初始化
 initialization(){
-    mkdir -p ${file_path}/linode
-    mkdir -p ${file_path}/linode/account
-    mkdir -p ${file_path}/linode/account/default（勿删）
+    mkdir -p ${file_path}
+    mkdir -p ${file_path}/account
+    mkdir -p ${file_path}/account/default（勿删）
     linode_menu
 }
 
@@ -369,9 +369,9 @@ create_api_linode(){
     read -e -p "请新的api添加一个备注：" api_name
     read -e -p "输入api：" api_key
 	
-	if [ ! -d "${file_path}/linode/account/${api_name}" ]; then
-			mkdir ${file_path}/linode/account/${api_name}
-			echo "${api_key}" > ${file_path}/linode/account/${api_name}/token
+	if [ ! -d "${file_path}/account/${api_name}" ]; then
+			mkdir ${file_path}/account/${api_name}
+			echo "${api_key}" > ${file_path}/account/${api_name}/token
 			echo "添加成功！"
 		else
 			echo "该备注已经存在，请更换其他名字，或者删除原来api"
@@ -385,9 +385,9 @@ del_api_linode(){
     clear
     echo "`date` 正在进行Linode删除api操作"
     echo
-    cd ${file_path}/linode/account
+    cd ${file_path}/account
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/linode/account`)
+    a=(`ls ${file_path}/account`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -404,10 +404,10 @@ del_api_linode(){
     read -e -p "是否需要删除备注为 ${a[num]} 的API(默认: N 取消)：" info
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
-		if [ ! -d "${file_path}/linode/account/${api_name}" ]; then
+		if [ ! -d "${file_path}/account/${api_name}" ]; then
 			echo "未在系统中查找到该名称的api"
 		else
-			rm -rf ${file_path}/linode/account/${a[num]}
+			rm -rf ${file_path}/account/${a[num]}
             echo "删除成功！"
 		fi
 	
