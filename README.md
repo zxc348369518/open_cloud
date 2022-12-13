@@ -1,7 +1,9 @@
 # 云服务开机脚本 本地Shell版
 
 ### 支持云服务（持续更新）
-- Digitalocean ```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)```
+- Digitalocean 
+```bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)```
+
 - 其他云服务器 新版本正在架构，请耐心等待！
 
 ### 主要特性
