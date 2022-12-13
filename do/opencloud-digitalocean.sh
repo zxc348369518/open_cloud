@@ -36,6 +36,8 @@ read -p " 请输入数字 :" num
 #do测活
 Information_user_do() {
     clear
+    echo "`date` 正在进行Digitalocean测活api操作"
+    echo
     cd ${file_path}/do/account
     o=`ls -l|grep -c "^d"`
     a=(`ls ${file_path}/do/account`)
@@ -48,7 +50,11 @@ Information_user_do() {
         echo ${a[i]}
     done
     
-    read -e -p "是否需要删除那个API？(编号)：" num
+    read -e -p "是否需要测活那个API？(编号)：" num
+    
+    clear
+    echo "`date` 正在进行Digitalocean测活api操作"
+    echo
     
     DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${a[num]}/token`
 
@@ -258,6 +264,8 @@ IP地址为：${ipv4}
 #删除机器
 del_do() {
     clear
+    echo "`date` 正在进行Digitalocean删除vm操作"
+    echo
     cd ${file_path}/do/account
     o=`ls -l|grep -c "^d"`
     a=(`ls ${file_path}/do/account`)
@@ -275,6 +283,8 @@ del_do() {
     DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${a[num]}/token`
     
     clear
+    echo "`date` 正在进行Digitalocean删除vm操作"
+    echo
     
     cd ${file_path}/do/account/${a[num]}/vm
     o=`ls -l|grep -c "^d"`
@@ -295,6 +305,8 @@ del_do() {
     id=`cat ${qq}/${a[num]}/id`
     
     clear
+    echo "`date` 正在进行Digitalocean删除vm操作"
+    echo
     
     echo "查询到机器ID为：${id}，IP为：${ip}"
     
@@ -302,7 +314,8 @@ del_do() {
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
         clear
-        echo "正在删除ID为：${id}，IP为：${ip}的VM"
+        echo "`date` 正在进行Digitalocean删除vm操作，删除ID为：${id}，IP为：${ip}的VM"
+        echo
         sleep 2s
         curl -s -X DELETE \
         -H "Content-Type: application/json" \
