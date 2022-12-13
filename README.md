@@ -18,11 +18,11 @@ apt-get install curl jq -y
 ```新版本正在架构，请耐心等待！```
 
 ### AWS（国际版）
-## AWS CLI
+- AWS CLI
 ```新版本正在架构，请耐心等待！```
 
 ### Azure（国际版）
-## Azure Rest api
+- Azure Rest api
 ```新版本正在架构，请耐心等待！```
 
 ### Vultr
