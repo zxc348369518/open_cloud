@@ -97,7 +97,22 @@ size_do(){
         echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
         echo $json | jq -r '.opencloud['${i}'].name'
     done
+    read -e -p "请选择你的服务器机型（编号）:" b
+    
+    clear
+    
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size-${b})`
+    o=`echo $json| jq ".opencloud | length"`
+    
+    i=-1
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo $json | jq -r '.opencloud['${i}'].name'
+    done
     read -e -p "请选择你的服务器大小（编号）:" b
+    
         size=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
@@ -120,14 +135,24 @@ image_do(){
 #创建机器
 create_do() {
     clear
+    echo "`date` 正在进行Digitalocean创建vm操作"
+    echo
     read -p " 请输入机器名字:" name
     clear
+    echo "`date` 正在进行Digitalocean创建vm操作"
+    echo
     region_do
     clear
+    echo "`date` 正在进行Digitalocean创建vm操作"
+    echo
     size_do
     clear
+    echo "`date` 正在进行Digitalocean创建vm操作"
+    echo
     image_do
     clear
+    echo "`date` 正在进行Digitalocean创建vm操作"
+    echo
     cd ${file_path}/do/account
     o=`ls -l|grep -c "^d"`
     a=(`ls ${file_path}/do/account`)
