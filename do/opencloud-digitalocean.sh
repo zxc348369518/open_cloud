@@ -33,40 +33,25 @@ read -p " 请输入数字 :" num
   esac
 }
 
-#do机器信息
-Information_vps_do() {
-    check_api_do
-    read -p "你需要查询的api名称:" api_name
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
-    clear
-    json=`curl -s -X GET \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-    "https://api.digitalocean.com/v2/droplets"`
-    total=`echo $json | jq -r '.meta.total'`
-    echo "`date` 正在进行查询 ${api_name} 已创建的机器" && echo
-    i=-1
-    while ((i < ("${total}" - "1" )))
-    do
-        ((i++))
-        echo  "机器ID：`echo $json | jq '.droplets['${i}'].id'`——————机器名字：`echo $json | jq '.droplets['${i}'].name'`——————机器IP：`echo $json | jq '.droplets['${i}'].networks.v4[0].ip_address'`"
-    done
-    do_loop_script
-}
-
-#do一键测活
+#do测活
 Information_user_do() {
     clear
-    cd ${file_path}/do
-    o=`ls ${file_path}/do|wc -l`
+    cd ${file_path}/do/account
+    o=`ls -l|grep -c "^d"`
+    a=(`ls ${file_path}/do/account`)
     i=-1
+    echo "已保存的api"
     while ((i < ("${o}" - "1" )))
     do
         ((i++))
-        array=(*)
-        var0=`echo ${array[${i}]}`
-        DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${var0}`
-        
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo ${a[i]}
+    done
+    
+    read -e -p "是否需要删除那个API？(编号)：" num
+    
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${a[num]}/token`
+
         json=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/account"`
         json2=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/customers/my/balance"`
         var1=`echo $json | jq -r '.account.droplet_limit'`
@@ -74,15 +59,19 @@ Information_user_do() {
         var3=`echo $json | jq -r '.account.status'`
         var4=`echo $json2 | jq -r '.month_to_date_balance'`
         
-        echo -e  "API名称：${var0}————电子邮箱：${var2}————账号配额：${var1}————账号余额：${var4}————账号状态：${var3}" 
-        
-    done
+        echo -e  "账号信息如下：
+API名称：${var0}
+电子邮箱：${var2}
+账号配额：${var1}
+账号余额：${var4}
+账号状态：${var3}" 
+
     do_loop_script
 }
 
 #do服务器位置
 region_do(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/digitalocean/region)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/region)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -98,7 +87,7 @@ region_do(){
 
 #do服务器大小
 size_do(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/digitalocean/size)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -114,7 +103,7 @@ size_do(){
 
 #do服务器镜像
 image_do(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/digitalocean/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -138,11 +127,29 @@ create_do() {
     size_do
     clear
     image_do
+    clear
+    cd ${file_path}/do/account
+    o=`ls -l|grep -c "^d"`
+    a=(`ls ${file_path}/do/account`)
+    i=-1
+    echo "已保存的api"
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo ${a[i]}
+    done
 
+    read -e -p "是否需要使用那个API？(编号)：" num
+    
     clear
     
     echo -e "请确认？ [Y/n]
-机器名字：${name}\n服务器位置：${region}\n服务器规格：${size}\n机器系统: ${image}"
+使用账号：${a[num]}
+机器备注：${name}
+服务器位置：${region}
+服务器规格：${size}
+机器系统: ${image}"
         read -e -p "(默认: N 取消):" state
         [[ -z ${state} ]] && state="n"
         if [[ ${state} == [Yy] ]]; then
@@ -201,41 +208,81 @@ cheek_ip_do(){
     then
         cheek_ip_do
     else
-        echo -e "IP地址为：${ipv4}\n用户名：root\n密码：Opencloud@Leige\n密码为固定密码，请立即修改！"
+        mkdir ${file_path}/do/account/${a[num]}/${name}
+        echo ${var1} > ${file_path}/do/account/${a[num]}/${name}/id
+        echo ${ipv4} > ${file_path}/do/account/${a[num]}/${name}/ip
+        clear
+        echo -e "vm创建成功！
+使用账号：${a[num]}
+机器备注：${name}
+服务器位置：${region}
+服务器规格：${size}
+机器系统: ${image}
+
+IP地址为：${ipv4}
+用户名：root
+密码：Opencloud@Leige
+密码为固定密码，请立即修改！"
     fi
     do_loop_script
 }
 
 #删除机器
 del_do() {
-    check_api_do
-    read -p "你需要删除哪个api下的机器（输入API名字）:" api_name
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
-
-    json=`curl -s -X GET \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-    "https://api.digitalocean.com/v2/droplets"`
-    total=`echo $json | jq -r '.meta.total'`
-    echo "`date` 正在进行查询 ${api_name} 已创建的机器" && echo
-    echo API名称：${api_name}
+    clear
+    cd ${file_path}/do/account
+    o=`ls -l|grep -c "^d"`
+    a=(`ls ${file_path}/do/account`)
     i=-1
-    while ((i < ("${total}" - "1" )))
+    echo "已保存的api"
+    while ((i < ("${o}" - "1" )))
     do
         ((i++))
-        echo "机器ID：`echo  $json | jq '.droplets['${i}'].id'`——————机器名字：`echo  $json | jq '.droplets['${i}'].name'`——————机器IP：`echo  $json | jq '.droplets['${i}'].networks.v4[0].ip_address'`"
-        
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo ${a[i]}
     done
     
-    read -e -p "请输入需要删除机器的id号：" id
-    read -e -p "是否需要删除id为 ${id} (默认: N 取消)：" info
-        [[ -z ${info} ]] && info="n"
-        if [[ ${info} == [Yy] ]]; then
-            curl -s -X DELETE \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-            "https://api.digitalocean.com/v2/droplets/${id}"
-        fi
+    read -e -p "是否需要删除那个API？(编号)：" num
+    
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${a[num]}/token`
+    
+    clear
+    
+    cd ${file_path}/do/account/${a[num]}/vm
+    o=`ls -l|grep -c "^d"`
+    a=(`ls ${file_path}/do/account/${a[num]}/vm`)
+    i=-1
+    echo "${a[num]}名下已创建的机器"
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo ${a[i]}
+    done
+    
+    read -e -p "是否需要删除那台备注的机器(编号)：" num
+    
+    qq=`pwd`
+    ip=`cat ${qq}/${a[num]}/ip`
+    id=`cat ${qq}/${a[num]}/id`
+    
+    clear
+    
+    echo "查询到机器ID为：${id}，IP为：${ip}"
+    
+    read -e -p "是否需要删除这台机器(默认: N 取消)：" info
+    [[ -z ${info} ]] && info="n"
+    if [[ ${info} == [Yy] ]]; then
+        clear
+        echo "正在删除ID为：${id}，IP为：${ip}的VM"
+        sleep 2s
+        curl -s -X DELETE \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
+        "https://api.digitalocean.com/v2/droplets/${id}"
+        rm -rf ${qq}
+        echo && echo "删除成功"
+    fi
     do_loop_script
 }
 
@@ -244,17 +291,15 @@ digitalocean_menu() {
   clear
   echo && echo -e "Digitalocean 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
 项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
- ${Green_font_prefix}1.${Font_color_suffix} 一键全部API测活
- ${Green_font_prefix}2.${Font_color_suffix} 查询机器信息
- ${Green_font_prefix}3.${Font_color_suffix} 创建机器
- ${Green_font_prefix}4.${Font_color_suffix} 删除机器
+ ${Green_font_prefix}1.${Font_color_suffix} API测活
+ ${Green_font_prefix}2.${Font_color_suffix} 创建机器
+ ${Green_font_prefix}3.${Font_color_suffix} 删除机器
 ————————————————————————————————————————————————————————————————
- ${Green_font_prefix}5.${Font_color_suffix} 查询已保存api
- ${Green_font_prefix}6.${Font_color_suffix} 添加api
- ${Green_font_prefix}7.${Font_color_suffix} 删除api
+ ${Green_font_prefix}4.${Font_color_suffix} 查询已保存api
+ ${Green_font_prefix}5.${Font_color_suffix} 添加api
+ ${Green_font_prefix}6.${Font_color_suffix} 删除api
 ————————————————————————————————————————————————————————————————
- ${Green_font_prefix}98.${Font_color_suffix} 返回菜单
- ${Green_font_prefix}99.${Font_color_suffix} 退出脚本" &&
+ ${Green_font_prefix}0.${Font_color_suffix} 退出脚本" &&
 
 read -p " 请输入数字 :" num
   case "$num" in
@@ -262,28 +307,22 @@ read -p " 请输入数字 :" num
     Information_user_do
     ;;
     2)
-    Information_vps_do
+    create_do
     ;;
     3)
-    Check_liveness_do
-    ;;
-    4)
     del_do
     ;;
-    5)
+    4)
     check_api_do
     do_loop_script
     ;;
-    6)
+    5)
     create_api_do
     ;;
-    7)
+    6)
     del_api_do
     ;;
-    98)
-    bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud.sh)
-    ;;
-    99)
+    0)
     exit 1
     ;;
   *)
@@ -299,25 +338,7 @@ read -p " 请输入数字 :" num
 check_api_do(){
     clear
     echo "已绑定的api："
-    ls ${file_path}/do
-}
-
-#do检查账号是否存存活
-Check_liveness_do(){
-    check_api_do
-    read -p "你需要查询的api名称:" api_name
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/do/${api_name}`
-        
-    json=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/account"`
-    var1=`echo $json | jq -r '.account.status'`
-    
-    if [[ ${var1} == "active" ]];then
-        create_do
-    else
-        echo -e  "检测到该API存在问题，无法创建服务器！（2秒后返回）"
-        sleep 2s
-        digitalocean_menu
-    fi
+    ls ${file_path}/do/account
 }
 
 #创建doapi
@@ -326,31 +347,52 @@ create_api_do(){
     
     read -e -p "请为这个api添加一个备注：" api_name
     read -e -p "输入api：" api_key
-    if test -f "${file_path}/do/${api_name}"; then
-        echo "该备注已经存在，请更换其他名字，或者删除原来api"
-    else
-        echo "${api_key}" > ${file_path}/do/${api_name}
-        echo "添加成功！"
-    fi
+	
+	if [ ! -d "${file_path}/do/account/${api_name}" ]; then
+			mkdir ${file_path}/do/account/${api_name}
+			echo "${api_key}" > ${file_path}/do/account/${api_name}/token
+			echo "添加成功！"
+		else
+			echo "该备注已经存在，请更换其他名字，或者删除原来api"
+		fi
     
     do_loop_script
 }
 
+#初始化
+initialization(){
+    mkdir -p ${file_path}/do
+    mkdir -p ${file_path}/do/account
+    digitalocean_menu
+}
+
 #删除doapi
 del_api_do(){
-    check_api_do
-    read -p "你需要删除的api名称:" api_name
-    read -e -p "是否需要删除 ${api_name}(默认: N 取消)：" info
+    cd ${file_path}/do/account
+    o=`ls -l|grep -c "^d"`
+    a=(`ls ${file_path}/do/account`)
+    i=-1
+    echo "已保存的api"
+    while ((i < ("${o}" - "1" )))
+    do
+        ((i++))
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo ${a[i]}
+    done
+    
+    read -e -p "是否需要删除那个API？(编号)：" num
+    
+    read -e -p "是否需要删除备注为 ${a[num]} 的API(默认: N 取消)：" info
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
-        read -e -p "请输入需要删除api的名字：" api_name
-        if test -f "${file_path}/do/${api_name}"; then
-            rm -rf ${file_path}/do/${api_name}
+		if [ ! -d "${file_path}/do/account/${api_name}" ]; then
+			echo "未在系统中查找到该名称的api"
+		else
+			rm -rf ${file_path}/do/account/${api_name}
             echo "删除成功！"
-        else
-            echo "未在系统中查找到该名称的api"
-        fi
+		fi
+	
     fi
     do_loop_script
 }
-digitalocean_menu
+initialization
