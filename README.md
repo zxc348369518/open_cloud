@@ -14,29 +14,28 @@ apt-get install curl jq -y
 
 ### Digitalocean 
 ```
-# 支持常用功能
+# 支持 所有地区创建VM、删除VM、开机root、账号检测
+```
+```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)
 ```
 
 ### Linode
 ```
-# 支持常用功能
+# 支持 所有地区创建VM、删除VM、开机root、账号检测
+```
+```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)
 ```
 
 ### AWS
-```
-新版本正在架构，请耐心等待！
-```
+```新版本正在架构，请耐心等待！```
 
 ### Azure
-```新版本正在架构，请耐心等待！
- ```
+```新版本正在架构，请耐心等待！```
 
 ### Vultr
-```
-未完成
-```
+```未完成```
 
 ### 主要特性
 - opencloud 利用 云服务的api调用 进行创建机器 删除机器等操作
