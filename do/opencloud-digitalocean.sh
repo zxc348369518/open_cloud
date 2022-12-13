@@ -420,7 +420,7 @@ initialization(){
 #删除doapi
 del_api_do(){
     clear
-    echo "`date`正在进行Digitalocean删除api操作"
+    echo "`date` 正在进行Digitalocean删除api操作"
     echo
     cd ${file_path}/do/account
     o=`ls -l|grep -c "^d"`
