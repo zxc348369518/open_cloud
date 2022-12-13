@@ -27,6 +27,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linod
 ```
 
 ## AWS
+EC2：
  - 支持常用功能、创建Windows、更换IP
 ```
 新版本正在架构，请耐心等待！
