@@ -98,10 +98,13 @@ size_do(){
         echo $json | jq -r '.opencloud['${i}'].name'
     done
     read -e -p "请选择你的服务器机型（编号）:" b
+    size=`echo $json | jq -r '.opencloud['${b}'].id'`
     
     clear
+    echo "`date` 正在进行Digitalocean创建vm操作"
+    echo
     
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size-${b})`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size-${size})`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
