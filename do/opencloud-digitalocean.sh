@@ -289,7 +289,7 @@ del_do() {
 #do菜单
 digitalocean_menu() {
   clear
-  echo && echo -e "Digitalocean 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
+  echo -e "Digitalocean 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
 项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} API测活
  ${Green_font_prefix}2.${Font_color_suffix} 创建机器
@@ -313,6 +313,9 @@ read -p " 请输入数字 :" num
     del_do
     ;;
     4)
+    clear
+    echo "`date` 正在进行Digitalocean查询已保存的api"
+    echo
     check_api_do
     do_loop_script
     ;;
@@ -336,16 +339,19 @@ read -p " 请输入数字 :" num
 
 #查询已保存doapi
 check_api_do(){
-    clear
-    echo "已绑定的api："
+    echo "已保存的api有："
     ls ${file_path}/do/account
 }
 
 #创建doapi
 create_api_do(){
+    clear
+    echo "`date` 正在进行Digitalocean创建api操作"
+    echo
     check_api_do
     
-    read -e -p "请为这个api添加一个备注：" api_name
+    echo
+    read -e -p "请新的api添加一个备注：" api_name
     read -e -p "输入api：" api_key
 	
 	if [ ! -d "${file_path}/do/account/${api_name}" ]; then
@@ -363,12 +369,15 @@ create_api_do(){
 initialization(){
     mkdir -p ${file_path}/do
     mkdir -p ${file_path}/do/account
+    mkdir -p ${file_path}/do/account/default（勿删）
     digitalocean_menu
 }
 
 #删除doapi
 del_api_do(){
     clear
+    echo "`date`正在进行Digitalocean删除api操作"
+    echo
     cd ${file_path}/do/account
     o=`ls -l|grep -c "^d"`
     a=(`ls ${file_path}/do/account`)
@@ -381,6 +390,8 @@ del_api_do(){
         echo ${a[i]}
     done
     
+    echo
+    
     read -e -p "是否需要删除那个API？(编号)：" num
     
     read -e -p "是否需要删除备注为 ${a[num]} 的API(默认: N 取消)：" info
@@ -389,7 +400,7 @@ del_api_do(){
 		if [ ! -d "${file_path}/do/account/${api_name}" ]; then
 			echo "未在系统中查找到该名称的api"
 		else
-			rm -rf ${file_path}/do/account/${api_name}
+			rm -rf ${file_path}/do/account/${a[num]}
             echo "删除成功！"
 		fi
 	
