@@ -1,0 +1,20 @@
+{
+	"opencloud":[
+		{
+			"name":"s-1vcpu-1gb",
+			"id":"s-1vcpu-1gb"
+		},
+		{
+			"name":"s-1vcpu-2gb",
+			"id":"s-1vcpu-2gb"
+		},
+		{
+			"name":"s-2vcpu-2gb",
+			"id":"s-2vcpu-2gb"
+		},
+		{
+			"name":"s-2vcpu-4gb",
+			"id":"s-2vcpu-4gb"
+		}
+	]
+}

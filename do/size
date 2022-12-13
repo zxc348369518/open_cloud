@@ -1,52 +1,16 @@
 {
 	"opencloud":[
 		{
-			"name":"s-1vcpu-1gb",
-			"id":"s-1vcpu-1gb"
+			"name":"普通机型",
+			"id":"ordinary"
 		},
 		{
-			"name":"s-1vcpu-1gb-amd",
-			"id":"s-1vcpu-1gb-amd"
+			"name":"AMD机型",
+			"id":"amd"
 		},
 		{
-			"name":"s-1vcpu-1gb-intel",
-			"id":"s-1vcpu-1gb-intel"
-		},
-		{
-			"name":"s-1vcpu-2gb",
-			"id":"s-1vcpu-2gb"
-		},
-		{
-			"name":"s-1vcpu-2gb-amd",
-			"id":"s-1vcpu-2gb-amd"
-		},
-		{
-			"name":"s-1vcpu-2gb-intel",
-			"id":"s-1vcpu-2gb-intel"
-		},
-		{
-			"name":"s-2vcpu-2gb",
-			"id":"s-2vcpu-2gb"
-		},
-		{
-			"name":"s-2vcpu-2gb-amd",
-			"id":"s-2vcpu-2gb-amd"
-		},
-		{
-			"name":"s-2vcpu-2gb-intel",
-			"id":"s-2vcpu-2gb-intel"
-		},
-		{
-			"name":"s-2vcpu-4gb",
-			"id":"s-2vcpu-4gb"
-		},
-		{
-			"name":"s-2vcpu-4gb-amd",
-			"id":"ubuntu-22-04-x64"
-		},
-		{
-			"name":"s-2vcpu-4gb-intel",
-			"id":"s-2vcpu-4gb-intel"
+			"name":"英特尔机型",
+			"id":"intel"
 		}
 	]
 }

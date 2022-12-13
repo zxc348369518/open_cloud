@@ -1,0 +1,20 @@
+{
+	"opencloud":[
+		{
+			"name":"s-1vcpu-1gb-amd",
+			"id":"s-1vcpu-1gb-amd"
+		},
+		{
+			"name":"s-1vcpu-2gb-amd",
+			"id":"s-1vcpu-2gb-amd"
+		},
+		{
+			"name":"s-2vcpu-2gb-amd",
+			"id":"s-2vcpu-2gb-amd"
+		},
+		{
+			"name":"s-2vcpu-4gb-amd",
+			"id":"ubuntu-22-04-x64"
+		}
+	]
+}
