@@ -1,0 +1,28 @@
+{
+	"opencloud":[
+		{
+			"name":"Ubuntu16.04_lts",
+			"id":"linode/ubuntu16.04lts"
+		},
+		{
+			"name":"Ubuntu18.04",
+			"id":"linode/ubuntu18.04"
+		},
+		{
+			"name":"Ubuntu20.04",
+			"id":"linode/ubuntu20.04"
+		},
+		{
+			"name":"Ubuntu21.04",
+			"id":"Ubuntu21.04"
+		},
+		{
+			"name":"Ubuntu21.10",
+			"id":"linode/ubuntu21.10"
+		},
+		{
+			"name":"Ubuntu22.04",
+			"id":"linode/ubuntu22.04"
+		}
+	]
+}

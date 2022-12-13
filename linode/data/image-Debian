@@ -1,0 +1,16 @@
+{
+	"opencloud":[
+		{
+			"name":"Debian9",
+			"id":"linode/debian9"
+		},
+		{
+			"name":"Debian10",
+			"id":"linode/debian10"
+		},
+		{
+			"name":"Debian11",
+			"id":"linode/debian11"
+		}
+	]
+}

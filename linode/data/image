@@ -1,0 +1,16 @@
+{
+	"opencloud":[
+		{
+			"name":"Centos",
+			"id":"Centos"
+		},
+		{
+			"name":"Debian",
+			"id":"Debian"
+		},
+		{
+			"name":"Ubuntu",
+			"id":"Ubuntu"
+		}
+	]
+}
