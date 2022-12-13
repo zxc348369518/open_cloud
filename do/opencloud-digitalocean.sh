@@ -77,7 +77,7 @@ API名称：${var0}
 
 #do服务器位置
 region_do(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/region)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/region)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -93,7 +93,7 @@ region_do(){
 
 #do服务器大小
 size_do(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/size)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -110,7 +110,7 @@ size_do(){
     echo "`date` 正在进行Digitalocean创建vm操作"
     echo
     
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size-${size})`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/size-${size})`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -127,7 +127,7 @@ size_do(){
 
 #do服务器镜像
 image_do(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
