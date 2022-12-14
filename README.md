@@ -29,7 +29,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linod
 EC2：
  - 支持常用功能、创建Windows、获取Windows登录密码、更换IP
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-aws-ec2.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-aws-ec2.sh)
 ```
 
 ## Azure
