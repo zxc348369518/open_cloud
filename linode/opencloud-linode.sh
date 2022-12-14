@@ -8,7 +8,7 @@ Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
-file_path="/root/opencloud/linode"
+file_path="/root/.opencloud/linode"
 #linode循环脚本
 linode_loop_script(){
 echo -e "
