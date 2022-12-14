@@ -25,11 +25,11 @@ bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/op
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)
 ```
 
-## AWS
+## AWS（AWC CLI）
 EC2：
- - 支持常用功能、创建Windows、更换IP
+ - 支持常用功能、创建Windows、获取Windows登录密码、更换IP
 ```
-新版本正在架构，请耐心等待！
+bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-aws-ec2.sh)
 ```
 
 ## Azure
