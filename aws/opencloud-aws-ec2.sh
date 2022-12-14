@@ -47,9 +47,9 @@ get_win_passwd(){
     echo "`date` 正在进行AWS EC2 获取WIN密码"
     echo
     
-    cd ${file_path}/account/${b[num]}
+    cd ${file_path}/account/${b[num]/${region}}
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${b[num]}`)
+    a=(`ls ${file_path}/account/${b[num]}/${region}`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -64,7 +64,7 @@ get_win_passwd(){
     
     qq=`pwd`
     
-    ids=`cat ${qq}/InstanceId`
+    ids=`cat ${qq}/vm/InstanceId`
     
     sleep 10s
     
@@ -113,9 +113,9 @@ del_ec2_aws(){
     echo "`date` 正在进行AWS EC2 删除vm"
     echo
     
-    cd ${file_path}/account/${b[num]}
+    cd ${file_path}/account/${b[num]}/${region}
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${b[num]}`)
+    a=(`ls ${file_path}/account/${b[num]}/${region}`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -130,7 +130,7 @@ del_ec2_aws(){
     
     qq=`pwd`
     
-    ids=`cat ${qq}/InstanceId`
+    ids=`cat ${qq}/vm/InstanceId`
     
     json=`aws ec2 terminate-instances \
     --instance-ids ${ids}`
@@ -188,9 +188,9 @@ change_ip_aws_ec2(){
     echo "`date` 正在进行AWS EC2 更换IP"
     echo
     
-    cd ${file_path}/account/${b[num]}
+    cd ${file_path}/account/${b[num]}/${region}
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${b[num]}`)
+    a=(`ls ${file_path}/account/${b[num]}/${region}`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -205,7 +205,7 @@ change_ip_aws_ec2(){
     
     qq=`pwd`
     
-    ids=`cat ${qq}/InstanceId`
+    ids=`cat ${qq}/vm/InstanceId`
     
     clear
     echo "`date` 正在进行AWS EC2 更换IP"
@@ -237,10 +237,10 @@ change_ip_aws_ec2(){
     ip=`echo $json | jq -r '.Reservations[0].Instances[0].PublicIpAddress'`
     echo "`date` 正在进行AWS EC2 VM信息"
     echo
-    echo "旧IP：`${file_path}/account/${api_name}/${region}/${remark}/ip`
+    echo "旧IP：`${file_path}/account/${api_name}/${region}/vm/${remark}/ip`
 新IP：${ip}"
-    rm -rf ${file_path}/account/${api_name}/${region}/${remark}/ip
-    echo "${ip}" >  ${file_path}/account/${api_name}/${region}/${remark}/ip
+    rm -rf ${file_path}/account/${api_name}/${region}/vm/${remark}/ip
+    echo "${ip}" >  ${file_path}/account/${api_name}/${region}/vm/${remark}/ip
 }
 
 #已保存实例的备注
@@ -265,8 +265,9 @@ create_win_aws_EC2(){
     InstanceId=`echo $json | jq -r '.Instances[0].InstanceId'`
     
     if [[ $InstanceId != null ]]; then
-        mkdir ${file_path}/account/${api_name}/${region}/${remark}
-        echo "${InstanceId}" > ${file_path}/account/${api_name}/${region}/${remark}/InstanceId
+        mkdir ${file_path}/account/${api_name}/${region}/vm
+        mkdir ${file_path}/account/${api_name}/${region}/vm/${remark}
+        echo "${InstanceId}" > ${file_path}/account/${api_name}/${region}/vm/${remark}/InstanceId
     else
         echo $json
         echo ""
@@ -299,8 +300,9 @@ sudo service sshd restart;
     InstanceId=`echo $json | jq -r '.Instances[0].InstanceId'`
     
     if [[ $InstanceId != null ]]; then
-        mkdir ${file_path}/account/${api_name}/${region}/${remark}
-        echo "${InstanceId}" > ${file_path}/account/${api_name}/${region}/${remark}/InstanceId
+        mkdir ${file_path}/account/${api_name}/${region}/vm
+        mkdir ${file_path}/account/${api_name}/${region}/vm/${remark}
+        echo "${InstanceId}" > ${file_path}/account/${api_name}/${region}/vm/${remark}/InstanceId
     else
         echo $json
         echo ""
@@ -483,7 +485,7 @@ create_ec2_AWS(){
     --instance-ids ${ids} \
     --region ${region} `
     ip=`echo $json | jq -r '.Reservations[0].Instances[0].PublicIpAddress'`
-    echo "${ip}" >  ${file_path}/account/${api_name}/${region}/${remark}/ip
+    echo "${ip}" >  ${file_path}/account/${api_name}/${region}/vm/${remark}/ip
     
     
     clear
