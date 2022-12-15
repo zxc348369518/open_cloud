@@ -824,6 +824,7 @@ initialization(){
     
     if [ ! -f "/usr/local/bin/aws" ]; then
         echo "需要初始化，2秒后进行！"
+        echo "注意：如果一直卡主无法初始化，请自行安装aws cli就可以了。"
         sleep 2s
         install_aws_EC2_cli
         rm -rf /root/aws
