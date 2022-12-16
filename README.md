@@ -35,7 +35,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/o
 ## Azure 1.0【旧版不建议使用】
  - 支持常用功能、更换IP
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-Azure.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/opencloud-Azure.sh)
 ```
 
 ## Vultr 1.0
