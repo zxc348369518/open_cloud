@@ -8,11 +8,171 @@ Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
+Version="3.0"
 file_path="/root/.opencloud/do"
-#do循环脚本
-do_loop_script(){
-echo -e "
- ${Green_font_prefix}98.${Font_color_suffix} 返回Digitalocean菜单
+bash_name="Digitalocean"
+
+#初始化
+initialization(){
+    mkdir -p ${file_path}
+    mkdir -p ${file_path}/account
+    mkdir -p ${file_path}/account/default（勿删）
+
+    if [ ! -f "${file_path}/userdata" ]; then
+        echo "#!/bin/bash
+                
+sudo service iptables stop 2> /dev/null ; chkconfig iptables off 2> /dev/null ;
+sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/sysconfig/selinux;
+sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/selinux/config;
+sudo setenforce 0;
+echo root:Opencloud@Leige |sudo chpasswd root;
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+sudo service sshd restart;" > ${file_path}/userdata
+    fi
+    menu
+}
+
+#菜单
+menu() {
+  clear
+  echo -e "Digitalocean 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
+项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} API测活
+ ${Green_font_prefix}2.${Font_color_suffix} 创建机器
+ ${Green_font_prefix}3.${Font_color_suffix} 删除机器
+————————————————————————————————————————————————————————————————
+ ${Green_font_prefix}4.${Font_color_suffix} 添加api
+ ${Green_font_prefix}5.${Font_color_suffix} 删除api
+————————————————————————————————————————————————————————————————
+ 当前版本：${Version}" &&
+
+read -p " 请输入数字 :" num
+  case "$num" in
+    1)
+    check_account
+    ;;
+    2)
+    create
+    ;;
+    3)
+    delete_vm
+    ;;
+    4)
+    create_api
+    ;;
+    5)
+    delete_api
+    ;;
+  *)
+    clear
+    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
+    sleep 2s
+    menu
+    ;;
+  esac
+}
+
+#标题
+title(){
+    echo "`date` 正在进行 ${bash_name} ${title_content}"
+    echo
+}
+
+#查询已保存api
+check_api(){
+    echo "已保存的api有："
+    if ls -d "${file_path}/account/"*/ &> /dev/null; then
+    ls "${file_path}/account/"
+    else
+        :
+    fi
+}
+
+#检查vm备注是否存在
+check_vm_name(){
+    if test -d "${file_path}/account/${api_name}/${vm_name}"; then
+        echo "检测到该备注存在，请重新添加（2秒后返回）"
+        sleep 2s
+        create_vm
+    else
+        :
+    fi
+}
+
+#选择API
+select_api(){
+    echo "已保存的api有："
+    
+    num_files=$(ls "${file_path}/account" | wc -l)
+
+    for ((i=1; i<=num_files; i++)); do
+      file=$(ls "${file_path}/account" | sort | sed -n "${i}p")
+      echo "$i. $file"
+    done
+
+    echo "请选择操作的API（输入编号）："
+    read file_num
+
+    api_name=$(ls "${file_path}/account" | sort | sed -n "${file_num}p")
+}
+
+#添加api
+create_api(){
+    
+    clear
+    title_content="创建API操作"
+    title
+    
+    check_api
+    
+    echo
+    read -e -p "请新的api添加一个备注：" api_name
+    
+    if test -d "${file_path}/account/${api_name}"; then
+        echo "检测到该备注存在，请重新添加（2秒后返回）"
+        sleep 2s
+        create_api
+    else
+        :
+    fi
+
+    read -e -p "输入api：" api_key
+    
+    mkdir ${file_path}/account/${api_name}
+	echo "${api_key}" > ${file_path}/account/${api_name}/token
+	echo "添加成功！"
+	loop_script
+}
+
+#删除API
+delete_api(){
+    clear
+    title_content="删除API操作"
+    title
+    select_api
+    
+    clear
+    title_content="删除VM操作"
+    title
+    echo
+    read -p "是否需要帮你删除备注为 ${api_name} 的API [y/n] " confirm
+
+    if [[ $confirm =~ ^[Yy]$ ]]; then
+        rm -rf ${file_path}/account/${api_name}
+        echo
+        echo "备注为 ${api_name} 的API，删除成功！"
+    else
+        echo
+        echo "用户已取消"
+    fi
+    loop_script
+}
+
+#循环脚本
+loop_script(){
+    echo
+    echo -e "${Green_font_prefix}98.${Font_color_suffix} 返回Digitalocean菜单
  ${Green_font_prefix}99.${Font_color_suffix} 退出脚本"  &&
  
 
@@ -33,50 +193,32 @@ read -p " 请输入数字 :" num
   esac
 }
 
-#do测活
-Information_user_do() {
+#测活
+check_account(){
     clear
-    echo "`date` 正在进行Digitalocean测活api操作"
-    echo
-    cd ${file_path}/account
-    o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account`)
-    i=-1
-    echo "已保存的api"
-    while ((i < ("${o}" - "1" )))
-    do
-        ((i++))
-        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
-        echo ${a[i]}
-    done
+    title_content="检测API操作"
+    title
     
-    read -e -p "是否需要测活那个API？(编号)：" num
+    select_api
     
-    clear
-    echo "`date` 正在进行Digitalocean测活api操作"
-    echo
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/account/${api_name}/token`
     
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/${a[num]}/token`
+    json=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/account"`
+    json2=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/customers/my/balance"`
 
-        json=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/account"`
-        json2=`curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/customers/my/balance"`
-        var1=`echo $json | jq -r '.account.droplet_limit'`
-        var2=`echo $json | jq -r '.account.email'`
-        var3=`echo $json | jq -r '.account.status'`
-        var4=`echo $json2 | jq -r '.month_to_date_balance'`
-        
-        echo -e  "账号信息如下：
-API名称：${var0}
-电子邮箱：${var2}
-账号配额：${var1}
-账号余额：${var4}
-账号状态：${var3}" 
+    echo
+    echo -e  "账号信息如下：
+API名称：${api_name}
+电子邮箱：`echo $json | jq -r '.account.email'`
+账号配额：`echo $json | jq -r '.account.droplet_limit'`
+账号余额：`echo $json2 | jq -r '.month_to_date_balance'`
+账号状态：`echo $json | jq -r '.account.status'`"
 
-    do_loop_script
+    loop_script
 }
 
-#do服务器位置
-region_do(){
+#服务器位置
+region(){
     json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/region)`
     o=`echo $json| jq ".opencloud | length"`
     
@@ -91,8 +233,8 @@ region_do(){
         region=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
-#do服务器大小
-size_do(){
+#服务器大小
+size(){
     json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/size)`
     o=`echo $json| jq ".opencloud | length"`
     
@@ -105,11 +247,11 @@ size_do(){
     done
     read -e -p "请选择你的服务器机型（编号）:" b
     size=`echo $json | jq -r '.opencloud['${b}'].id'`
-    
-    clear
-    echo "`date` 正在进行Digitalocean创建vm操作"
-    echo
-    
+
+}
+
+#服务器大小
+size2(){  
     json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/size-${size})`
     o=`echo $json| jq ".opencloud | length"`
     
@@ -125,8 +267,8 @@ size_do(){
         size=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
-#do服务器镜像
-image_do(){
+#服务器镜像
+image(){
     json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/image)`
     o=`echo $json| jq ".opencloud | length"`
     
@@ -141,107 +283,51 @@ image_do(){
         image=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
-#创建机器
-create_do() {
-    clear
-    echo "`date` 正在进行Digitalocean创建vm操作"
-    echo
-    read -p " 请输入机器名字:" name
-    clear
-    echo "`date` 正在进行Digitalocean创建vm操作"
-    echo
-    region_do
-    clear
-    echo "`date` 正在进行Digitalocean创建vm操作"
-    echo
-    size_do
-    clear
-    echo "`date` 正在进行Digitalocean创建vm操作"
-    echo
-    image_do
-    clear
-    echo "`date` 正在进行Digitalocean创建vm操作"
-    echo
-    cd ${file_path}/account
-    o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account`)
-    i=-1
-    echo "已保存的api"
-    while ((i < ("${o}" - "1" )))
-    do
-        ((i++))
-        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
-        echo ${a[i]}
-    done
-
-    read -e -p "是否需要使用那个API？(编号)：" num
-    
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/account/${a[num]}/token`
-    
-    clear
-    echo -e "`date` 正在进行Digitalocean创建vm操作
-    
-使用账号：${a[num]}
-机器备注：${name}
+#vm信息
+vm_info(){
+    echo -e "使用账号：${api_name}
+机器备注：${vm_name}
 服务器位置：${region}
 服务器规格：${size}
 机器系统: ${image}"
-        read -e -p "请确认开机信息？(默认: N 取消):" state
-        [[ -z ${state} ]] && state="n"
-        if [[ ${state} == [Yy] ]]; then
-        clear
-echo "`date` 正在进行Digitalocean创建vm操作"
-            
-             json=`curl -s -X POST \
-             -H "Content-Type: application/json" \
-             -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-             -d '{
-                "name":"'${name}'",
-                "region":"'${region}'",
-                "size":"'${size}'",
-                "image":"'${image}'",
-                "backups":"false",
-                "ipv6":"true",
-                "user_data":"'"$(cat ${file_path}/userdata)"'"
-             }' \
-             https://api.digitalocean.com/v2/droplets`
-            rm -rf ${file_path}/userdata
-           var1=`echo $json | jq -r '.droplet.id'`
-           echo ""
-           if [[ $var1 == null ]];
-           then
-               echo $json
-               echo "创建失败"
-           else
-               echo "创建中，请稍等！"
-               cheek_ip_do
-           fi
-        fi
-
 }
 
-#获取doip
-cheek_ip_do(){
-
-    var1=`echo $json | jq -r '.droplet.id'`
-    json=`curl -s -X GET \
+#提交创建vm
+create_vm(){
+    json=`curl -s -X POST \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
-    "https://api.digitalocean.com/v2/droplets/${var1}"`
-    ipv4=`echo $json | jq -r '.droplet.networks.v4[0].ip_address'`
+    -d '{
+       "name":"'${name}'",
+       "region":"'${region}'",
+       "size":"'${size}'",
+       "image":"'${image}'",
+       "backups":"false",
+       "ipv6":"true",
+       "user_data":"'"$(cat ${file_path}/userdata)"'"
+    }' \
+    https://api.digitalocean.com/v2/droplets`
     
-    if [[ $ipv4 =~ "null" ]];
+    var1=`echo $json | jq -r '.droplet.id'`
+
+    if [[ $var1 == null ]];
     then
-        cheek_ip_do
-    else
-        mkdir ${file_path}/account/${a[num]}/${name}
-        echo ${var1} > ${file_path}/account/${a[num]}/${name}/id
-        echo ${ipv4} > ${file_path}/account/${a[num]}/${name}/ip
         clear
-        echo -e "`date` Digitalocean创建vm完成！
-        
-使用账号：${a[num]}
-机器备注：${name}
+        echo $json
+        echo "创建失败"
+        loop_script
+    else
+        mkdir -p ${file_path}/account/${api_name}/vm
+        mkdir -p ${file_path}/account/${api_name}/vm/${vm_name}
+        echo ${var1} > ${file_path}/account/${api_name}/vm/${vm_name}/id
+    fi
+}
+
+#创建vm完成返回信息
+create_vm_done(){
+    echo
+    echo -e "使用账号：${api_name}
+机器备注：${vm_name}
 服务器位置：${region}
 服务器规格：${size}
 机器系统: ${image}
@@ -250,208 +336,143 @@ IP地址为：${ipv4}
 用户名：root
 密码：Opencloud@Leige
 密码为固定密码，请立即修改！"
+}
+
+#获取vmip
+cheek_ip(){
+
+    json=`curl -s -X GET \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
+    "https://api.digitalocean.com/v2/droplets/${var1}"`
+    ipv4=`echo $json | jq -r '.droplet.networks.v4[0].ip_address'`
+    
+    if [[ $ipv4 =~ "null" ]];
+    then
+        sleep 5s
+        cheek_ip
+    else
+        echo ${ipv4} > ${file_path}/account/${api_name}/vm/${vm_name}/ip
+        
+        clear
+        title_content="创建VM操作"
+        title
+        create_vm_done
     fi
     do_loop_script
 }
 
-#删除机器
-del_do() {
+#创建vm
+create(){
     clear
-    echo "`date` 正在进行Digitalocean删除vm操作"
-    echo
-    cd ${file_path}/account
-    o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account`)
-    i=-1
-    echo "已保存的api"
-    while ((i < ("${o}" - "1" )))
-    do
-        ((i++))
-        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
-        echo ${a[i]}
-    done
+    title_content="创建VM操作"
+    title
     
-    read -e -p "是否需要删除那个API？(编号)：" num
+    select_api
     
-    DIGITALOCEAN_TOKEN=`cat ${file_path}/${a[num]}/token`
+    DIGITALOCEAN_TOKEN=`cat ${file_path}/account/${api_name}/token`
+
+    clear
+    title_content="创建VM操作"
+    title
+    read -p " 请输入机器名字:" vm_name
+    check_vm_name
     
     clear
-    echo "`date` 正在进行Digitalocean删除vm操作"
-    echo
-    
-    cd ${file_path}/account/${a[num]}/vm
-    o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${a[num]}/vm`)
-    i=-1
-    echo "${a[num]}名下已创建的机器"
-    while ((i < ("${o}" - "1" )))
-    do
-        ((i++))
-        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
-        echo ${a[i]}
-    done
-    
-    read -e -p "是否需要删除那台备注的机器(编号)：" num
-    
-    qq=`pwd`
-    ip=`cat ${qq}/${a[num]}/ip`
-    id=`cat ${qq}/${a[num]}/id`
+    title_content="创建VM操作"
+    title
+    region
     
     clear
-    echo "`date` 正在进行Digitalocean删除vm操作"
+    title_content="创建VM操作"
+    title
+    image
+    
+    clear
+    title_content="创建VM操作"
+    title
+    size
+    
+    clear
+    title_content="创建VM操作"
+    title
+    size2
+    
+    clear
+    title_content="创建VM操作"
+    title
+    vm_info
+    
     echo
+    read -e -p "请确认开机信息？(默认: N 取消):" confirm
     
-    echo "查询到机器ID为：${id}，IP为：${ip}"
-    
-    read -e -p "是否需要删除这台机器(默认: N 取消)：" info
-    [[ -z ${info} ]] && info="n"
-    if [[ ${info} == [Yy] ]]; then
+    if [[ $confirm =~ ^[Yy]$ ]]; then
         clear
-        echo "`date` 正在进行Digitalocean删除vm操作，删除ID为：${id}，IP为：${ip}的VM"
+        title_content="创建VM操作"
+        title
+        create_vm
+        
+        clear
+        title_content="创建VM操作"
+        title
+        cheek_ip
+    else
         echo
-        sleep 2s
+        echo "用户已取消"
+        loop_script
+    fi
+}
+
+#选择vm
+select_vm(){
+
+    num_files=$(ls "${file_path}/account/${api_name}/vm" | wc -l)
+
+    for ((i=1; i<=num_files; i++)); do
+      file=$(ls "${file_path}/account/${api_name}/vm" | sort | sed -n "${i}p")
+      echo "$i. $file"
+    done
+
+
+    echo "请选择操作的API（输入编号）："
+    read file_num
+
+    vm_name=$(ls "${file_path}/account/${api_name}/vm" | sort | sed -n "${file_num}p")
+}
+
+#删除vm
+delete_vm(){
+    clear
+    title_content="删除VM操作"
+    title
+    select_api
+    
+    clear
+    title_content="删除VM操作"
+    title
+    select_vm
+    
+    clear
+    title_content="删除VM操作"
+    title
+    echo
+    read -p "是否需要帮你删除备注为 ${api_name} 的API中的 ${vm_name} [y/n] " confirm
+    
+    id=`cat ${file_path}/account/${api_name}/vm/${vm_name}/id`
+
+    if [[ $confirm =~ ^[Yy]$ ]]; then
         curl -s -X DELETE \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \
         "https://api.digitalocean.com/v2/droplets/${id}"
-        rm -rf ${qq}
-        echo && echo "删除成功"
+        rm -rf ${file_path}/account/${api_name}/vm/${vm_name}
+        echo
+        echo "备注为 ${api_name} 的API，删除成功！"
+    else
+        echo
+        echo "用户已取消"
     fi
     do_loop_script
 }
 
-#do菜单
-digitalocean_menu() {
-  clear
-  echo -e "Digitalocean 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
-项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
- ${Green_font_prefix}1.${Font_color_suffix} API测活
- ${Green_font_prefix}2.${Font_color_suffix} 创建机器
- ${Green_font_prefix}3.${Font_color_suffix} 删除机器
-————————————————————————————————————————————————————————————————
- ${Green_font_prefix}4.${Font_color_suffix} 查询已保存api
- ${Green_font_prefix}5.${Font_color_suffix} 添加api
- ${Green_font_prefix}6.${Font_color_suffix} 删除api
-————————————————————————————————————————————————————————————————
- ${Green_font_prefix}0.${Font_color_suffix} 退出脚本" &&
-
-read -p " 请输入数字 :" num
-  case "$num" in
-    1)
-    Information_user_do
-    ;;
-    2)
-    create_do
-    ;;
-    3)
-    del_do
-    ;;
-    4)
-    clear
-    echo "`date` 正在进行Digitalocean查询已保存的api"
-    echo
-    check_api_do
-    do_loop_script
-    ;;
-    5)
-    create_api_do
-    ;;
-    6)
-    del_api_do
-    ;;
-    0)
-    exit 1
-    ;;
-  *)
-    clear
-    echo -e "${Error}:请输入正确数字 [0-99]（2秒后返回）"
-    sleep 2s
-    digitalocean_menu
-    ;;
-  esac
-}
-
-#查询已保存doapi
-check_api_do(){
-    echo "已保存的api有："
-    ls ${file_path}/account
-}
-
-#创建doapi
-create_api_do(){
-    clear
-    echo "`date` 正在进行Digitalocean创建api操作"
-    echo
-    check_api_do
-    
-    echo
-    read -e -p "请新的api添加一个备注：" api_name
-    read -e -p "输入api：" api_key
-	
-	if [ ! -d "${file_path}/account/${api_name}" ]; then
-			mkdir ${file_path}/account/${api_name}
-			echo "${api_key}" > ${file_path}/account/${api_name}/token
-			echo "添加成功！"
-		else
-			echo "该备注已经存在，请更换其他名字，或者删除原来api"
-    fi
-    
-    do_loop_script
-}
-
-#初始化
-initialization(){
-    mkdir -p ${file_path}
-    mkdir -p ${file_path}/account
-    mkdir -p ${file_path}/account/default（勿删）
-
-    if [ ! -f "${file_path}/userdata" ]; then
-        echo "#!/bin/bash
-                
-sudo service iptables stop 2> /dev/null ; chkconfig iptables off 2> /dev/null ;
-sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/sysconfig/selinux;
-sudo sed -i.bak '/^SELINUX=/cSELINUX=disabled' /etc/selinux/config;
-sudo setenforce 0;
-echo root:Opencloud@Leige |sudo chpasswd root;
-sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
-sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
-sudo service sshd restart;" > ${file_path}/userdata
-    fi
-    digitalocean_menu
-}
-
-#删除doapi
-del_api_do(){
-    clear
-    echo "`date` 正在进行Digitalocean删除api操作"
-    echo
-    cd ${file_path}/account
-    o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account`)
-    i=-1
-    echo "已保存的api"
-    while ((i < ("${o}" - "1" )))
-    do
-        ((i++))
-        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
-        echo ${a[i]}
-    done
-    
-    echo
-    
-    read -e -p "是否需要删除那个API？(编号)：" num
-    
-    read -e -p "是否需要删除备注为 ${a[num]} 的API(默认: N 取消)：" info
-    [[ -z ${info} ]] && info="n"
-    if [[ ${info} == [Yy] ]]; then
-		if [ ! -d "${file_path}/account/${api_name}" ]; then
-			echo "未在系统中查找到该名称的api"
-		else
-			rm -rf ${file_path}/account/${a[num]}
-            echo "删除成功！"
-		fi
-	
-    fi
-    do_loop_script
-}
 initialization
