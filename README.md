@@ -1,4 +1,4 @@
-# 云服务开机脚本 本地Shell版 2.0 【Beta】
+# 云服务开机脚本 本地Shell版 【Beta】
 
 # 使用脚本
 
@@ -12,32 +12,32 @@ apt-get install curl jq unzip -y
 ```
 - 常用功能（记录API、创建linux、删除vm、查询账号状态）
 
-## Digitalocean 
+## Digitalocean 2.0 
  - 支持常用功能
 
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)
 ```
 
-## Linode
+## Linode 2.0
  - 支持常用功能
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)
 ```
 
-## AWS（AWC CLI）
+## AWS（AWC CLI） 2.0
 EC2：
  - 支持常用功能、创建Windows、获取Windows登录密码、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-aws-ec2.sh)
 ```
 
-## Azure
+## Azure 1.0
 ```
 新版本正在架构，请耐心等待！
 ```
 
-## Vultr
+## Vultr 1.0
 ```
 未完成
 ```
