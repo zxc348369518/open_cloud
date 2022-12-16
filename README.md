@@ -25,16 +25,18 @@ bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/op
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)
 ```
 
-## AWS（AWC CLI） 2.0
+## AWS 2.0
 EC2：
  - 支持常用功能、创建Windows、获取Windows登录密码、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-aws-ec2.sh)
 ```
 
-## Azure 1.0
+## Azure 1.0【旧版不建议使用】
+EC2：
+ - 支持常用功能、更换IP
 ```
-新版本正在架构，请耐心等待！
+bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-Azure.sh)
 ```
 
 ## Vultr 1.0
