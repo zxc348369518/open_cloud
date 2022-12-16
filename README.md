@@ -12,27 +12,27 @@ apt-get install curl jq unzip -y
 ```
 - 常用功能（记录API、创建linux、删除vm、查询账号状态）
 
-## Digitalocean 3.0 
+## Digitalocean
  - 支持常用功能
 
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)
 ```
 
-## Linode 2.0
+## Linode
  - 支持常用功能
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)
 ```
 
-## AWS 2.0
+## AWS
 EC2：
  - 支持常用功能、创建Windows、获取Windows登录密码、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-aws-ec2.sh)
 ```
 
-## Azure 1.0【旧版不建议使用】
+## Azure【旧版不建议使用】
  - 支持常用功能、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/opencloud-Azure.sh)

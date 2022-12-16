@@ -159,12 +159,14 @@ create_linode() {
 
     read -e -p "是否需要使用那个API？(编号)：" num
     
-    TOKEN=`cat ${file_path}/account/${a[num]}/token`
+    api_name=${a[num]}
+    
+    TOKEN=`cat ${file_path}/account/${api_name}/token`
     
     clear
     echo "`date` 正在进行Linode创建vm操作
     
-使用账号：${a[num]}
+使用账号：${api_name}
 机器备注：${name}
 服务器位置：${region}
 服务器规格：${size}
@@ -197,14 +199,15 @@ create_linode() {
         echo $json
         echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
     else
-        mkdir ${file_path}/account/${a[num]}/${name}
-        echo ${id} > ${file_path}/account/${a[num]}/${name}/id
-        echo ${ipv4} > ${file_path}/dlinodeo/account/${a[num]}/${name}/ipv4
-        echo ${ipv6} > ${file_path}/dlinodeo/account/${a[num]}/${name}/ipv6
+        mkdir ${file_path}/account/${api_name}/vm
+        mkdir ${file_path}/account/${api_name}}/vm/${name}
+        echo ${id} > ${file_path}/account/${api_name}//vm/${name}/id
+        echo ${ipv4} > ${file_path}/dlinodeo/account/${api_name}/vm/${name}/ipv4
+        echo ${ipv6} > ${file_path}/dlinodeo/account/${api_name}/vm/${name}/ipv6
         
         echo -e "`date` Linode创建vm完成！
     
-使用账号：${a[num]}
+使用账号：${api_name}
 机器备注：${name}
 服务器位置：${region}
 服务器规格：${size}
@@ -238,17 +241,19 @@ del_linode() {
     
     read -e -p "是否需要删除那个API？(编号)：" num
     
-    token=`cat ${file_path}/${a[num]}/token`
+    api_name=${a[num]}
+    
+    token=`cat ${file_path}/${api_name}/token`
     
     clear
     echo "`date` 正在进行Linode删除vm操作"
     echo
     
-    cd ${file_path}/account/${a[num]}/vm
+    cd ${file_path}/account/${api_name}/vm
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${a[num]}/vm`)
+    a=(`ls ${file_path}/account/${api_name}/vm`)
     i=-1
-    echo "${a[num]}名下已创建的机器"
+    echo "${api_name}名下已创建的机器"
     while ((i < ("${o}" - "1" )))
     do
         ((i++))
@@ -258,9 +263,10 @@ del_linode() {
     
     read -e -p "是否需要删除那台备注的机器(编号)：" num
     
-    qq=`pwd`
-    ip=`cat ${qq}/${a[num]}/ipv4`
-    id=`cat ${qq}/${a[num]}/id`
+    vm_name=${a[num]}
+    
+    ip=`cat ${file_path}/account/${api_name}/vm/${vm_name}/ipv4`
+    id=`cat ${file_path}/account/${api_name}/vm/${vm_name}/id`
     
     clear
     echo "`date` 正在进行Linode删除vm操作"
@@ -278,7 +284,7 @@ del_linode() {
         curl -s -H "Authorization: Bearer $token" \
             -X DELETE \
             https://api.linode.com/v4/linode/instances/${id}
-        rm -rf ${qq}
+        rm -rf ${file_path}/account/${api_name}/vm/${vm_name}
         echo && echo "删除成功"
     fi
     linode_loop_script
@@ -401,13 +407,15 @@ del_api_linode(){
     
     read -e -p "是否需要删除那个API？(编号)：" num
     
-    read -e -p "是否需要删除备注为 ${a[num]} 的API(默认: N 取消)：" info
+    api_name=${a[num]}
+    
+    read -e -p "是否需要删除备注为 ${api_name} 的API(默认: N 取消)：" info
     [[ -z ${info} ]] && info="n"
     if [[ ${info} == [Yy] ]]; then
 		if [ ! -d "${file_path}/account/${api_name}" ]; then
 			echo "未在系统中查找到该名称的api"
 		else
-			rm -rf ${file_path}/account/${a[num]}
+			rm -rf ${file_path}/account/${api_name}
             echo "删除成功！"
 		fi
 	

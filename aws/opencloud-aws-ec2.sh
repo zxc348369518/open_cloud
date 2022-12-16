@@ -35,8 +35,10 @@ get_win_passwd(){
     echo
     read -e -p "是否需要使用那个API？(编号)：" num
     
-    key_id=`cat ${file_path}/account/${a[num]}/key_id`
-    access_key=`cat ${file_path}/account/${a[num]}/access_key`
+    api_name=${a[num]}
+    
+    key_id=`cat ${file_path}/account/${api_name}/key_id`
+    access_key=`cat ${file_path}/account/${api_name}/access_key`
     
     export AWS_ACCESS_KEY_ID=${key_id}
     export AWS_SECRET_ACCESS_KEY=${access_key}
@@ -47,9 +49,9 @@ get_win_passwd(){
     echo "`date` 正在进行AWS EC2 获取WIN密码"
     echo
     
-    cd ${file_path}/account/${b[num]/${region}}
+    cd ${file_path}/account/${api_name}/VM/${region}/vm_info
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${b[num]}/${region}`)
+    a=(`ls ${file_path}/account/${api_name}/VM/${region}/vm_info`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -61,14 +63,13 @@ get_win_passwd(){
     echo
     read -e -p "是否需要获取那台机器？(编号)：" num
     
+    vm_name=${a[num]}
     
-    qq=`pwd`
-    
-    ids=`cat ${qq}/vm/InstanceId`
+    ids=`cat ${file_path}/account/${api_name}/VM/${region}/vm_info/${vm_name}/InstanceId`
     
     sleep 10s
     
-    `json=ws ec2 get-password-data --instance-id ${ids} --priv-launch-key ${file_path}/${api_name}/${region}/opencloud.pem`
+    `json=ws ec2 get-password-data --instance-id ${ids} --priv-launch-key ${file_path}/account/${api_name}/opencloud.pem`
     data=`echo $json | jq -r '.PasswordData'`
     clear
     echo -e "`date` 正在进行AWS EC2 获取WIN密码
@@ -101,8 +102,10 @@ del_ec2_aws(){
     echo
     read -e -p "是否需要使用那个API？(编号)：" num
     
-    key_id=`cat ${file_path}/account/${a[num]}/key_id`
-    access_key=`cat ${file_path}/account/${a[num]}/access_key`
+    api_name=${a[num]}
+    
+    key_id=`cat ${file_path}/account/${api_name}/key_id`
+    access_key=`cat ${file_path}/account/${api_name}/access_key`
     
     export AWS_ACCESS_KEY_ID=${key_id}
     export AWS_SECRET_ACCESS_KEY=${access_key}
@@ -113,9 +116,9 @@ del_ec2_aws(){
     echo "`date` 正在进行AWS EC2 删除vm"
     echo
     
-    cd ${file_path}/account/${b[num]}/${region}
+    cd ${file_path}/account/${api_name}/VM/${region}/vm_info
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${b[num]}/${region}`)
+    a=(`ls ${file_path}/account/${api_name}/VM/${region}/vm_info`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -128,9 +131,10 @@ del_ec2_aws(){
     read -e -p "是否需要修改那台机器？(编号)：" num
     
     
-    qq=`pwd`
+    vm_name=${a[num]}
     
-    ids=`cat ${qq}/vm/InstanceId`
+    
+    ids=`cat ${file_path}/account/${api_name}/VM/${region}/vm_info/${vm_name}/InstanceId`
     
     json=`aws ec2 terminate-instances \
     --instance-ids ${ids}`
@@ -176,8 +180,10 @@ change_ip_aws_ec2(){
     echo
     read -e -p "是否需要使用那个API？(编号)：" num
     
-    key_id=`cat ${file_path}/account/${a[num]}/key_id`
-    access_key=`cat ${file_path}/account/${a[num]}/access_key`
+    api_name=${a[num]}
+    
+    key_id=`cat ${file_path}/account/${api_name}/key_id`
+    access_key=`cat ${file_path}/account/${api_name}/access_key`
     
     export AWS_ACCESS_KEY_ID=${key_id}
     export AWS_SECRET_ACCESS_KEY=${access_key}
@@ -188,9 +194,9 @@ change_ip_aws_ec2(){
     echo "`date` 正在进行AWS EC2 更换IP"
     echo
     
-    cd ${file_path}/account/${b[num]}/${region}
+    cd ${file_path}/account/${api_name}/VM/${region}/vm_info
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${b[num]}/${region}`)
+    a=(`ls ${file_path}/account/${api_name}/VM/${region}/vm_info`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -203,9 +209,9 @@ change_ip_aws_ec2(){
     read -e -p "是否需要修改那台机器？(编号)：" num
     
     
-    qq=`pwd`
+    vm_name=${a[num]}
     
-    ids=`cat ${qq}/vm/InstanceId`
+    ids=`cat ${file_path}/account/${api_name}/VM/${region}/vm_info/${vm_name}/InstanceId`
     
     clear
     echo "`date` 正在进行AWS EC2 更换IP"
@@ -237,16 +243,16 @@ change_ip_aws_ec2(){
     ip=`echo $json | jq -r '.Reservations[0].Instances[0].PublicIpAddress'`
     echo "`date` 正在进行AWS EC2 VM信息"
     echo
-    echo "旧IP：`${file_path}/account/${api_name}/${region}/vm/${remark}/ip`
+    echo "旧IP：`${file_path}/account/${api_name}/vm/${region}/vm_info/${remark}/ip`
 新IP：${ip}"
-    rm -rf ${file_path}/account/${api_name}/${region}/vm/${remark}/ip
-    echo "${ip}" >  ${file_path}/account/${api_name}/${region}/vm/${remark}/ip
+    rm -rf ${file_path}/account/${api_name}/vm/${region}/${remark}/vm_info/ip
+    echo "${ip}" >  ${file_path}/account/${api_name}/vm/${region}/vm_info/${remark}/ip
 }
 
 #已保存实例的备注
 check_remark_aws_EC2(){
     echo "该API下保存的实例备注："
-    ls ${file_path}/account/${api_name}/${region}
+    ls ${file_path}/account/${api_name}/VM/${region}/vm_info
 }
 
 #创建机器 win
@@ -265,9 +271,11 @@ create_win_aws_EC2(){
     InstanceId=`echo $json | jq -r '.Instances[0].InstanceId'`
     
     if [[ $InstanceId != null ]]; then
-        mkdir ${file_path}/account/${api_name}/${region}/vm
-        mkdir ${file_path}/account/${api_name}/${region}/vm/${remark}
-        echo "${InstanceId}" > ${file_path}/account/${api_name}/${region}/vm/${remark}/InstanceId
+        mkdir ${file_path}/account/${api_name}/vm
+        mkdir ${file_path}/account/${api_name}/vm/${region}
+        mkdir ${file_path}/account/${api_name}/vm/${region}/vm_info
+        mkdir ${file_path}/account/${api_name}/vm/${region}/vm_info/${remark}
+        echo "${InstanceId}" > ${file_path}/account/${api_name}/vm/${region}/vm_info/${remark}/InstanceId
     else
         echo $json
         echo ""
@@ -300,9 +308,11 @@ sudo service sshd restart;
     InstanceId=`echo $json | jq -r '.Instances[0].InstanceId'`
     
     if [[ $InstanceId != null ]]; then
-        mkdir ${file_path}/account/${api_name}/${region}/vm
-        mkdir ${file_path}/account/${api_name}/${region}/vm/${remark}
-        echo "${InstanceId}" > ${file_path}/account/${api_name}/${region}/vm/${remark}/InstanceId
+        mkdir ${file_path}/account/${api_name}/vm
+        mkdir ${file_path}/account/${api_name}/vm/${region}
+        mkdir ${file_path}/account/${api_name}/vm/${region}/${remark}
+        mkdir ${file_path}/account/${api_name}/vm/${region}/${remark}/vm_info
+        echo "${InstanceId}" > ${file_path}/account/${api_name}/vm/${region}/vm_info/${remark}/InstanceId
     else
         echo $json
         echo ""
@@ -335,8 +345,10 @@ create_ec2_AWS(){
     echo
     read -e -p "是否需要使用那个API？(编号)：" num
     
-    key_id=`cat ${file_path}/account/${a[num]}/key_id`
-    access_key=`cat ${file_path}/account/${a[num]}/access_key`
+    api_name=${a[num]}
+    
+    key_id=`cat ${file_path}/account/${api_name}/key_id`
+    access_key=`cat ${file_path}/account/${api_name}/access_key`
     
     export AWS_ACCESS_KEY_ID=${key_id}
     export AWS_SECRET_ACCESS_KEY=${access_key}
@@ -378,7 +390,7 @@ create_ec2_AWS(){
     clear
     echo "`date` 正在进行AWS EC2 创建vm
         
-使用账号：${a[num]}
+使用账号：${api_name}
 机器备注：${remark}
 服务器位置：${region}
 服务器规格：${size}
@@ -391,13 +403,15 @@ create_ec2_AWS(){
     clear
     echo "`date` 正在进行AWS EC2 创建vm"
     echo
-    if test -f "${file_path}/account/${api_name}/${region}/vpcid"; then
-        vpcid=`cat ${file_path}/account/${api_name}/${region}/vpcid`
+    if test -f "${file_path}/account/${api_name}/VM/${region}/vpcid"; then
+        vpcid=`cat ${file_path}/account/${api_name}/VM/${region}/vpcid`
+        
+        # 写到这里
     else
         json=`aws  ec2 describe-vpcs`
         vpcid=`echo $json | jq -r '.Vpcs[0].VpcId'`
         if [[ $svpcidgid != null ]]; then
-            echo "${vpcid}" > ${file_path}/account/${api_name}/${region}/vpcid
+            echo "${vpcid}" > ${file_path}/account/${api_name}/VM/${region}/vpcid
         else
             clear
             echo $json
@@ -410,8 +424,8 @@ create_ec2_AWS(){
      clear
     echo "`date` 正在进行AWS EC2 创建vm"
     echo
-    if test -f "${file_path}/${api_name}/${region}/security_group"; then
-       ${sgid}=`cat ${file_path}/account/${api_name}/${region}/security_group`
+    if test -f "${file_path}/${api_name}/VM/${region}/security_group"; then
+       ${sgid}=`cat ${file_path}/account/${api_name}/VM/${region}/security_group`
     else
         json=`aws ec2 create-security-group \
         --region ${region} \
@@ -423,7 +437,7 @@ create_ec2_AWS(){
         echo "`date` 正在进行AWS EC2 创建vm"
         echo
         if [[ $sgid != null ]]; then
-            echo "${sgid}" > ${file_path}/account/${api_name}/${region}/security_group
+            echo "${sgid}" > ${file_path}/account/${api_name}/vm/${region}/security_group
                 json=`aws ec2 authorize-security-group-ingress \
                 --group-id ${sgid} \
                 --protocol -1 \
@@ -451,13 +465,13 @@ create_ec2_AWS(){
     clear
     echo "`date` 正在进行AWS EC2 创建vm"
     echo
-    if test -f "${file_path}/account/${api_name}/${region}/SubnetId"; then
-        vpcid=`cat ${file_path}/account/${api_name}/${region}/SubnetId`
+    if test -f "${file_path}/account/${api_name}/vm/${region}/SubnetId"; then
+        vpcid=`cat ${file_path}/account/${api_name}/vm/${region}/SubnetId`
     else
         json=`aws ec2 describe-subnets --region ${region}`
         SubnetId=`echo $json | jq -r '.Subnets[0].SubnetId'`
         if [[ SubnetId != null ]]; then
-            echo "${vpcid}" > ${file_path}/account/${api_name}/${region}/SubnetId
+            echo "${vpcid}" > ${file_path}/account/${api_name}/vm/${region}/SubnetId
         else
             clear
             echo $json
@@ -480,12 +494,12 @@ create_ec2_AWS(){
     echo "`date` 正在进行AWS EC2 创建vm"
     echo
     sleep 10s
-    ids=`cat ${file_path}/${api_name}/${region}/${remark}/InstanceId`
+    ids=`cat ${file_path}/${api_name}/vm/${region}/${remark}/InstanceId`
     json=`aws ec2 describe-instances \
     --instance-ids ${ids} \
     --region ${region} `
     ip=`echo $json | jq -r '.Reservations[0].Instances[0].PublicIpAddress'`
-    echo "${ip}" >  ${file_path}/account/${api_name}/${region}/vm/${remark}/ip
+    echo "${ip}" >  ${file_path}/account/${api_name}//vm/${region}/vm_info/${remark}/ip
     
     
     clear
@@ -632,8 +646,10 @@ Information_user_aws_EC2(){
     echo
     read -e -p "是否需要测活那个API？(编号)：" num
     
-    key_id=`cat ${file_path}/account/${a[num]}/key_id`
-    access_key=`cat ${file_path}/account/${a[num]}/access_key`
+    api_name=${a[num]}
+    
+    key_id=`cat ${file_path}/account/${api_name}/key_id`
+    access_key=`cat ${file_path}/account/${api_name}/access_key`
     
     export AWS_ACCESS_KEY_ID=${key_id}
     export AWS_SECRET_ACCESS_KEY=${access_key}
@@ -683,10 +699,10 @@ read -p " 请输入数字 :" num
 #登录秘钥
 ssh_key(){
     
-    if [[ ! -f "${file_path}/${api_name}/${region}/opencloud.pem" ]]; then
-        json=`aws ec2 create-key-pair --key-name opencloud --query 'opencloud' --output text > ${file_path}/${api_name}/opencloud.pem`
+    if [[ ! -f "${file_path}/${api_name}/account/opencloud.pem" ]]; then
+        json=`aws ec2 create-key-pair --key-name opencloud --query 'opencloud' --output text > ${file_path}/account/${api_name}/opencloud.pem`
     else
-        keydata=`cat ${file_path}/${api_name}/opencloud.pem`
+        keydata=`cat ${file_path}/${api_name}/account/opencloud.pem`
     fi
 }
 
@@ -818,7 +834,6 @@ del_api_aws_EC2(){
 #初始化
 initialization(){
     mkdir -p ${file_path}
-    mkdir -p ${file_path}/account
     mkdir -p ${file_path}/account
     mkdir -p ${file_path}/account/default（勿删）
     
