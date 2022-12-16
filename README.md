@@ -33,7 +33,6 @@ bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/o
 ```
 
 ## Azure 1.0【旧版不建议使用】
-EC2：
  - 支持常用功能、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-Azure.sh)
