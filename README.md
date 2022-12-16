@@ -38,11 +38,6 @@ bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/o
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/opencloud-Azure.sh)
 ```
 
-## Vultr 1.0
-```
-未完成
-```
-
 # 主要特性
 - opencloud 利用 云服务的api调用 进行创建机器 删除机器等操作
 - 脚本会自动保存api到本地，云端不会记录你保存的api
