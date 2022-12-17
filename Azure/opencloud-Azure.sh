@@ -73,7 +73,7 @@ create_vm_azure(){
 
 #vm镜像
 image_azure(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/data/NT/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/data/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -92,7 +92,7 @@ image_azure(){
 
 #VM实例大小
 vmSize_azure(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/data/NT/vmSize)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/data/vmSize)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -366,7 +366,7 @@ create_azure(){
 
 #azure选择位置
 location_azure(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/data/NT/location)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/data/location)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
