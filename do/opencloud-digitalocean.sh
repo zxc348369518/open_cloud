@@ -36,7 +36,7 @@ sudo service sshd restart;" > ${file_path}/userdata
 #菜单
 menu() {
   clear
-  echo -e "Digitalocean 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
+  echo -e "${bash_name} 云服务开机脚本${Red_font_prefix} 开源免费 无加密代码${Font_color_suffix} ${Green_font_prefix}from @openccloud${Font_color_suffix}
 项目地址：${Red_font_prefix}https://github.com/LG-leige/open_cloud${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} API测活
  ${Green_font_prefix}2.${Font_color_suffix} 创建机器
@@ -219,7 +219,7 @@ API名称：${api_name}
 
 #服务器位置
 region(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/region)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/region)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -235,7 +235,7 @@ region(){
 
 #服务器大小
 size(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/size)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -252,7 +252,7 @@ size(){
 
 #服务器大小
 size2(){  
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/size-${size})`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size-${size})`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -269,7 +269,7 @@ size2(){
 
 #服务器镜像
 image(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/data/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1

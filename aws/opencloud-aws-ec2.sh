@@ -521,7 +521,7 @@ fi
 
 #aws选择区域
 region_ec2_aws(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/data/EC2/region/region)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/EC2/region/region)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -537,7 +537,7 @@ region_ec2_aws(){
     clear
     echo "`date` 正在进行AWS EC2 创建vm"
     echo
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/data/EC2/region/${id}) `
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/EC2/region/${id}) `
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -553,7 +553,7 @@ region_ec2_aws(){
 
 #aws选择类型
 size_ec2_aws(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/data/EC2/size/size)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/EC2/size/size)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -569,7 +569,7 @@ size_ec2_aws(){
     clear
     echo "`date` 正在进行AWS EC2 创建vm"
     echo
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/data/EC2/size/${id})`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/EC2/size/${id})`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -585,7 +585,7 @@ size_ec2_aws(){
 
 #选择系统
 image_aws_ec2(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/data/EC2/image/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/EC2/image/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -601,7 +601,7 @@ image_aws_ec2(){
     clear
     echo "`date` 正在进行AWS EC2 创建vm"
     echo
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/data/EC2/image/${region}/${image})`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/EC2/image/${region}/${image})`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1

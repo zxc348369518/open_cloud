@@ -292,7 +292,7 @@ del_linode() {
 
 #linnode服务器位置
 region_linode(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/data/region)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/region)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -309,7 +309,7 @@ region_linode(){
 
 #linode服务器镜像
 image_linode(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/data/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -326,7 +326,7 @@ image_linode(){
     echo "`date` 正在进行Linode创建vm操作"
     echo
     
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/data/image-${image})`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/image-${image})`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -342,7 +342,7 @@ image_linode(){
 
 #linode服务器大小
 size_linode(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/data/size)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/size)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
