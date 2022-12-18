@@ -29,7 +29,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/openc
 
 ## AWS
 EC2：
- - 支持常用功能（记录API、创建linux、删除vm、查询账号状态）、创建Windows、获取Windows登录密码、更换IP
+ - 支持常用功能（记录API、创建linux、删除vm、查询账号状态）、创建Windows、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/opencloud-aws-ec2.sh)
 ```
