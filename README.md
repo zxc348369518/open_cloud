@@ -34,7 +34,7 @@ EC2：
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-aws-ec2.sh)
 ```
 
-## Azure【旧版不建议使用】
+## Azure
  - 支持常用功能（记录API、创建linux、删除vm、查询账号状态）、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/opencloud-Azure.sh)

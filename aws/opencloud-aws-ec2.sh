@@ -49,9 +49,9 @@ get_win_passwd(){
     echo "`date` 正在进行AWS EC2 获取WIN密码"
     echo
     
-    cd ${file_path}/account/${api_name}/VM/${region}/vm_info
+    cd ${file_path}/account/${api_name}/vm/${region}/vm_info
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${api_name}/VM/${region}/vm_info`)
+    a=(`ls ${file_path}/account/${api_name}/vm/${region}/vm_info`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -65,7 +65,7 @@ get_win_passwd(){
     
     vm_name=${a[num]}
     
-    ids=`cat ${file_path}/account/${api_name}/VM/${region}/vm_info/${vm_name}/InstanceId`
+    ids=`cat ${file_path}/account/${api_name}/vm/${region}/vm_info/${vm_name}/InstanceId`
     
     sleep 10s
     
@@ -116,9 +116,9 @@ del_ec2_aws(){
     echo "`date` 正在进行AWS EC2 删除vm"
     echo
     
-    cd ${file_path}/account/${api_name}/VM/${region}/vm_info
+    cd ${file_path}/account/${api_name}/vm/${region}/vm_info
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${api_name}/VM/${region}/vm_info`)
+    a=(`ls ${file_path}/account/${api_name}/vm/${region}/vm_info`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -134,7 +134,7 @@ del_ec2_aws(){
     vm_name=${a[num]}
     
     
-    ids=`cat ${file_path}/account/${api_name}/VM/${region}/vm_info/${vm_name}/InstanceId`
+    ids=`cat ${file_path}/account/${api_name}/vm/${region}/vm_info/${vm_name}/InstanceId`
     
     json=`aws ec2 terminate-instances \
     --instance-ids ${ids}`
@@ -194,9 +194,9 @@ change_ip_aws_ec2(){
     echo "`date` 正在进行AWS EC2 更换IP"
     echo
     
-    cd ${file_path}/account/${api_name}/VM/${region}/vm_info
+    cd ${file_path}/account/${api_name}/vm/${region}/vm_info
     o=`ls -l|grep -c "^d"`
-    a=(`ls ${file_path}/account/${api_name}/VM/${region}/vm_info`)
+    a=(`ls ${file_path}/account/${api_name}/vm/${region}/vm_info`)
     i=-1
     echo "已保存的api"
     while ((i < ("${o}" - "1" )))
@@ -211,7 +211,7 @@ change_ip_aws_ec2(){
     
     vm_name=${a[num]}
     
-    ids=`cat ${file_path}/account/${api_name}/VM/${region}/vm_info/${vm_name}/InstanceId`
+    ids=`cat ${file_path}/account/${api_name}/vm/${region}/vm_info/${vm_name}/InstanceId`
     
     clear
     echo "`date` 正在进行AWS EC2 更换IP"
@@ -252,7 +252,7 @@ change_ip_aws_ec2(){
 #已保存实例的备注
 check_remark_aws_EC2(){
     echo "该API下保存的实例备注："
-    ls ${file_path}/account/${api_name}/VM/${region}/vm_info
+    ls ${file_path}/account/${api_name}/vm/${region}/vm_info
 }
 
 #创建机器 win
@@ -403,15 +403,15 @@ create_ec2_AWS(){
     clear
     echo "`date` 正在进行AWS EC2 创建vm"
     echo
-    if test -f "${file_path}/account/${api_name}/VM/${region}/vpcid"; then
-        vpcid=`cat ${file_path}/account/${api_name}/VM/${region}/vpcid`
+    if test -f "${file_path}/account/${api_name}/vm/${region}/vpcid"; then
+        vpcid=`cat ${file_path}/account/${api_name}/vm/${region}/vpcid`
         
         # 写到这里
     else
         json=`aws  ec2 describe-vpcs`
         vpcid=`echo $json | jq -r '.Vpcs[0].VpcId'`
         if [[ $svpcidgid != null ]]; then
-            echo "${vpcid}" > ${file_path}/account/${api_name}/VM/${region}/vpcid
+            echo "${vpcid}" > ${file_path}/account/${api_name}/vm/${region}/vpcid
         else
             clear
             echo $json
@@ -424,8 +424,8 @@ create_ec2_AWS(){
      clear
     echo "`date` 正在进行AWS EC2 创建vm"
     echo
-    if test -f "${file_path}/${api_name}/VM/${region}/security_group"; then
-       ${sgid}=`cat ${file_path}/account/${api_name}/VM/${region}/security_group`
+    if test -f "${file_path}/${api_name}/vm/${region}/security_group"; then
+       ${sgid}=`cat ${file_path}/account/${api_name}/vm/${region}/security_group`
     else
         json=`aws ec2 create-security-group \
         --region ${region} \
