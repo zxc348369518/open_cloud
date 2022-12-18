@@ -15,27 +15,22 @@ apt-get install curl jq unzip -y
 ```
 
 ## Digitalocean
- - 支持常用功能（记录API、创建linux、删除vm、查询账号状态）
-
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)
 ```
 
 ## Linode
- - 支持常用功能（记录API、创建linux、删除vm、查询账号状态）
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)
 ```
 
 ## AWS
 EC2：
- - 支持常用功能（记录API、创建linux、删除vm、查询账号状态）、支持Windows系统、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-aws-ec2.sh)
 ```
 
 ## Azure
- - 支持常用功能（记录API、创建linux、删除vm、查询账号状态）、支持Windows系统、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/opencloud-Azure.sh)
 ```
