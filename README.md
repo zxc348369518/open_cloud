@@ -3,11 +3,14 @@
 # 使用脚本
 
 - 第一次运行必须安装 curl 和 jq 和 unzip，如果是这两个没有安装导致报错的请不要来找我！
+
+- Centos系统
 ```
-# Centos系统
 yum install curl jq unzip -y
+```
  
-# Ddebian和Ubuntu系统
+- Ddebian和Ubuntu系统
+```
 apt-get install curl jq unzip -y
 ```
 - 常用功能（记录API、创建linux、删除vm、查询账号状态）
