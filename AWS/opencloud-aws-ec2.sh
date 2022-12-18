@@ -823,7 +823,7 @@ del_api_aws_EC2(){
 		if [ ! -d "${file_path}/account/${api_name}" ]; then
 			echo "未在系统中查找到该名称的api"
 		else
-			rm -rf ${file_path}/account/${a[num]}
+			rm -rf ${file_path}/account/${api_name}
             echo "删除成功！"
 		fi
 	
