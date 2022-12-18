@@ -35,7 +35,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/o
 ```
 
 ## Azure
- - 支持常用功能（记录API、创建linux、删除vm、查询账号状态）、更换IP
+ - 支持常用功能（记录API、创建linux、删除vm、查询账号状态）、支持Windows系统、更换IP
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/opencloud-Azure.sh)
 ```
