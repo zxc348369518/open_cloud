@@ -13,7 +13,6 @@ yum install curl jq unzip -y
 ```
 apt-get install curl jq unzip -y
 ```
-- 常用功能（记录API、创建linux、删除vm、查询账号状态）
 
 ## Digitalocean
  - 支持常用功能
