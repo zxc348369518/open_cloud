@@ -87,30 +87,38 @@ read -p " 请输入数字 :" num
 #linode一键测活
 Information_user_linode() {
     
-    cd ${file_path}
-    o=`ls ${file_path}|wc -l`
+    clear
+    echo "`date` 正在进行Linode测活"
+    echo
+    cd ${file_path}/account
+    o=`ls -l|grep -c "^d"`
+    a=(`ls ${file_path}/account`)
     i=-1
+    echo "已保存的api"
     while ((i < ("${o}" - "1" )))
     do
         ((i++))
-        array=(*)
-        var0=`echo ${array[${i}]}`
-        TOKEN=`cat ${file_path}/${var0}`
-        
-        json=`curl -s -H "Authorization: Bearer $TOKEN" \
-        https://api.linode.com/v4/account`
-        
-        var1=`echo $json | jq -r '.email'`
-        var2=`echo $json | jq -r '.active_promotions[0].credit_remaining'`
-        
-        if [[ ${var2} == "null" ]];then
-            echo -e  "API名称：${var0}————电子邮箱：${var1}————账号状态：Disabled" 
-        else
-            echo -e  "API名称：${var0}————电子邮箱：${var1}————账号余额：${var2}————账号状态：Enabled" 
-        fi
-        
+        echo -n -e "  ${Green_font_prefix}${i}.${Font_color_suffix}  "
+        echo ${a[i]}
     done
+
+    read -e -p "是否需要使用那个API？(编号)：" num
     
+    api_name=${a[num]}
+    
+    json=`curl -s -H "Authorization: Bearer $TOKEN" \
+    https://api.linode.com/v4/account`
+    
+    var1=
+    var2=
+    
+    clear
+    echo "`date` 正在进行Linode测活
+    
+API名称：${api_name}
+电子邮箱：`echo $json | jq -r '.email'`
+账号余额：`echo $json | jq -r '.active_promotions[0].credit_remaining'`
+Ps：账号正常则返回余额，不正常就返回其他"
     linode_loop_script
 }
 
