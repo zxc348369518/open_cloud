@@ -200,7 +200,7 @@ create_linode() {
         echo "创建失败，请把以上的错误代码发送给 @LeiGe_233 可帮您更新提示"
     else
         mkdir ${file_path}/account/${api_name}/vm
-        mkdir ${file_path}/account/${api_name}}/vm/${name}
+        mkdir ${file_path}/account/${api_name}/vm/${name}
         echo ${id} > ${file_path}/account/${api_name}//vm/${name}/id
         echo ${ipv4} > ${file_path}/dlinodeo/account/${api_name}/vm/${name}/ipv4
         echo ${ipv6} > ${file_path}/dlinodeo/account/${api_name}/vm/${name}/ipv6
