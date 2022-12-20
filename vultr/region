@@ -1,20 +1,115 @@
 {
 	"opencloud":[
 		{
-			"name":"美国地区",
-			"id":"America"
+			"name":"Atlanta（美国 亚特兰大）",
+			"id":"atl"
 		},
 		{
-			"name":"欧洲地区",
-			"id":"Europe"
+			"name":"Dallas（美国 达拉斯）",
+			"id":"dfw"
 		},
 		{
-			"name":"澳大利亚地区",
-			"id":"Australia"
+			"name":"Honolulu（美国 檀香山）",
+			"id":"hnl"
 		},
 		{
-			"name":"亚洲地区",
-			"id":"Asia"
+			"name":"Los Angeles（美国 洛杉矶）",
+			"id":"lax"
+		},
+		{
+			"name":"Mexico City（墨西哥）",
+			"id":"mex"
+		},
+		{
+			"name":"Miami（美国 迈阿密）",
+			"id":"mia"
+		},
+		{
+			"name":"Chicago（美国 芝加哥）",
+			"id":"ord"
+		},
+		{
+			"name":"Seattle（美国 西雅图）",
+			"id":"sea"
+		},
+		{
+			"name":"Silicon Valley（美国 硅谷）",
+			"id":"sjc"
+		},
+		{
+			"name":"New Jersey（美国 新泽西）",
+			"id":"ewr"
+		},
+		{
+			"name":"Bangalore（印度 班加罗尔）",
+			"id":"blr"
+		},
+		{
+			"name":"Mumbai（印度 孟买）",
+			"id":"bom"
+		},
+		{
+			"name":"Delhi NCR（印度 德里）",
+			"id":"del"
+		},
+		{
+			"name":"Seoul（韩国 汉城）",
+			"id":"icn"
+		},
+		{
+			"name":"Tokyo（日本 东京）",
+			"id":"nrt"
+		},
+		{
+			"name":"Singapore（新加坡）",
+			"id":"sgp"
+		},
+		{
+			"name":"Toronto（加拿大 多伦多）",
+			"id":"yto"
+		},
+		{
+			"name":"Johannesburg（南非 约翰内斯堡）",
+			"id":"jnb"
+		},
+		{
+			"name":"Melbourne（澳大利亚 墨尔本）",
+			"id":"mel"
+		},
+		{
+			"name":"（澳大利亚 悉尼）",
+			"id":"syd"
+		},{
+			"name":"Amsterdam（荷兰）",
+			"id":"ams"
+		},
+		{
+			"name":"Paris（法国 巴黎）",
+			"id":"cdg"
+		},
+		{
+			"name":"Frankfurt（德国 法兰克福）",
+			"id":"fra"
+		},
+		{
+			"name":"London(英国 伦敦)",
+			"id":"lhr"
+		},
+		{
+			"name":"Stockholm(瑞典 斯德哥尔摩)",
+			"id":"sto"
+		},
+		{
+			"name":"Warsaw(波兰 华沙)",
+			"id":"waw"
+		},
+		{
+			"name":"Warsaw(波兰 华沙)",
+			"id":"waw"
+		},
+		{
+			"name":"Madrid(西班牙 马德里)",
+			"id":"mad"
 		}
 	]
 }
