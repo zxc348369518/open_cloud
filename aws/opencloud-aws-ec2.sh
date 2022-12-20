@@ -141,7 +141,7 @@ del_ec2_aws(){
     status=`echo $json | jq -r '.TerminatingInstances[0].CurrentState.Code'`
     sleep 20s
     if [[ $status == "32" ]]; then
-        rm -rf ${qq}
+        rm -rf ${file_path}/account/${api_name}/vm/${region}/vm_info/${vm_name}/
         clear
         echo "`date` 正在进行AWS EC2 删除vm"
         echo

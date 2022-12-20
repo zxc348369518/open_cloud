@@ -1,0 +1,20 @@
+{
+	"opencloud":[
+		{
+			"name":"Debian 8",
+			"id":"debian_8_7"
+		},
+		{
+			"name":"Debian 9",
+			"id":"debian_9_13"
+		},
+		{
+			"name":"Debian 10",
+			"id":"debian_10"
+		},
+		{
+			"name":"Debian 11",
+			"id":"debian_11"
+		}
+	]
+}

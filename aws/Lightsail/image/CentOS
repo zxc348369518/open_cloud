@@ -1,0 +1,12 @@
+{
+	"opencloud":[
+		{
+			"name":"CentOS 7",
+			"id":"centos_7_2009_01"
+		},
+		{
+			"name":"CentOS 8",
+			"id":"centos_8"
+		}
+	]
+}

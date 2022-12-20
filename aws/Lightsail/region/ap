@@ -1,0 +1,36 @@
+{
+	"opencloud":[
+		{
+			"name":"亚太地区（香港）【需开启】",
+			"id":"ap-east-1"
+		},
+		{
+			"name":"亚太地区（雅加达）【需开启】",
+			"id":"ap-southeast-3"
+		},
+		{
+			"name":"亚太地区（孟买）",
+			"id":"ap-south-1"
+		},
+		{
+			"name":"亚太地区（大阪）",
+			"id":"ap-northeast-3"
+		},
+		
+		{	"name":"亚太地区（首尔）",
+			"id":"ap-northeast-2"
+		},
+		{
+			"name":"亚太地区（新加坡）",
+			"id":"ap-southeast-1"
+		},
+		{
+			"name":"亚太地区（悉尼）",
+			"id":"ap-southeast-2"
+		},
+		{
+			"name":"亚太地区（东京）",
+			"id":"ap-northeast-1"
+		}
+	]
+}
