@@ -301,7 +301,7 @@ del_vultr() {
 
 #vultr服务器位置
 region_vultr(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/region)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/region/region)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -317,7 +317,7 @@ region_vultr(){
     clear
     echo "`date` 正在进行vultr 创建vm"
     echo    
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/region-${region})`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/region/${region})`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -334,7 +334,7 @@ region_vultr(){
 
 #vultr服务器镜像
 image_vultr(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/image/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -350,7 +350,7 @@ image_vultr(){
 
 #vultr服务器大小
 size_vultr(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/size)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/size/size)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -366,7 +366,7 @@ size_vultr(){
     clear
     echo "`date` 正在进行vultr 创建vm"
     echo
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/${size})`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/size/${size})`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1

@@ -219,7 +219,7 @@ API名称：${api_name}
 
 #服务器位置
 region(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/region)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/region/region)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -235,7 +235,7 @@ region(){
 
 #服务器大小
 size(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size/size)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -252,7 +252,7 @@ size(){
 
 #服务器大小
 size2(){  
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size-${size})`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/size/${size})`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
@@ -269,7 +269,7 @@ size2(){
 
 #服务器镜像
 image(){
-    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/image)`
+    json=`cat <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/image/image)`
     o=`echo $json| jq ".opencloud | length"`
     
     i=-1
