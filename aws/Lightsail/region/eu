@@ -1,27 +1,7 @@
 {
 	"opencloud":[
 		{
-			"name":"欧洲（法兰克福）",
-			"id":"eu-central-1"
-		},
-		{
-			"name":"欧洲（爱尔兰）",
-			"id":"eu-west-1"
-		},
-		{
-			"name":"欧洲（伦敦）",
-			"id":"eu-west-2"
-		},
-		{
-			"name":"欧洲（米兰）【需开启】",
-			"id":"eu-south-1"
-		},
-		
-		{	"name":"欧洲（巴黎）",
-			"id":"eu-west-3"
-		},
-		{
-			"name":"欧洲（斯德哥尔摩）",
+			"name":"瑞典 斯德哥尔摩",
 			"id":"eu-north-1"
 		}
 	]
