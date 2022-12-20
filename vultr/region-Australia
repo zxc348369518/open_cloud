@@ -1,0 +1,12 @@
+{
+	"opencloud":[
+		{
+			"name":"Melbourne（澳大利亚 墨尔本）",
+			"id":"mel"
+		},
+		{
+			"name":"（澳大利亚 悉尼）",
+			"id":"syd"
+		}
+	]
+}

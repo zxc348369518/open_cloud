@@ -1,0 +1,44 @@
+{
+	"opencloud":[
+		{
+			"name":"Atlanta（美国 亚特兰大）",
+			"id":"atl"
+		},
+		{
+			"name":"Dallas（美国 达拉斯）",
+			"id":"dfw"
+		},
+		{
+			"name":"Honolulu（美国 檀香山）",
+			"id":"hnl"
+		},
+		{
+			"name":"Los Angeles（美国 洛杉矶）",
+			"id":"lax"
+		},
+		{
+			"name":"Mexico City（墨西哥）",
+			"id":"mex"
+		},
+		{
+			"name":"Miami（美国 迈阿密）",
+			"id":"mia"
+		},
+		{
+			"name":"Chicago（美国 芝加哥）",
+			"id":"ord"
+		},
+		{
+			"name":"Seattle（美国 西雅图）",
+			"id":"sea"
+		},
+		{
+			"name":"Silicon Valley（美国 硅谷）",
+			"id":"sjc"
+		},
+		{
+			"name":"New Jersey（美国 新泽西）",
+			"id":"ewr"
+		}
+	]
+}

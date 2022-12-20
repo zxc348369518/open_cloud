@@ -1,0 +1,36 @@
+{
+	"opencloud":[
+		{
+			"name":"Amsterdam（荷兰）",
+			"id":"ams"
+		},
+		{
+			"name":"Paris（法国 巴黎）",
+			"id":"cdg"
+		},
+		{
+			"name":"Frankfurt（德国 法兰克福）",
+			"id":"fra"
+		},
+		{
+			"name":"London(英国 伦敦)",
+			"id":"lhr"
+		},
+		{
+			"name":"Stockholm(瑞典 斯德哥尔摩)",
+			"id":"sto"
+		},
+		{
+			"name":"Warsaw(波兰 华沙)",
+			"id":"waw"
+		},
+		{
+			"name":"Warsaw(波兰 华沙)",
+			"id":"waw"
+		},
+		{
+			"name":"Madrid(西班牙 马德里)",
+			"id":"mad"
+		}
+	]
+}
