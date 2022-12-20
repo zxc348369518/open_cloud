@@ -23,6 +23,14 @@
 		{
 			"name":"Warsaw(波兰 华沙)",
 			"id":"waw"
+		},
+		{
+			"name":"Warsaw(波兰 华沙)",
+			"id":"waw"
+		},
+		{
+			"name":"Madrid(西班牙 马德里)",
+			"id":"mad"
 		}
 	]
 }

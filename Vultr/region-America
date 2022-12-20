@@ -35,6 +35,10 @@
 		{
 			"name":"Silicon Valley（美国 硅谷）",
 			"id":"sjc"
+		},
+		{
+			"name":"New Jersey（美国 新泽西）",
+			"id":"ewr"
 		}
 	]
 }

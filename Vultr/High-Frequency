@@ -1,0 +1,40 @@
+{
+	"opencloud":[
+		{
+			"name":"1vCPU 1GB 1TB $6",
+			"id":"vhf-1c-1gb"
+		},
+		{
+			"name":"1vCPU 2GB 2TB $12",
+			"id":"vhf-1c-2gb"
+		},
+		{
+			"name":"2vCPU 2G 3TB $18",
+			"id":"vhf-2c-2gb"
+		},
+		{
+			"name":"2vCPU 4G 3TB $24",
+			"id":"vhf-2c-4gb"
+		},
+		{
+			"name":"3vCPU 8GB 4TB $48",
+			"id":"vhf-3c-8gb"
+		},
+		{
+			"name":"4vCPU 16GB 5TB $96",
+			"id":"vhf-4c-16gb"
+		},
+		{
+			"name":"6vCPU 24GB 6TB $144",
+			"id":"vhf-6c-24gb"
+		},
+		{
+			"name":"8vCPU 32GB 7TB $192",
+			"id":"vhf-8c-32gb"
+		},
+		{
+			"name":"12vCPU 48GB 8TB $256",
+			"id":"vhf-12c-48gb"
+		}
+	]
+}
