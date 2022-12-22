@@ -323,6 +323,7 @@ IP地址2：${ipv6}
 密码：Opencloud@Leige
 密码为固定密码，请立即修改！"
 fi
+fi
 }
 
 #aws选择区域
@@ -648,4 +649,4 @@ install_aws_Lightsail_cli(){
     sudo ./aws/install
     ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
 }
-#initialization
+initialization
