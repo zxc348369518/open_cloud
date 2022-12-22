@@ -371,7 +371,7 @@ size_Lightsail_aws(){
         echo $json | jq -r '.opencloud['${i}'].name'
     done
     read -e -p "请选择你的服务器类型（编号）:" b
-        id=`echo $json | jq -r '.opencloud['${b}'].id'`
+        size=`echo $json | jq -r '.opencloud['${b}'].id'`
 }
 
 #选择系统
