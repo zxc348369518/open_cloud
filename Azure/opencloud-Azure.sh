@@ -716,7 +716,7 @@ read -p " 请输入数字 :" num
     change_ip_azure
     ;;
     3)
-    create_azure
+    create_azure_vm
     ;;
     4)
     del_azure
