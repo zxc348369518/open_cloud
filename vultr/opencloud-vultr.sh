@@ -212,7 +212,7 @@ create_vultr() {
     fi
         mkdir ${file_path}/account/${api_name}/vm
         mkdir ${file_path}/account/${api_name}/vm/${name}
-        echo ${id} > ${file_path}/account/${api_name}//vm/${name}/id
+        echo ${id} > ${file_path}/account/${api_name}/vm/${name}/id
         echo ${ipv4} > ${file_path}/dvultro/account/${api_name}/vm/${name}/ipv4
         
         echo -e "`date` vultr创建vm完成！
