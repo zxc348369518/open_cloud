@@ -20,8 +20,8 @@ EC2：
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/zxc348369518/open_cloud/main/aws/opencloud-aws-ec2.sh)
 
-     
-     
+
+## AWS    
      
 - 开机密码固定为：Opencloud@Leige 请登录后立即修改密码，Windows系统除外！
 
