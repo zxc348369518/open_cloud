@@ -9,7 +9,7 @@
 yum install curl jq unzip -y
 ```
  
-- Ddebian和Ubuntu系统
+- Ddebian和Ubuntu系统  UBUNTU16.04才行
 ```
 apt-get install curl jq unzip -y
 ```
