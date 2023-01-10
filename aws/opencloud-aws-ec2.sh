@@ -266,7 +266,7 @@ create_win_aws_EC2(){
     --security-group-ids ${sgid} \
     --subnet-id ${SubnetId} \
     --region ${region} \
-    --block-device-mappings "[{\"DeviceName\":\"/dev/xvda\",\"Ebs\":{\"VolumeSize\":${vda},\"DeleteOnTermination\":true}}]"`
+    --block-device-mappings "[{\"DeviceName\":\"/dev/sda1\",\"Ebs\":{\"VolumeSize\":${vda},\"DeleteOnTermination\":true}}]"`
     
     InstanceId=`echo $json | jq -r '.Instances[0].InstanceId'`
     
@@ -303,7 +303,7 @@ sudo service sshd restart;
     --security-group-ids ${sgid} \
     --subnet-id ${SubnetId} \
     --region ${region} \
-    --block-device-mappings "[{\"DeviceName\":\"/dev/xvda\",\"Ebs\":{\"VolumeSize\":${vda},\"DeleteOnTermination\":true}}]"`
+    --block-device-mappings "[{\"DeviceName\":\"/dev/sda1\",\"Ebs\":{\"VolumeSize\":${vda},\"DeleteOnTermination\":true}}]"`
     
     InstanceId=`echo $json | jq -r '.Instances[0].InstanceId'`
     
