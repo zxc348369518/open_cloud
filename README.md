@@ -14,34 +14,11 @@ yum install curl jq unzip -y
 apt-get install curl jq unzip -y
 ```
 
-## Digitalocean
-```
-bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/do/opencloud-digitalocean.sh)
-```
-
-## Linode
-```
-bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/linode/opencloud-linode.sh)
-```
 
 ## AWS
 EC2：
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-aws-ec2.sh)
-```
-Lightsail：
-```
-bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/aws/opencloud-aws-Lightsail.sh)
-```
-## Azure
-```
-bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/Azure/opencloud-Azure.sh)
-```
-
-## Vultr
-```
-bash <(curl -Ls https://raw.githubusercontent.com/LG-leige/open_cloud/main/vultr/opencloud-vultr.sh)
-```
+bash <(curl -Ls https://raw.githubusercontent.com/zxc348369518/open_cloud/main/aws/opencloud-aws-ec2.sh)
 
 # 主要特性
 - opencloud 利用 云服务的api调用 进行创建机器 删除机器等操作
