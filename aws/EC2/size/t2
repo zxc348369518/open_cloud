@@ -3,6 +3,14 @@
 		{
 			"name":"m6in.2xlarge 8C32G",
 			"id":"m6in.2xlarge"
+		},
+		{
+			"name":"r6in.2xlarge 8C64G",
+			"id":"r6in.2xlarge"
+		},
+		{
+			"name":"m5zn.2xlarge 8C32G",
+			"id":"m5zn.2xlarge"
 		}
 	]
 }
