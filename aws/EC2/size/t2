@@ -9,6 +9,14 @@
 			"id":"r6in.2xlarge"
 		},
 		{
+			"name":"m6i.2xlarge 8C32G",
+			"id":"m6i.2xlarge"
+		},
+		{
+			"name":"i3en.2xlarge 8V64G",
+			"id":"i3en.2xlarge"
+		},
+		{
 			"name":"m5zn.2xlarge 8C32G",
 			"id":"m5zn.2xlarge"
 		}
